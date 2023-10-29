@@ -19,7 +19,7 @@ def create_user_response(user, message, status_code):
     response.set_cookie("access_token_cookie", access_token, httponly=True)
     return response
 
-@auth.route('/api/register', methods=["POST"])
+@auth.route('/register', methods=["POST"])
 def register():
     user_schema = UserSchema()
     try:
