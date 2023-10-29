@@ -154,5 +154,22 @@ def signin():
 @auth.route('verify-token', methods=["GET"])
 @jwt_required()
 def verify_token():
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    """
+    Route used for when frontend needs to verify if a user is still logged in
+    or grab the username and profile picture to display in different places
+    """
+    # initialize the current users id
+    current_user_id = get_jwt_identity()
+
+    # Fetch the user from the database using the ID
+    current_user = User.query.get(current_user_id)
+
+    # Return an error if the current user doesnt exist
+    if not current_user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Return an object containing the user name and profile picture stored for the current user
+    return jsonify({
+        "logged_in_as": current_user.username,
+        "profile_picture": current_user.profile_picture
+    }), 200
