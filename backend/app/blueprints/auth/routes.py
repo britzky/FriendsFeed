@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, make_response, g
 from flask_jwt_extended import create_access_token
+from marshmallow import ValidationError
+from app.schemas import UserSchema
 from app.models import User
 from . import auth
 
@@ -19,8 +21,9 @@ def create_user_response(user, message, status_code):
 
 @auth.route('/api/register', methods=["POST"])
 def register():
+    user_schema = UserSchema()
     try:
-        data = request.json
+        data = user_schema.load(request.json)
         new_user = User(
             username=data['username'],
             email=data['email'],
@@ -29,6 +32,8 @@ def register():
         new_user.password = new_user.hash_password(data['password'])
         new_user.save_to_db()
         return create_user_response(new_user, "Logged in successfully", 201)
+    except ValidationError as err:
+        return jsonify(err.messages), 400
     except Exception as e:
         print(f"Exception occurred: {e}")
         return jsonify({"message": "An error occurred"}), 500
