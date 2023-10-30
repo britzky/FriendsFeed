@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import api from "./api";
 
 const REGISTER_URL = "https://colab-test.onrender.com/register";
@@ -27,6 +27,10 @@ export default function MyForm() {
       validationErrors.password = "Password is required";
     }
 
+    if (!formData.email) {
+      validationErrors.email = "email is required";
+    }
+
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the API
       try {
@@ -38,9 +42,10 @@ export default function MyForm() {
           headers: {
             "Content-Type": "application/json",
           },
-         
-        });
 
+          body: JSON.stringify(formData),
+        });
+            console.log(formData)
         if (response.status === 201) {
           // Registration was successful, navigate to the user's dashboard or login screen
           // navigation.navigate("Dashboard"); // Adjust the screen name as needed
@@ -66,6 +71,15 @@ export default function MyForm() {
         placeholder="username"
         value={formData.username}
         onChangeText={(text) => handleChange("username", text)}
+      />
+      {errors.username && (
+        <Text style={{ color: "red" }}>{errors.username}</Text>
+      )}
+      
+      <TextInput
+        placeholder="email"
+        value={formData.email}
+        onChangeText={(text) => handleChange("email", text)}
       />
       {errors.username && (
         <Text style={{ color: "red" }}>{errors.username}</Text>
