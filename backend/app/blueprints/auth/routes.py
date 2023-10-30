@@ -151,7 +151,7 @@ def signin():
         print(f"Exception occurred: {e}")
         return jsonify({"message": "An error occurred"}), 500
 
-@auth.route('verify-token', methods=["GET"])
+@auth.route('/verify-token', methods=["GET"])
 @jwt_required()
 def verify_token():
     """
