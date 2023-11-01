@@ -123,7 +123,7 @@ class Review(db.Model):
     rating = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('resaurant.id'), nullable=False)
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
     cuisine_id = db.Column(db.Integer, db.ForeignKey('cuisine.id'), nullable=False)
 
     # save review to database
