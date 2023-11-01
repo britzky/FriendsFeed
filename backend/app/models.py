@@ -115,12 +115,12 @@ class Review(db.Model):
 
     """
     id = db.Column(db.Integer, primary_key=True)
-    restaurant_name = db.Column(db.String, nullable=False)
-    dish = db.Column(db.String, nullable=False)
     comment = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('resaurant_id'), nullable=False)
+    cuisine_id = db.Column(db.Integer, db.ForeignKey('cuisine_id'), nullable=False)
 
     # save review to database
     def save_to_db(self):
@@ -137,3 +137,32 @@ class Review(db.Model):
     def delete_review(self):
         db.session.delete(self)
         db.session.commit()
+
+class Cuisine(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    reviews = db.relationship('Review', backref='cuisine', lazy='dynamic')
+
+restaurant_cuisines = db.Table('restaurant_cuisines',
+    db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True),
+    db.Column('cuisine_id', db.Integer, db.ForeignKey('cuisine.id'), primary_key=True)
+)
+
+class Restaurant(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False, unique=True)
+    address = db.Column(db.String)
+    city = db.Column(db.String)
+    state = db.Column(db.String)
+    zip_code = db.Column(db.String)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    average_rating = db.Column(db.Float, default=0.0)
+    review_count = db.Column(db.Integer, default=0)
+    reviews = db.relationship(
+        'Review', backref='restaurant', lazy='dynamic'
+    )
+    cuisine = db.relationship('Cuisine', secondary=restaurant_cuisines, lazy='subquery',
+        backref=db.backref('restaurants', lazy=True))
+
+

@@ -145,6 +145,7 @@ def signin():
     try:
         # Parse the JSON payload from the client request
         user_data = request.get_json()
+        current_app.logger.info(user_data)
 
         # Validate the JSON payload
         if not user_data:
