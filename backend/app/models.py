@@ -167,6 +167,11 @@ class Restaurant(db.Model):
     )
     cuisine = db.relationship('Cuisine', secondary=restaurant_cuisines, lazy='subquery',
         backref=db.backref('restaurants', lazy=True))
-    
+
+    # method to add a cuisine to the restaurants list of cuisines
+    def add_cuisine(self, cuisine):
+        self.cuisine.append(cuisine)
+        db.session.commit()
+
 
 
