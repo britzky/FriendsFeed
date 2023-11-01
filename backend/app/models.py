@@ -143,6 +143,9 @@ class Cuisine(db.Model):
     name = db.Column(db.String, nullable=False)
     reviews = db.relationship('Review', backref='cuisine', lazy='dynamic')
 
+    def get_all_restaurants(self):
+        return self.restaurants.all()
+
 restaurant_cuisines = db.Table('restaurant_cuisines',
     db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True),
     db.Column('cuisine_id', db.Integer, db.ForeignKey('cuisine.id'), primary_key=True)
@@ -164,5 +167,6 @@ class Restaurant(db.Model):
     )
     cuisine = db.relationship('Cuisine', secondary=restaurant_cuisines, lazy='subquery',
         backref=db.backref('restaurants', lazy=True))
+    
 
 
