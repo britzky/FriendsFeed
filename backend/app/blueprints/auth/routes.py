@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify, make_response, g
+from flask import Flask, request, jsonify, make_response, current_app
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from werkzeug.utils import secure_filename
 from marshmallow import ValidationError
 from app.schemas import UserSchema
 from app.models import User
 from . import auth
+import os
 
 
 def create_user_response(user, message, status_code):
@@ -35,7 +37,8 @@ def create_user_response(user, message, status_code):
             "id": user.id,
             "username": user.username,
             "profile_picture": user.profile_picture
-        }
+        },
+        "access_token": access_token
     }, status_code)
     response.set_cookie("access_token_cookie", access_token, httponly=True)
     return response
@@ -79,6 +82,23 @@ def register():
         )
         # Hash the users password before stroing it
         new_user.password = new_user.hash_password(data['password'])
+
+        # Check if the request has the file part
+        if 'profile_picture' in request.files:
+            file = request.files['profile_picture']
+
+            #if user doesn't select a file, the browser submits an empty file without a filename
+            if file.filename == '':
+                return jsonify({"message": "No selected file"}), 400
+
+            #Secure the filename
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+            # Update the new_user object with the saved file path
+            new_user.profile_picture = file_path
+
         # Save the new user to the database
         new_user.save_to_db()
         # Generate a response containing the new user's details, JWT token and HTTP status code
@@ -125,6 +145,7 @@ def signin():
     try:
         # Parse the JSON payload from the client request
         user_data = request.get_json()
+        current_app.logger.info(user_data)
 
         # Validate the JSON payload
         if not user_data:
@@ -139,11 +160,11 @@ def signin():
 
         # Handle the case where a user doesn't exist
         if not user:
-            return jsonify({"message": "Invalid username/email or password"})
+            return jsonify({"message": "Invalid username/email or password"}), 400
 
         # Verify that the provided password matches the stored hash
         if not user.check_hash_password(password):
-            return jsonify({"message": "Invalid username/email or password"})
+            return jsonify({"message": "Invalid username/email or password"}), 400
         # Create and return a response with JWT token
         return create_user_response(user, "Logged in successfully", 200)
     except Exception as e:
@@ -166,7 +187,7 @@ def verify_token():
 
     # Return an error if the current user doesnt exist
     if not current_user:
-        return jsonify({"message": "User not found"}), 404
+        return jsonify({"message": "User not found"}), 401
 
     # Return an object containing the user name and profile picture stored for the current user
     return jsonify({

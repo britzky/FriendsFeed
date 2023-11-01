@@ -1,17 +1,26 @@
 from flask import Flask, g, request
-from config import Config
+from config import Config, TestingConfig
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+import os
 
 db = SQLAlchemy()
 migrate = Migrate()
 
-def create_app():
+def create_app(testing=False):
     app = Flask(__name__)
 
-    app.config.from_object(Config)
+    if testing:
+        app.config.from_object(TestingConfig)
+    else:
+        app.config.from_object(Config)
+
+
+
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     jwt = JWTManager(app)
 
