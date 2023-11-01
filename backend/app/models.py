@@ -89,6 +89,10 @@ class User(db.Model):
     def get_all_friends(self):
         return self.friends.all()
 
+    # get all reviews made by friends
+    def get_all_reviews_by_friends(self):
+        return Review.query.filter(Review.user_id.in_([friend.id for friend in self.get_all_friends.all()]))
+
 
     # search for users by username
     @classmethod
@@ -138,6 +142,11 @@ class Review(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    # get all of the reviews of a certain rating
+    @classmethod
+    def get_reviews_by_rating(cls, rating):
+        return cls.query.filter_by(rating=rating).all()
+
 class Cuisine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -168,9 +177,20 @@ class Restaurant(db.Model):
     cuisine = db.relationship('Cuisine', secondary=restaurant_cuisines, lazy='subquery',
         backref=db.backref('restaurants', lazy=True))
 
-    # method to add a cuisine to the restaurants list of cuisines
+    # add a cuisine to the restaurants list of cuisines
     def add_cuisine(self, cuisine):
         self.cuisine.append(cuisine)
+        db.session.commit()
+
+    # update the average rating for a restaurant
+    def update_average_rating(self):
+        # get all reviews
+        all_reviews = self.reviews.all()
+        # calculate average of the reviews
+        new_avg = sum([review.rating for review in all_reviews]) / len(all_reviews)
+        # update the average rating field with the calculation
+        self.average_rating = new_avg
+        # commit the changes to the database
         db.session.commit()
 
 
