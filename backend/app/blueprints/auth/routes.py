@@ -1,7 +1,6 @@
 from flask import (
     request,
     jsonify,
-    make_response,
     current_app
 )
 from flask_jwt_extended import (
@@ -9,7 +8,6 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt_identity,
     create_refresh_token,
-    jwt_refresh_token_required
 )
 from werkzeug.utils import secure_filename
 from marshmallow import ValidationError
