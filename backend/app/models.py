@@ -105,6 +105,30 @@ class User(db.Model):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
+    def get_average_rating_by_friends(self, yelp_restaurant_id):
+        """
+        Calculate the average rating of a given restaurant by Yelp ID from
+        friends' reviews
+
+        parameters: yelo_restaurant_id: Yelp ID of the restaurant
+        return: The average rating as a float
+        """
+        # initialize a variable to hold all friend ids
+        friend_ids = []
+
+        # loop through all friends and add them to the friend_ids list
+        for friend in self.get_all_friends():
+            friend_ids.append(friend.id)
+
+        # use the friend_ids list to filter reviews
+        average_rating = db.session.query(
+            db.func.avg(Review.rating).label('average')
+        ).filter(
+            Review.user_id.in_(friend_ids),
+            Review.yelp_restaurant_id == yelp_restaurant_id
+        ).scalar()
+
+        return average_rating or 0
 
 class Review(db.Model):
     """
