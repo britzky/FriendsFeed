@@ -35,6 +35,7 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String)
+    zipcode = db.Column(db.String, nullable=False)
     reviews = db.relationship(
         'Review', backref='user', lazy='dynamic'
     )
@@ -58,6 +59,11 @@ class User(db.Model):
     # save user to database
     def save_to_db(self):
         db.session.add(self)
+        db.session.commit()
+
+    # update users zipcode
+    def update_zipcode(self, new_zipcode):
+        self.zipcode = new_zipcode
         db.session.commit()
 
     #update users profile picture
@@ -91,7 +97,7 @@ class User(db.Model):
 
     # get all reviews made by friends
     def get_all_reviews_by_friends(self):
-        return Review.query.filter(Review.user_id.in_([friend.id for friend in self.get_all_friends.all()]))
+        return Review.query.filter(Review.user_id.in_([friend.id for friend in self.get_all_friends()]))
 
 
     # search for users by username
