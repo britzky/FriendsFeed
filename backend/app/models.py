@@ -111,8 +111,7 @@ class Review(db.Model):
     Review model for storing user reviews
 
     Attributes:
-        - restaurant_name: The name of the restaurant thats being reviewed
-        - dish: The dish that is being reviewed
+        - yelp_restaurant_id: The unique identifier for the restaurant on Yelp
         - comment: the actual review its self
         - rating: the rating given by the reviewer
         - date: date the review was posted
@@ -125,12 +124,11 @@ class Review(db.Model):
 
     """
     id = db.Column(db.Integer, primary_key=True)
+    yelp_restaurant_id = db.Column(db.String, nullable=False)
     comment = db.Column(db.String, nullable=False)
     rating = db.Column(db.Integer, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow())
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.id'), nullable=False)
-    cuisine_id = db.Column(db.Integer, db.ForeignKey('cuisine.id'), nullable=False)
 
     # save review to database
     def save_to_db(self):
@@ -153,51 +151,8 @@ class Review(db.Model):
     def get_reviews_by_rating(cls, rating):
         return cls.query.filter_by(rating=rating).all()
 
-class Cuisine(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    reviews = db.relationship('Review', backref='cuisine', lazy='dynamic')
 
-    def get_all_restaurants(self):
-        return self.restaurants.all()
 
-restaurant_cuisines = db.Table('restaurant_cuisines',
-    db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True),
-    db.Column('cuisine_id', db.Integer, db.ForeignKey('cuisine.id'), primary_key=True)
-)
-
-class Restaurant(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False, unique=True)
-    address = db.Column(db.String)
-    city = db.Column(db.String)
-    state = db.Column(db.String)
-    zip_code = db.Column(db.String)
-    latitude = db.Column(db.Float)
-    longitude = db.Column(db.Float)
-    average_rating = db.Column(db.Float, default=0.0)
-    review_count = db.Column(db.Integer, default=0)
-    reviews = db.relationship(
-        'Review', backref='restaurant', lazy='dynamic'
-    )
-    cuisine = db.relationship('Cuisine', secondary=restaurant_cuisines, lazy='subquery',
-        backref=db.backref('restaurants', lazy=True))
-
-    # add a cuisine to the restaurants list of cuisines
-    def add_cuisine(self, cuisine):
-        self.cuisine.append(cuisine)
-        db.session.commit()
-
-    # update the average rating for a restaurant
-    def update_average_rating(self):
-        # get all reviews
-        all_reviews = self.reviews.all()
-        # calculate average of the reviews
-        new_avg = sum([review.rating for review in all_reviews]) / len(all_reviews)
-        # update the average rating field with the calculation
-        self.average_rating = new_avg
-        # commit the changes to the database
-        db.session.commit()
 
 
 
