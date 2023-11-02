@@ -126,7 +126,7 @@ def register():
         return jsonify({"message": "An error occurred"}), 500
 
 @auth.route('/update-zipcode', methods=["POST"])
-@jwt_required
+@jwt_required()
 def update_zipcode():
     #get the new zipcode from the request
     new_zipcode = request.json.get('zipcode')
@@ -232,7 +232,7 @@ def verify_token():
     }), 200
 
 @auth.route('/token/refresh', methods=['POST'])
-@jwt_refresh_token_required
+@jwt_required(refresh=True)
 def refresh():
     # get the current users id
     current_user_id = get_jwt_identity()
