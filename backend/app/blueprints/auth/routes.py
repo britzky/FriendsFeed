@@ -229,7 +229,7 @@ def verify_token():
         "profile_picture": current_user.profile_picture
     }), 200
 
-@auth.route('/token/refresh', methods=['POST'])
+@auth.route('/token-refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh():
     # get the current users id
