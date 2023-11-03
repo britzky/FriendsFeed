@@ -47,7 +47,8 @@ def create_user_response(user, message, status_code):
         "user": {
             "id": user.id,
             "username": user.username,
-            "profile_picture": user.profile_picture
+            "profile_picture": user.profile_picture,
+            "zipcode": user.zipcode
         },
         "access_token": access_token,
         "refresh_token": refresh_token
