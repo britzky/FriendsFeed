@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const BASE_URL = 'https://colab-test.onrender.com'
 
 export const useGetRestaurants = (zipcode) => {
-    const { accessToken, refreshToken, isLoggedIn } = useAuth();
+    const { accessToken, setAccessToken, refreshToken, isLoggedIn } = useAuth();
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -18,15 +18,26 @@ export const useGetRestaurants = (zipcode) => {
             if (!zipcode || !isLoggedIn) return;
 
             setLoading(true)
+            let currentToken = accessToken;
+            if(!currentToken) {
+                currentToken = await AsyncStorage.getItem('access_token');
+            }
 
             try {
                 let response = await fetchRestaurantFromAPI(accessToken);
 
                 if (response.status === 401) {
                     //Attempt to refresh the token
-                    await refreshToken();
-                    // Re-fetch after refreshing the token
-                    response = await fetchRestaurantFromAPI(accessToken);
+                    newToken = await refreshToken();
+                    if (newToken) {
+                        currentToken = newToken;
+                        setAccessToken(newToken);
+                        await AsyncStorage.setItem('access_token', newToken)
+                        // Re-fetch after refreshing the token
+                        response = await fetchRestaurantFromAPI(currentToken);
+                    } else {
+                        throw new Error('Authenticatiion failed');
+                    }
                 }
 
                 if (response.ok) {
