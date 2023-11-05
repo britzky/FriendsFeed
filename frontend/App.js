@@ -1,36 +1,25 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet,} from "react-native";
+import { AuthProvider } from "./context/AuthContext";
+import { AppNavigator } from "./navigation/AppNavigator";
 
-import Login from "./screens/Login";
-import Register from "./screens/Register";
 
+global.Buffer = global.Buffer || require('buffer').Buffer;
 
-// import RestaurantList from "./screens/RestaurantList";
-import RestaurantTile from "./components/RestaurantTile";
-import RestaurantList from "./screens/RestaurantList";
+global.atob = global.atob || function(encoded) {
+  return require('buffer').Buffer.from(encoded, 'base64').toString('binary');
+};
+global.btoa = global.btoa || function(binary) {
+  return require('buffer').Buffer.from(binary, 'binary').toString('base64');
+};
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./screens/Home";
-import FriendScreen from "./screens/FriendScreen";
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <>
-      <StatusBar style="dark" />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="RestaurantList" component={RestaurantList} />
-          <Stack.Screen name="Register" component={Register} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="RestaurantTile" component={RestaurantTile} />
-          <Stack.Screen name="Friends" component={FriendScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
+    <AuthProvider>
+        <AppNavigator style={styles.container} />
+        <StatusBar style="auto" />
+    </AuthProvider>
   );
 }
 

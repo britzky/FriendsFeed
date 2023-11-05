@@ -1,5 +1,14 @@
-from flask import Flask, request, jsonify, make_response, current_app
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask import (
+    request,
+    jsonify,
+    current_app
+)
+from flask_jwt_extended import (
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    create_refresh_token,
+)
 from werkzeug.utils import secure_filename
 from marshmallow import ValidationError
 from app.schemas import UserSchema
@@ -28,20 +37,23 @@ def create_user_response(user, message, status_code):
         Used in authentication routes to return a response to the client that
         includes both user details and a JWT token.
     """
-    # generate the token
+    # generate the access token
     access_token = create_access_token(identity=user.id)
+    #generate the refresh token
+    refresh_token = create_refresh_token(identity=user.id)
     # create the response object
-    response = make_response({
+    response = {
         "message": message,
         "user": {
             "id": user.id,
             "username": user.username,
-            "profile_picture": user.profile_picture
+            "profile_picture": user.profile_picture,
+            "zipcode": user.zipcode
         },
-        "access_token": access_token
-    }, status_code)
-    response.set_cookie("access_token_cookie", access_token, httponly=True)
-    return response
+        "access_token": access_token,
+        "refresh_token": refresh_token
+    }
+    return jsonify(response), status_code
 
 
 @auth.route('/register', methods=["POST"])
@@ -78,6 +90,7 @@ def register():
         new_user = User(
             username=data['username'],
             email=data['email'],
+            zipcode=data['zipcode'],
             profile_picture=data.get('profile_picture', None) # Optional field
         )
         # Hash the users password before stroing it
@@ -110,6 +123,28 @@ def register():
         # Log any unknown exceptions and return a 500 Internal Server Error
         print(f"Exception occurred: {e}")
         return jsonify({"message": "An error occurred"}), 500
+
+@auth.route('/update-zipcode', methods=["POST"])
+@jwt_required()
+def update_zipcode():
+    #get the new zipcode from the request
+    new_zipcode = request.json.get('zipcode')
+
+    # get the current user's ID from the JWT token
+    current_user_id = get_jwt_identity()
+
+    # Fetch the user by ID
+    user = User.query.get(current_user_id)
+
+    # Check if the user exists
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Update the user's zipcode using the the method in the User model
+    user.update_zipcode(new_zipcode)
+
+    # Return a success response
+    return jsonify({"message": "Zipcode updated successfully"}), 200
 
 
 @auth.route('/signin', methods=["POST"])
@@ -194,3 +229,16 @@ def verify_token():
         "logged_in_as": current_user.username,
         "profile_picture": current_user.profile_picture
     }), 200
+
+@auth.route('/token-refresh', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh():
+    # get the current users id
+    current_user_id = get_jwt_identity()
+
+    # Generate a new access token
+    new_access_token = create_access_token(identity=current_user_id)
+    return jsonify({"access_token": new_access_token}), 200
+
+
+

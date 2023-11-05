@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import api from "../components/api";
 
 const REGISTER_URL = "https://colab-test.onrender.com/register";
 
+
 export default function Register() {
+  const navigate = useNavigation()
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -54,7 +56,7 @@ export default function Register() {
         console.log(formData);
         if (response.status === 201) {
           // Registration was successful, navigate to the user's dashboard or login screen
-          navigation.navigate("); 
+          navigate.navigate("RestaurantList"); 
         } else {
           // Handle registration errors here
           const errorData = await response.json();

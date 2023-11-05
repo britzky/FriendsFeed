@@ -1,6 +1,14 @@
-import { View, TextInput, Button, Text, StyleSheet, Image, Pressable } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+} from "react-native";
 
-const RestaurantTile = ({onPress, color, title}) => {
+const RestaurantCard = ({ onPress, color, title }) => {
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -19,9 +27,9 @@ const RestaurantTile = ({onPress, color, title}) => {
         </View>
       </Pressable>
     </View>
-  )
-}
-export default RestaurantTile
+  );
+};
+export default RestaurantCard;
 
 const styles = StyleSheet.create({
   gridItem: {

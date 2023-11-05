@@ -4,7 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
-export default function MyForm() {
+export default function Login() {
+  const navigate = useNavigation()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -59,6 +60,7 @@ export default function MyForm() {
           const data = await response.json();
           console.log("Login successful:", data);
           setIsLoggedIn(true);
+          navigate.navigate("RestaurantList"); 
         } else {
           // Handle registration errors here
           const errorData = await response.json();
