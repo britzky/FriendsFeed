@@ -4,7 +4,7 @@ import logging
 
 def get_restaurants_by_zipcode(zipcode):
     # Base URL for the Yelp Fusion API
-    api_url = "https://api.yelp.com/v3/businesses/search"
+    api_url = f"https://api.yelp.com/v3/businesses/search?location={zipcode}&categories=restaurants"
 
     # Get the API key from the environment variable
     api_key = current_app.config['YELP_API_KEY']
@@ -14,19 +14,12 @@ def get_restaurants_by_zipcode(zipcode):
         "Authorization": f"Bearer {api_key}"
     }
 
-    # Define parameters for the request
-    params = {
-        "location": zipcode,
-        "categories": "restaurants",
-        "limit": 20
-    }
-
     logging.debug(f"Making Yelp API request to URL: {api_url}")
     logging.debug(f"With headers: {headers}")
-    logging.debug(f"And params: {params}")
+
 
     # Make the GET request to the Yelp API
-    response = requests.get(api_url, headers=headers, params=params)
+    response = requests.get(api_url, headers=headers)
 
     logging.debug(f"Yelp API Response Status: {response.status_code}")
     logging.debug(f"Yelp API Response Headers: {response.headers}")
