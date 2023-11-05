@@ -1,5 +1,6 @@
 from flask import current_app
 import requests
+import logging
 
 def get_restaurants_by_zipcode(zipcode):
     # Base URL for the Yelp Fusion API
@@ -20,8 +21,16 @@ def get_restaurants_by_zipcode(zipcode):
         "limit": 20
     }
 
+    logging.debug(f"Making Yelp API request to URL: {api_url}")
+    logging.debug(f"With headers: {headers}")
+    logging.debug(f"And params: {params}")
+
     # Make the GET request to the Yelp API
     response = requests.get(api_url, headers=headers, params=params)
+
+    logging.debug(f"Yelp API Response Status: {response.status_code}")
+    logging.debug(f"Yelp API Response Headers: {response.headers}")
+    logging.debug(f"Yelp API Response Body: {response.text}")
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -29,4 +38,5 @@ def get_restaurants_by_zipcode(zipcode):
         restaurants = response.json()
         return restaurants
     else:
+        logging.error(f"Yelp API request faild: {response.text}")
         return {"error": "Request failed", "status_code": response.status_code}
