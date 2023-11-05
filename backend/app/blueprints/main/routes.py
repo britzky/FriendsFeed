@@ -12,4 +12,13 @@ def restaurants():
     # Call the Yelp API function
     results = get_restaurants_by_zipcode(zipcode)
 
+    # Check if there was an error in the results and return accordingly
+    if 'error' in results:
+        #Structure the error response for the client
+        return jsonify({
+            "error": results["error"],
+            "message": "Failed to fetch data from Yelp API",
+            "status_code": results["status_code"]
+        }), results["status_code"]
+
     return jsonify(results)
