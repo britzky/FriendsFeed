@@ -1,42 +1,36 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import "react-native-gesture-handler";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from "./screens/Login";
+import Register from "./screens/Register";
 
 
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
+// import RestaurantList from "./screens/RestaurantList";
+import RestaurantTile from "./components/RestaurantTile";
+import RestaurantList from "./screens/RestaurantList";
 
-
-
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Home from "./screens/Home";
+import FriendScreen from "./screens/FriendScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Login />
-      <Register />
-      <Home />
-
-{/* <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="home" component={Home} />
-      </Stack.Navigator>
-    </NavigationContainer> */}
-
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style="dark" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="RestaurantList" component={RestaurantList} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="RestaurantTile" component={RestaurantTile} />
+          <Stack.Screen name="Friends" component={FriendScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
 
