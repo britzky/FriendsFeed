@@ -1,42 +1,25 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet,} from "react-native";
+import { AuthContext } from "./context/AuthContext";
+import { AppNavigator } from "./navigation/AppNavigator";
 import "react-native-gesture-handler";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Home from "./components/Home";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+global.Buffer = global.Buffer || require('buffer').Buffer;
 
+global.atob = global.atob || function(encoded) {
+  return require('buffer').Buffer.from(encoded, 'base64').toString('binary');
+};
+global.btoa = global.btoa || function(binary) {
+  return require('buffer').Buffer.from(binary, 'binary').toString('base64');
+};
 
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
-
-
-
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Login />
-      <Register />
-      <Home />
-
-{/* <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="home" component={Home} />
-      </Stack.Navigator>
-    </NavigationContainer> */}
-
-      <StatusBar style="auto" />
-    </View>
+    <AuthContext>
+        <AppNavigator style={styles.container} />
+        <StatusBar style="auto" />
+    </AuthContext>
   );
 }
 
