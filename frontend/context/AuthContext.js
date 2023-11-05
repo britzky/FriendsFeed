@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect} from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 
@@ -13,9 +13,12 @@ export const AuthProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [accessToken, setAccessToken] = useState(null)
 
-    const checkLoginStatus = async () => {
+    const checkLoginStatus = useCallback(async () => {
         try{
             const token = await AsyncStorage.getItem('access_token');
+            if (token) {
+                setAccessToken(token)
+            }
             const userDetailsString = await AsyncStorage.getItem('user_details');
             const user = JSON.parse(userDetailsString)
 
@@ -37,7 +40,7 @@ export const AuthProvider = ({ children }) => {
             console.error('Error retrieving login info from AsyncStorage: ', error)
         }
 
-    }
+    }, [refreshToken])
 
     const refreshToken = async () => {
         try {
@@ -73,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         checkLoginStatus()
-    }, []);
+    }, [checkLoginStatus]);
 
 
   return (
