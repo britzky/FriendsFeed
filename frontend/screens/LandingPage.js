@@ -11,31 +11,35 @@ import { useNavigation } from "@react-navigation/native";
 const LandingPage = () => {
   const navigate = useNavigation();
 
-  const navigateToRegister = () => {
-    navigate.navigate("Register");
-  };
+  // const navigateToRegister = () => {
+  //   navigate.navigate("Register");
+  // };
 
   // const navigateToLogin = () => {
-  //   navigation.navigate("Login");
+  //   navigate.navigate("Login");
   // };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Food.Finder</Text>
       <Text style={styles.subtitle}>
-        Discover restaurants one friend at a time
+        Discover new restaurants
       </Text>
+      <Text style={styles.text2}>
+         one friend at a time
+      </Text>
+
       <Image
         source={{
           uri: "https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg",
         }} // Using a remote placeholder image
         style={styles.logo}
       />
-      <Button
-        style={styles.buttonText}
-        title="Sign-Up"
-        onPress={navigateToRegister}
-      />
+     
+
+     <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register")}>
+        <Text style={styles.text} >Sign-up</Text>
+      </Pressable>
 
 
       {/* <Button
@@ -43,9 +47,19 @@ const LandingPage = () => {
         onPress={navigateToLogin}
       /> */}
 
-      <Pressable style={styles.buttonTwo}  onPress={() => navigation.navigate('Login')}>
-      <Text>Already have an account? Login</Text>
+<Pressable
+        style={styles.buttonTwo}
+        onPress={() => navigate.navigate("Login")}
+      >
+        <Text style={{fontSize: 15}}>Already have an account? Login</Text>
       </Pressable>
+
+{/* <Pressable
+        style={styles.buttonTwo}
+        onPress={() => navigate.navigate("Login")}
+      >
+        <Text style={{fontSize: 15}}>Already have an account? Login</Text>
+      </Pressable> */}
     </View>
   );
 };
@@ -66,7 +80,10 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: "gray",
-    marginBottom: 20,
+    marginBottom: 0,
+    margin: 0,
+    width: 180,
+    padding: 0
   },
   button: {
     backgroundColor: "brown",
@@ -81,21 +98,43 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     backgroundColor: "transparent",
-    color: 'blue',
+    color: "blue",
+    margin: 20,
   },
   buttonText: {
-    color: "white",
-    fontSize: 18,
-    padding: 0,
+    paddingHorizontal: 150, // Add horizontal padding to make the button wider
+    paddingVertical: 15, // Add vertical padding for height
+    backgroundColor: '#3d85c6', // Your desired background color
+    borderRadius: 5, // Rounded corners
+    // Add any other styling you want for the button here, like margin
+    marginVertical: 10,
+    color: 'white',
   },
   loginText: {
     color: "blue",
     marginTop: 15,
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 16,
+    width: 150,
+    height: 150,
+    marginBottom: 80,
     borderRadius: 10,
+    margin: 30
   },
+  text: {
+    color: 'white',
+    fontSize: 18,
+  },
+  subTitle2: {
+    margin: 10,
+  },
+  text2: {
+    fontSize: 16,
+    color: "gray",
+    marginBottom: 20,
+    margin: 0,
+    width: 150,
+    padding: 0,
+    marginTop: 2
+  }
 });

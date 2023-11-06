@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Text, StyleSheet } from "react-native";
+import { View, TextInput, Button, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from '../context/AuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -86,8 +86,14 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder.</Text>
-      <Text style={styles.subtitle}>Discover restaurants one friend at a time</Text>
+      <Text style={styles.title}>Food.Finder</Text>
+      <Text style={styles.subtitle}>
+        Discover new restaurants
+      </Text>
+      <Text style={styles.text2}>
+         one friend at a time
+      </Text>
+
       <TextInput
       style={styles.input}
         placeholder="email"
@@ -127,9 +133,12 @@ export default function Register() {
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
 
+<Pressable style={styles.buttonText} onPress={handleRegistration}>
+          <Text style={styles.text} >Sign Up</Text>
+        </Pressable>
 
 
-      <Button style={styles.buttonText} title="Sign-Up" onPress={handleRegistration} />
+      {/* <Button style={styles.buttonText} title="Sign-Up" onPress={handleRegistration} /> */}
 
     </View>
   );
@@ -157,6 +166,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
+    
+    
   },
   button: {
     backgroundColor: 'blue',
@@ -165,13 +176,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
+    paddingHorizontal: 118, // Add horizontal padding to make the button wider
+    paddingVertical: 15, // Add vertical padding for height
+    backgroundColor: '#3d85c6', // Your desired background color
+    borderRadius: 5, // Rounded corners
+    // Add any other styling you want for the button here, like margin
+    marginVertical: 10,
     color: 'white',
-    fontWeight: 'bold',
+    marginTop: 100
   },
   subtitle: {
     fontSize: 16,
     color: 'gray',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   errorText: {
     color: 'red',
@@ -180,4 +197,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 0, // Add bottom margin for spacing before the next input
   },
+  text: {
+    color: 'white',
+    fontSize: 18,
+  },
+  text2: {
+    fontSize: 16,
+    color: "gray",
+    marginBottom: 70,
+    margin: 0,
+    width: 150,
+    padding: 0,
+    marginTop: 2
+  }
 });
+

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, TextInput, Button, Text, Alert, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  Text,
+  Alert,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,7 +16,7 @@ const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
   const { isLoggedIn, setIsLoggedIn, setUserDetails } = useAuth();
-  const navigate = useNavigation()
+  const navigate = useNavigation();
   const [formData, setFormData] = useState({
     password: "",
     username: "",
@@ -29,7 +37,6 @@ export default function Login() {
       validationErrors.password = "Password is required";
     }
 
-
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await fetch(SIGNIN_URL, {
@@ -43,17 +50,14 @@ export default function Login() {
         });
         console.log(formData);
         if (response.ok) {
-          Alert.alert(
-            "Alert Title",
-            "You are successfully logged in",
-          );
+          Alert.alert("Alert Title", "You are successfully logged in");
           const data = await response.json();
           console.log("Login successful:", data);
-          await AsyncStorage.setItem('access_token', data.access_token)
-          await AsyncStorage.setItem('refresh_token', data.refresh_token)
-          await AsyncStorage.setItem('user_details', JSON.stringify(data.user))
+          await AsyncStorage.setItem("access_token", data.access_token);
+          await AsyncStorage.setItem("refresh_token", data.refresh_token);
+          await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
           setIsLoggedIn(true);
-          setUserDetails(data.user)
+          setUserDetails(data.user);
           navigate.navigate("Home");
         } else {
           console.log("Login Failed:", response.status);
@@ -70,10 +74,9 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder.</Text>
-      <Text style={styles.subtitle}>
-        Discover restaurants one friend at a time
-      </Text>
+      <Text style={styles.title}>Food.Finder</Text>
+      <Text style={styles.subtitle}>Discover new restaurants</Text>
+      <Text style={styles.text2}>one friend at a time</Text>
       {isLoggedIn ? (
         <Text>Your logged in</Text>
       ) : (
@@ -88,7 +91,6 @@ export default function Login() {
             <Text style={styles.errorText}>{errors.username}</Text>
           )}
 
-
           <TextInput
             style={styles.input}
             placeholder="Password"
@@ -100,7 +102,9 @@ export default function Login() {
             <Text style={styles.errorText}>{errors.password}</Text>
           )}
 
-          <Button title="Login" onPress={handleSubmit} />
+          <Pressable style={styles.buttonText} onPress={handleSubmit}>
+            <Text style={styles.text}>Login</Text>
+          </Pressable>
         </>
       )}
     </View>
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30, // was 24, now larger
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -136,13 +140,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
+    paddingHorizontal: 118, // Add horizontal padding to make the button wider
+    paddingVertical: 15, // Add vertical padding for height
+    backgroundColor: "#3d85c6", // Your desired background color
+    borderRadius: 5, // Rounded corners
+    // Add any other styling you want for the button here, like margin
+    marginVertical: 10,
     color: "white",
-    fontWeight: "bold",
+    marginTop: 100,
   },
   subtitle: {
-    fontSize: 20, // was 16, now larger
+    fontSize: 16,
     color: "gray",
-    marginBottom: 20,
+    marginBottom: 0,
   },
   errorText: {
     color: "red",
@@ -150,5 +160,18 @@ const styles = StyleSheet.create({
     marginTop: 0, // Reduced top margin to bring it closer to the input field
     marginBottom: 15,
     padding: 0, // Add bottom margin for spacing before the next input
+  },
+  text2: {
+    fontSize: 16,
+    color: "gray",
+    marginBottom: 70,
+    margin: 0,
+    width: 150,
+    padding: 0,
+    marginTop: 2,
+  },
+  text: {
+    color: "white",
+    fontSize: 18,
   },
 });
