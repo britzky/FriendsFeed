@@ -1,46 +1,60 @@
+import React from 'react';
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button} from 'react-native';
+import { useAuth } from '../context/AuthContext';
+import { useGetRestaurants } from '../hooks/useGetRestaurants';
 
-import { View, TextInput, Button, Text, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+export const Home = () => {
+  const { userDetails, logout } = useAuth();
+  const { restaurants, loading, error } = useGetRestaurants(userDetails?.zipcode);
 
-const Home = () => {
+  if (loading) {
+    return <ActivityIndicator size="large" />
+  }
+
+  if (error) {
+    return <Text>Error fetching restaurants: {error}</Text>
+  }
+
+  const handleSubmit = async () => {
+    await logout()
+  }
+
+  console.log("Restaurants: ", restaurants)
+
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder</Text>
-        <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
+      <Text style={styles.header}>Restaurants near you</Text>
+      <FlatList
+        data={restaurants.businesses}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.listItem}>
+            <Text style={styles.title}>{item.name}</Text>
+          </View>
+        )}
+        ListEmptyComponent={<Text>No restaurants found for this zipcode.</Text>}
+      />
+      <Button title="logout" onPress={handleSubmit} />
     </View>
+
   )
 }
-export default Home
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5', // Adjust the color to match your screenshot
+    paddingTop: 22,
   },
-  title: {
-    fontSize: 24,
+  header: {
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 16,
-    color: 'gray',
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: 'brown', // Replace with the actual color code you want
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
+  listItem: {
+    padding: 10,
     fontSize: 18,
   },
-  loginText: {
-    color: 'blue',
-    marginTop: 15,
-  }
+  title: {
+    fontSize: 18,
+  },
 });

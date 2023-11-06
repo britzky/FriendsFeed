@@ -1,6 +1,5 @@
 import {
   View,
-  TextInput,
   Button,
   Text,
   StyleSheet,
@@ -10,10 +9,10 @@ import {
 import { useNavigation } from "@react-navigation/native";
 
 const LandingPage = () => {
-  const navigation = useNavigation();
+  const navigate = useNavigation();
 
   const navigateToRegister = () => {
-    navigation.navigate("Register");
+    navigate.navigate("Register");
   };
 
   // const navigateToLogin = () => {
@@ -38,7 +37,7 @@ const LandingPage = () => {
         onPress={navigateToRegister}
       />
 
-      
+
       {/* <Button
         title="Already have an account? Login"
         onPress={navigateToLogin}

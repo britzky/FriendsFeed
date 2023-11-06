@@ -13,6 +13,10 @@ export const AuthProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [accessToken, setAccessToken] = useState(null)
 
+    useEffect(() => {
+        console.log('Access Token Updated:', accessToken)
+    }, [accessToken])
+
     const checkLoginStatus = useCallback(async () => {
         try{
             const token = await AsyncStorage.getItem('access_token');
@@ -80,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, refreshToken, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout }}>
         {children}
     </AuthContext.Provider>
   )

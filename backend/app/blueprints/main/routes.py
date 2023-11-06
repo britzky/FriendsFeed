@@ -22,3 +22,8 @@ def restaurants():
         }), results["status_code"]
 
     return jsonify(results)
+
+@main.route('/follow-friend', methods=['POST'])
+@jwt_required()
+def follow_friend():
+    pass

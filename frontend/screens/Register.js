@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import api from "../components/api";
+import { useAuth } from '../context/AuthContext';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const REGISTER_URL = "https://colab-test.onrender.com/register";
 
 
 export default function Register() {
+  const { setIsLoggedIn, setUserDetails } = useAuth();
   const navigate = useNavigation()
   const [formData, setFormData] = useState({
     username: "",
@@ -56,11 +58,17 @@ export default function Register() {
         console.log(formData);
         if (response.status === 201) {
           // Registration was successful, navigate to the user's dashboard or login screen
-          navigate.navigate("RestaurantList"); 
+          const data = await response.json();
+          console.log("Registration successful", data);
+          await AsyncStorage.setItem('access_token', data.access_token)
+          await AsyncStorage.setItem('user_details', JSON.stringify(data.user))
+
+          setIsLoggedIn(true);
+          setUserDetails(data.user);
+          navigate.navigate("Home");
         } else {
           // Handle registration errors here
-          const errorData = await response.json();
-          console.error(errorData.message);
+          console.log("Registration failed", response.status);
         }
       } catch (error) {
         // Handle network or server errors here
@@ -72,9 +80,9 @@ export default function Register() {
     }
   };
 
- 
 
-  
+
+
 
   return (
     <View style={styles.container}>
@@ -119,10 +127,10 @@ export default function Register() {
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
 
-    
-      
+
+
       <Button style={styles.buttonText} title="Sign-Up" onPress={handleRegistration} />
-     
+
     </View>
   );
 }
@@ -135,7 +143,7 @@ const styles = StyleSheet.create({
   backgroundColor: '#FFF',
   width: '100%', // Ensure it's 100% of the parent
   paddingHorizontal: 20,
-  
+
   },
   title: {
     fontSize: 30, // was 24, now larger

@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, TextInput, Button, Text, Alert, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
+  const { isLoggedIn, setIsLoggedIn, setUserDetails } = useAuth();
   const navigate = useNavigation()
   const [formData, setFormData] = useState({
-    email: "",
     password: "",
     username: "",
   });
   const [errors, setErrors] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (data) => {
+  const handleSubmit = async () => {
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -27,9 +28,7 @@ export default function Login() {
     if (!formData.password) {
       validationErrors.password = "Password is required";
     }
-    if (!formData.email) {
-      validationErrors.email = "email is required";
-    }
+
 
     if (Object.keys(validationErrors).length === 0) {
       try {
@@ -47,24 +46,17 @@ export default function Login() {
           Alert.alert(
             "Alert Title",
             "You are successfully logged in",
-            [
-              {
-                text: "OK",
-                onPress: () => console.log("OK Pressed"),
-              },
-            ],
-            { cancelable: false }
           );
-          // Registration was successful, navigate to the user's dashboard or login screen
-          // navigation.navigate("Dashboard"); // Adjust the screen name as needed
           const data = await response.json();
           console.log("Login successful:", data);
+          await AsyncStorage.setItem('access_token', data.access_token)
+          await AsyncStorage.setItem('refresh_token', data.refresh_token)
+          await AsyncStorage.setItem('user_details', JSON.stringify(data.user))
           setIsLoggedIn(true);
-          navigate.navigate("RestaurantList"); 
+          setUserDetails(data.user)
+          navigate.navigate("Home");
         } else {
-          // Handle registration errors here
-          const errorData = await response.json();
-          console.error(errorData.message);
+          console.log("Login Failed:", response.status);
         }
       } catch (error) {
         // Handle network or server errors here
@@ -96,13 +88,6 @@ export default function Login() {
             <Text style={styles.errorText}>{errors.username}</Text>
           )}
 
-          <TextInput
-            style={styles.input}
-            placeholder="email"
-            value={formData.email}
-            onChangeText={(text) => handleChange("email", text)}
-          />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
           <TextInput
             style={styles.input}
