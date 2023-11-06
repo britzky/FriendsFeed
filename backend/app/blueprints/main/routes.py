@@ -25,7 +25,7 @@ def restaurants():
     return jsonify(results)
 
 @main.route('/friends', methods=['GET'])
-@jwt_required
+@jwt_required()
 def get_friends():
     # Define the current user
     current_user_username = get_jwt_identity()
@@ -87,7 +87,7 @@ def follow_friend():
         return jsonify({"message": "Could not follow friend", "error": str(e)}), 500
 
 @main.route('/remove-friend', methods=['DELETE'])
-@jwt_required
+@jwt_required()
 def remove_friend():
     # Get current users username from the jwt
     current_user_username = get_jwt_identity()
