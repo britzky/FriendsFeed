@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, FlatList, ActivityIndicator, StyleSheet, Button} from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useGetRestaurants } from '../hooks/useGetRestaurants';
+import RestaurantCard from '../components/RestaurantCard';
 
 export const Home = () => {
   const { userDetails, logout } = useAuth();
@@ -29,9 +30,11 @@ export const Home = () => {
         data={restaurants.businesses}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.listItem}>
-            <Text style={styles.title}>{item.name}</Text>
-          </View>
+          <RestaurantCard
+            restaurantName={item.name}
+            imageUrl={item.image_url}
+            cuisine={item.categories.map((category) => category.title).join(', ')}
+          />
         )}
         ListEmptyComponent={<Text>No restaurants found for this zipcode.</Text>}
       />

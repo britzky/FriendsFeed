@@ -1,14 +1,12 @@
 import {
   View,
-  TextInput,
-  Button,
   Text,
   StyleSheet,
   Image,
   Pressable,
 } from "react-native";
 
-const RestaurantCard = ({ onPress, color, title }) => {
+const RestaurantCard = ({ onPress, restaurantName, imageUrl, cuisine, rating }) => {
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -19,11 +17,14 @@ const RestaurantCard = ({ onPress, color, title }) => {
         ]}
         onPress={onPress}
       >
-        <View style={[styles.innerContainer, { backgroundColor: color }]}>
-          <Text>Image</Text>
-          <Text style={styles.title}>Restaurant name</Text>
-          <Text style={styles.subTitle}>Ratings</Text>
-          <Text>cuisine</Text>
+        <View style={[styles.innerContainer]}>
+          <Image
+            source={{ uri: imageUrl }}
+            style={styles.restaurantImage}
+          />
+          <Text style={styles.title}>{restaurantName}</Text>
+          <Text style={styles.subTitle}>{rating}</Text>
+          <Text>{cuisine}</Text>
         </View>
       </Pressable>
     </View>
@@ -61,5 +62,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 18,
+  },
+  restaurantImage: {
+    width: "100%", // or some fixed width
+    height: 100, // or some fixed height
+    borderRadius: 8, // if you want rounded corners
   },
 });
