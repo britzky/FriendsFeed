@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify
 from app.blueprints.main import main
 from app.models import User, Cuisine
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from services.yelp_api import get_restaurants_by_zipcode
+from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine
+
+######## Fetch from yelp ##########
 
 @main.route('/restaurants', methods=['GET'])
 @jwt_required()
@@ -24,6 +26,21 @@ def restaurants():
 
     return jsonify(results)
 
+@main.route('/restaurants-cuisine', methods=['GET'])
+@jwt_required()
+def get_restaurants():
+    zipcode = request.args.get('zipcode')
+    cuisine = request.args.get('cuisine')
+
+    if not zipcode or not cuisine:
+        return jsonify({"error": "Missing required parameters"})
+
+    restaurants = get_restaurants_by_zipcode_and_cuisine(zipcode, cuisine)
+
+    return jsonify(restaurants)
+
+#######Fetch from database###########
+
 @main.route('/get_cuisines', methods=['GET'])
 @jwt_required()
 def get_cuisines():
@@ -43,6 +60,7 @@ def get_cuisines():
     return jsonify(cuisines_list)
 
 
+########Friends#############
 
 @main.route('/friends', methods=['GET'])
 @jwt_required()
