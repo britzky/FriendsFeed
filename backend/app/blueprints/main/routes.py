@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from app.blueprints.main import main
-from app.models import User
+from app.models import User, Cuisine
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.yelp_api import get_restaurants_by_zipcode
 
@@ -23,6 +23,26 @@ def restaurants():
         }), results["status_code"]
 
     return jsonify(results)
+
+@main.route('/get_cuisines', methods=['GET'])
+@jwt_required()
+def get_cuisines():
+    # Get all cuisines from database
+    cuisines = Cuisine.query.all()
+
+    cuisines_list = []
+
+    for cuisine in cuisines:
+        cuisine_data = {
+            'id': cuisine.id,
+            'name': cuisine.name,
+            'yelp_alias': cuisine.yelp_alias
+        }
+        cuisines_list.append(cuisine_data)
+
+    return jsonify(cuisines_list)
+
+
 
 @main.route('/friends', methods=['GET'])
 @jwt_required()
