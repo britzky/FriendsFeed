@@ -9,6 +9,7 @@ import { useAuth } from "../context/AuthContext";
 // import RestaurantList from "../components/RestaurantList";
 import LandingPage from "../screens/LandingPage";
 import RestaurantTile from "../components/RestaurantCard";
+import FriendScreen from "../screens/FriendScreen";
 
 enableScreens();
 
@@ -24,6 +25,7 @@ export const AppNavigator = () => {
             {/* <Stack.Screen name="RestaurantList" component={RestaurantList} /> */}
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="RestaurantTile" component={RestaurantTile} />
+            <Stack.Screen name="FriendScreen" component={FriendScreen} />
           </Stack.Group>
         ) : (
           <Stack.Group>

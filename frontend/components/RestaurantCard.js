@@ -1,12 +1,15 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
-const RestaurantCard = ({ onPress, restaurantName, imageUrl, cuisine, rating }) => {
+import AntDesign from "react-native-vector-icons/AntDesign";
+
+
+const RestaurantCard = ({
+  onPress,
+  restaurantName,
+  imageUrl,
+  cuisine,
+  rating,
+}) => {
   return (
     <View style={styles.gridItem}>
       <Pressable
@@ -18,19 +21,22 @@ const RestaurantCard = ({ onPress, restaurantName, imageUrl, cuisine, rating }) 
         onPress={onPress}
       >
         <View>
-          <Image
-            source={{ uri: imageUrl }}
-            style={styles.restaurantImage}
-          />
-
+          <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
         <View style={[styles.innerContainer]}>
           <Text style={styles.title}>{restaurantName}</Text>
+          <Text style={styles.icon}>
+            <AntDesign name="star" style={styles.icon} />
+            <AntDesign name="star" style={styles.icon} />
+            <AntDesign name="star" style={styles.icon} />
+            <AntDesign name="star" style={styles.icon} />
+          </Text>
           <Text style={styles.subTitle}>{rating}</Text>
-          <Text>{cuisine}</Text>
+          <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>
-      <Pressable  android_ripple={{ color: "#ccc" }} style={styles.review} >
+
+      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review}>
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -43,14 +49,19 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 16,
     height: 310, /// adjust the length of the card
-    borderRadius: 0,
-    elevation: 4,
-    backgroundColor: "white",
-    shadowColor: "black",
-    shadowOpacity: 0.25,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
+    // borderRadius: 0,
+    // elevation: 4,
+    // backgroundColor: "white",
+    // shadowColor: "black",
+    // shadowOpacity: 0.25,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowRadius: 8,
+    marginTop: 25,
     overflow: Platform.OS === "android" ? "hidden" : "visible",
+    borderBottomColor: '#999999', // Light grey color for the divider
+    borderBottomWidth: 1, // One pixel bottom border
+    marginVertical: 8, // You can adjust vertical margin as needed
+    alignSelf: 'stretch',
   },
   button: {
     flex: 1,
@@ -64,12 +75,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    
   },
   title: {
     fontWeight: "bold",
     fontSize: 18,
-   
+    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    alignSelf: "stretch",
+    marginTop: 5,
   },
   restaurantImage: {
     width: "100%", // or some fixed width
@@ -77,31 +89,30 @@ const styles = StyleSheet.create({
     // borderRadius: 8, // if you want rounded corners
   },
   review: {
-    backgroundColor: '#3d85c6',
-    paddingHorizontal: 118,
+    paddingHorizontal: 135,
     paddingVertical: 15,
+    backgroundColor: "#3d85c6",
     marginVertical: 10,
     padding: 0,
-    margin: 0
+    
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    
+    alignItems: "flex-start", 
+    alignSelf: "stretch",
+  },
+
+  icon: {
+    color: "#f1c232",
+    fontSize: 18,
+    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    alignSelf: "stretch",
+  },
+  cuisine: {
+    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    alignSelf: "stretch",
   }
 });
 
 
-// fontSize: 16,
-//     color: "gray",
-//     marginBottom: 70,
-//     margin: 0,
-//     width: 150,
-//     padding: 0,
-//     marginTop: 2
-
-
-//     // Add any other styling you want for the button here, like margin
-//     marginVertical: 10,
-//     color: 'white',
-//     marginTop: 100

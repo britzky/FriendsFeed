@@ -1,4 +1,7 @@
-import { View } from "react-native";
+import { useState } from "react";
+import { View, StyleSheet, TextInput } from "react-native";
+
+
 
 const FriendScreen = () => {
   const [formData, setFormData] = useState({
@@ -56,5 +59,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#007BFF',
       borderRadius: 5,
     },
+    input: {
+
+    }
   });
   
