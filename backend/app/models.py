@@ -176,6 +176,23 @@ class Review(db.Model):
         return cls.query.filter_by(rating=rating).all()
 
 
+class Cuisine(db.Model):
+    """
+    Cuisine model for storing available types of cuisines from Yelp
+
+    Attributes:
+        - id: Unique ID for the cuisine entry
+        - name: Readable name of the cuisine type
+        - yelp_alias: The corresponding Yelp alias for the cuisine type
+
+    Methods:
+        - save_to_db: Saves the cuisine object to the database
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    yelp_alias = db.Column(db.String, nullable=False)
+
+
 
 
 
