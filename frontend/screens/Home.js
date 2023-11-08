@@ -14,19 +14,56 @@ import RestaurantCard from "../components/RestaurantCard";
 import { Searchbar } from "../components/Searchbar";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { CuisineFilter } from '../components/CuisineFilter';
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 export const Home = () => {
-  const { userDetails, logout } = useAuth();
+  const { userDetails, logout, accessToken } = useAuth();
   const [searchZipcode, setSearchZipcode] = useState(userDetails?.zipcode);
-  const { restaurants, loading, error } = useGetRestaurants(searchZipcode);
+  const { restaurants, loading, error, setRestaurants } = useGetRestaurants(searchZipcode);
   const navigation = useNavigation();
+  const [showCuisineFilter, setShowCuisineFilter] = useState(false);
+  const [selectedCuisine, setSelectedCuisine] = useState(null);
 
   useEffect(() => {
     if (userDetails?.zipcode) {
       setSearchZipcode(userDetails.zipcode);
     }
   }, [userDetails?.zipcode]);
+
+  useEffect(() => {
+    const getRestaurants = async () => {
+      if (!selectedCuisine || !searchZipcode) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://colab-test.onrender.com/restaurants-cuisine?zipcode=${searchZipcode}&cuisine=${selectedCuisine}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${accessToken}`
+            }
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurants(data)
+          console.log("Fetched filtered restaurants", data)
+        } else {
+          throw new Error(data.error || "Failed to fetch");
+        }
+      } catch (error) {
+        console.error('Error fetching filtered restaurants', error)
+      }
+    }
+
+    getRestaurants();
+
+  }, [selectedCuisine, searchZipcode, accessToken, setRestaurants])
 
   if (loading) {
     return <ActivityIndicator size="large" />;
@@ -40,17 +77,39 @@ export const Home = () => {
     await logout();
   };
 
-  console.log("Restaurants: ", restaurants);
-
   const handlePress = () => {
     navigation.navigate("FriendScreen");
   };
+
   const handleSearch = (newZipcode) => {
     setSearchZipcode(newZipcode);
   };
 
+  const handleOpenFilter = () => {
+    setShowCuisineFilter(true)
+  }
+
+  const handleApplyCuisineFilter = (cuisineAlias) => {
+    setSelectedCuisine(cuisineAlias)
+  }
+
+  const handleCloseFilter = () => {
+    setShowCuisineFilter(false)
+  }
+
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={handleOpenFilter}>
+        <Text>Filter by Cuisine</Text>
+      </TouchableOpacity>
+      {showCuisineFilter && (
+        <CuisineFilter
+          onApplyFilter={handleApplyCuisineFilter}
+          onClose={handleCloseFilter}
+          fetchCuisinesUrl={'https://colab-test.onrender.com/get-cuisines'}
+          searchZipcode={searchZipcode}
+        />
+      )}
       <View style={styles.headerContainer}>
         <Searchbar onSearch={handleSearch} placeholder="Enter Zipcode: 55555" />
         <TouchableOpacity onPress={handlePress}>

@@ -65,6 +65,6 @@ export const useGetRestaurants = (zipcode) => {
         })
     }
 
-  return { restaurants, loading, error };
+  return { restaurants, setRestaurants, loading, error };
 
 }
