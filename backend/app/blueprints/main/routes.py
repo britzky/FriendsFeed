@@ -41,7 +41,7 @@ def get_restaurants():
 
 #######Fetch from database###########
 
-@main.route('/get_cuisines', methods=['GET'])
+@main.route('/get-cuisines', methods=['GET'])
 @jwt_required()
 def get_cuisines():
     # Get all cuisines from database
