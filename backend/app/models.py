@@ -105,6 +105,11 @@ class User(db.Model):
     def find_by_username(cls, username):
         return cls.query.filter_by(username=username).first()
 
+    # Search for users by if
+    @classmethod
+    def find_by_id(cls, _id):
+        return cls.query.get(int(_id))
+
     def get_average_rating_by_friends(self, yelp_restaurant_id):
         """
         Calculate the average rating of a given restaurant by Yelp ID from
