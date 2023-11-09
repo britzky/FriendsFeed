@@ -164,9 +164,13 @@ def remove_friend():
 @main.route('/find-friend/<string:username>', methods=['GET'])
 @jwt_required()
 def find_friend(username):
+
     current_app.logger.info(f"Type of username: {type(username)}, Value of username: {username}")
+
     # Define the current user using the jwt
     current_user_username = get_jwt_identity()
+
+    current_app.logger.info(f"JWT identity: {current_user_username}")
     # Define the current user
     current_user = User.find_by_username(current_user_username)
 
