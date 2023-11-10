@@ -182,6 +182,7 @@ def find_friend(username):
 
     # Structure response
     user_data = {
+        "id": user_to_find.id,
         "username": user_to_find.username,
         "profile_picture": user_to_find.profile_picture,
         "following": is_already_friend
