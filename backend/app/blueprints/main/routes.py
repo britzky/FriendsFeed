@@ -81,8 +81,10 @@ def get_friends():
     friends_data = []
     for friend in friends_list:
         friend_data ={
+            "id": friend.id,
             "username": friend.username,
-            "profile_picture": friend.profile_picture
+            "profile_picture": friend.profile_picture,
+            "following": current_user.is_friend(friend)
         }
         friends_data.append(friend_data)
 
