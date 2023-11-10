@@ -6,10 +6,8 @@ import Register from "../screens/Register";
 import Login from "../screens/Login";
 import { enableScreens } from "react-native-screens";
 import { useAuth } from "../context/AuthContext";
-// import RestaurantList from "../components/RestaurantList";
 import LandingPage from "../screens/LandingPage";
-import RestaurantTile from "../components/RestaurantCard";
-import FriendScreen from "../screens/FriendScreen";
+import { Friend } from "../screens/Friend";
 
 enableScreens();
 
@@ -19,13 +17,11 @@ export const AppNavigator = () => {
   const { isLoggedIn } = useAuth();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="RestaurantList">
+      <Stack.Navigator initialRouteName="LandingPage">
         {isLoggedIn ? (
           <Stack.Group>
-            {/* <Stack.Screen name="RestaurantList" component={RestaurantList} /> */}
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="RestaurantTile" component={RestaurantTile} />
-            <Stack.Screen name="FriendScreen" component={FriendScreen} />
+            <Stack.Screen name="Friend" component={Friend} />
           </Stack.Group>
         ) : (
           <Stack.Group>

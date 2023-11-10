@@ -78,7 +78,7 @@ export const Home = () => {
   };
 
   const handlePress = () => {
-    navigation.navigate("FriendScreen");
+    navigation.navigate("Friend");
   };
 
   const handleSearch = (newZipcode) => {
