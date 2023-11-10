@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
-from app.models import User, Cuisine
+from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine
+from app import db
 
-######## Fetch from yelp ##########
+##### Fetch from yelp #####
 
 @main.route('/restaurants', methods=['GET'])
 @jwt_required()
@@ -39,7 +40,7 @@ def get_restaurants():
 
     return jsonify(restaurants)
 
-#######Fetch from database###########
+##### Cuisines ######
 
 @main.route('/get-cuisines', methods=['GET'])
 @jwt_required()
@@ -60,14 +61,14 @@ def get_cuisines():
     return jsonify(cuisines_list)
 
 
-########Friends#############
+##### Friends #####
 
 @main.route('/friends', methods=['GET'])
 @jwt_required()
 def get_friends():
     # Define the current user
-    current_user_username = get_jwt_identity()
-    current_user = User.find_by_username(current_user_username)
+    current_user_id = get_jwt_identity()
+    current_user = User.find_by_id(current_user_id)
 
     # check to make sure the current user is real
     if not current_user:
@@ -91,7 +92,7 @@ def get_friends():
 @jwt_required()
 def follow_friend():
     # Get the current users username from the jwt
-    current_user_username = get_jwt_identity()
+    current_user_id = get_jwt_identity()
     # extract the data from the request
     data = request.get_json()
 
@@ -102,7 +103,7 @@ def follow_friend():
     # define the user name of the friend we want to follow
     friend_username = data['friend_username']
     # fetch the data of the current user from the database
-    current_user = User.find_by_username(current_user_username)
+    current_user = User.find_by_id(current_user_id)
     # fetch the data of the friend user from the database
     friend_user = User.find_by_username(friend_username)
 
@@ -128,7 +129,7 @@ def follow_friend():
 @jwt_required()
 def remove_friend():
     # Get current users username from the jwt
-    current_user_username = get_jwt_identity()
+    current_user_id = get_jwt_identity()
     # extract the data from the request
     data = request.get_json()
 
@@ -139,7 +140,7 @@ def remove_friend():
     # define the username of the friend we want to unfollow
     friend_username = data['friend_username']
     #fetch the current user from the database
-    current_user = User.find_by_username(current_user_username)
+    current_user = User.find_by_id(current_user_id)
     # fetch the friend user from the database
     friend_user = User.find_by_username(friend_username)
 
@@ -187,5 +188,123 @@ def find_friend(username):
     }
 
     return jsonify(user_data), 200
+
+
+##### Reviews #####
+@main.route('/review/create', methods=['POST'])
+@jwt_required()
+def create_review():
+    # Get the current users id
+    current_user_id = get_jwt_identity()
+
+    # Extract the data from the request
+    data = request.json()
+    yelp_restaurant_id = data.get('yelp_restaurant_id')
+    comment = data.get('comment')
+    rating = data.get('rating')
+
+    if not yelp_restaurant_id or not comment or rating is None:
+        return jsonify({"message": "Missing data for creating a review"}), 400
+
+    #Make sure the user exists
+    user = User.find_by_id(current_user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 400
+
+    # Create a new review instance
+    new_review = Review(
+        yelp_restaurant_id=yelp_restaurant_id,
+        comment=comment,
+        rating=rating,
+        user_id = current_user_id
+    )
+
+    #Save the new review to the database
+    try:
+        new_review.save_to_db()
+        return jsonify({"message": "Review created successfully"}), 201
+    except:
+        return jsonify({"message": "Could not save review"}), 500
+
+@main.route('/restaurants/<string:yelp_restaurant_id>/friend-reviews')
+@jwt_required()
+def get_reviews_for_restaurant(yelp_restaurant_id):
+    # Get the current users id
+    current_user_id = get_jwt_identity()
+    # Find the current user by id
+    user = User.find_by_id(current_user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+    # Get the IDs of the user's friends
+    friend_ids = []
+    for friend in user.get_all_friends():
+        friend_ids.append(friend.id)
+    # Query the database for reviews with the given restaurant ID
+    reviews = Review.query.filter(Review.yelp_restaurant_id == yelp_restaurant_id, Review.user_id.in_(friend_ids)).all()
+
+    # Serialize the review data
+    reviews_data = []
+    for review in reviews:
+        review_data = {
+            "id": review.id,
+            "yelp_restaurant_id": review.yelp_restaurant_id,
+            "comment": review.comment,
+            "rating": review.rating,
+            "date": review.date.strftime("%Y-%m-%d %H:%M:%S"),
+            "user_id": review.user_id
+        }
+        reviews_data.append(review_data)
+
+    # Return the list of reviews as a JSON response
+    return jsonify(reviews_data), 200
+
+@main.route('/reviews/<int:review_id>/update', methods=['PUT'])
+@jwt_required()
+def update_review(review_id):
+    # Get current users id
+    current_user_id = get_jwt_identity()
+    # Get the review
+    review = Review.query.get(review_id)
+
+    # Make ssure the review exists
+    if not review:
+        return jsonify({"message": "Review not found"}), 404
+
+    # make sure the review belongs to the user
+    if review.user_id != current_user_id:
+        return jsonify({"message": "Unauthorized to update this review"})
+
+    data = request.get_json()
+
+    try:
+        review.update_review(data)
+        return jsonify({"message": "Review updated successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to update review", "error": str(e)}), 500
+
+@main.route('/reviews/<int:review_id>/delete', methods=['DELETE'])
+@jwt_required()
+def delete_review(review_id):
+    # Get current users id
+    current_user_id = get_jwt_identity()
+    # Get the review
+    review = Review.query.get(review_id)
+
+    # Make sure review exisits
+    if not review:
+        return jsonify({"message": "Review not found"}), 404
+
+    # Make sure the review belongs to the user
+    if review.user_id != current_user_id:
+        return jsonify({"message": "Unauthorized to delete this review"}), 403
+
+    try:
+        review.delete_review()
+        return({"message": "Review deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"message": "Failed to delete review", "error": str(e)}), 500
+
 
 
