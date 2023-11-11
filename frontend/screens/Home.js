@@ -25,6 +25,15 @@ export const Home = () => {
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
 
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
+
+  // ALso added this function (handleSelectedRestaurant--- EDuardo
+  const handleSelectRestaurant = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+    navigation.navigate("Restaurant");
+   
+  };
+
   useEffect(() => {
     if (userDetails?.zipcode) {
       setSearchZipcode(userDetails.zipcode);
@@ -121,6 +130,7 @@ export const Home = () => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <RestaurantCard
+          onPress={() => handleSelectRestaurant(item)} // ADDED by eduardo
             restaurantName={item.name}
             imageUrl={item.image_url}
             cuisine={item.categories

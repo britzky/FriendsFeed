@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 
 import AntDesign from "react-native-vector-icons/AntDesign";
-
+import Fontisto from "react-native-vector-icons/Fontisto";
 
 const RestaurantCard = ({
   onPress,
@@ -9,8 +10,41 @@ const RestaurantCard = ({
   imageUrl,
   cuisine,
   rating,
+  isIndividual,
+  address,
 }) => {
-  return (
+  // const [showMoreInfo, setShowMoreInfo] = useState(false);
+  return isIndividual ? (
+    <View style={styles.gridItem}>
+     
+        <View>
+          <Image
+            source={{
+              uri: imageUrl,
+            }}
+            style={styles.restaurantImage}
+          />
+        </View>
+
+     
+        <Text style={styles.title}>{restaurantName}</Text>
+        <Text style={styles.icon}>
+          <AntDesign name="star" style={styles.icon} />
+          <AntDesign name="star" style={styles.icon} />
+          <AntDesign name="star" style={styles.icon} />
+          <AntDesign name="star" style={styles.icon} />
+        </Text>
+        <Text style={styles.subTitle}>{rating}</Text>
+        <Text style={styles.address}>{address}</Text>
+      
+
+
+
+      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review}>
+        <Text style={styles.text}>Write a Review</Text>
+      </Pressable>
+    </View>
+  ) : (
     <View style={styles.gridItem}>
       <Pressable
         android_ripple={{ color: "#ccc" }}
@@ -57,11 +91,11 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: 0, height: 2 },
     // shadowRadius: 8,
     marginTop: 25,
-    overflow: Platform.OS === "android" ? "hidden" : "visible",
-    borderBottomColor: '#999999', // Light grey color for the divider
+    // overflow: Platform.OS === "android" ? "hidden" : "visible",                                   /// COME BACK TO THIS
+    borderBottomColor: "#999999", // Light grey color for the divider
     borderBottomWidth: 1, // One pixel bottom border
     marginVertical: 8, // You can adjust vertical margin as needed
-    alignSelf: 'stretch',
+    alignSelf: "stretch",
   },
   button: {
     flex: 1,
@@ -94,12 +128,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#3d85c6",
     marginVertical: 10,
     padding: 0,
-    
   },
   text: {
     color: "white",
     fontSize: 16,
-    alignItems: "flex-start", 
+    alignItems: "flex-start",
     alignSelf: "stretch",
   },
 
@@ -112,7 +145,14 @@ const styles = StyleSheet.create({
   cuisine: {
     alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
     alignSelf: "stretch",
-  }
+  },
+  icon2: {
+    flexDirection: "row", // Align children horizontally
+    alignItems: "center", // Center children vertically in the cross axis
+    justifyContent: "center",
+    marginTop: 5,
+    marginRight: 10,
+    color: 'white'
+  },
+  
 });
-
-

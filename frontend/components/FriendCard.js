@@ -1,12 +1,39 @@
 import React from 'react'
-import { Button, Image, View, Text } from 'react-native'
+import { Button, Image, View, Text, StyleSheet } from 'react-native'
 
 export const FriendCard = ({username, profile_picture, following}) => {
   return (
-    <View>
-        <Text>{username}</Text>
-        <Image source={profile_picture} />
-        <Button title={following ? "Unfollow" : "Follow"} />
+    <View style={styles.cardContainer}>
+        <Text style={styles.name}>{username}</Text>
+        <Image  style={styles.image} source={profile_picture} />
+        <Button style={styles.button} title={following ? "Unfollow" : "Follow"} />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  cardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 10,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25, // Makes it a circle
+  },
+  name: {
+    marginLeft: 10,
+    flex: 1,
+    color: "black",
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "green",
+    borderRadius: 5,
+  },
+});

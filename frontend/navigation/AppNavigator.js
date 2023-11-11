@@ -8,6 +8,8 @@ import { enableScreens } from "react-native-screens";
 import { useAuth } from "../context/AuthContext";
 import LandingPage from "../screens/LandingPage";
 import { Friend } from "../screens/Friend";
+import Restaurant from "../screens/Restaurant";
+
 
 enableScreens();
 
@@ -22,6 +24,9 @@ export const AppNavigator = () => {
           <Stack.Group>
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Friend" component={Friend} />
+            <Stack.Screen name="Restaurant" component={Restaurant} />
+           
+            
           </Stack.Group>
         ) : (
           <Stack.Group>
