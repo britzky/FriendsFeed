@@ -1,12 +1,27 @@
-import React from 'react'
 import { Button, Image, View, Text, StyleSheet } from 'react-native'
+import { useFriends } from '../context/FriendContext';
 
-export const FriendCard = ({username, profile_picture, following}) => {
+export const FriendCard = ({username, profile_picture, following, onFollowChange}) => {
+  const { unfollowFriend, followFriend } = useFriends();
+
+  const handleButtonPress = () => {
+    if (following) {
+      unfollowFriend(username);
+    } else {
+      followFriend(username);
+    }
+    onFollowChange();
+  };
+
   return (
     <View style={styles.cardContainer}>
         <Text style={styles.name}>{username}</Text>
         <Image  style={styles.image} source={profile_picture} />
-        <Button style={styles.button} title={following ? "Unfollow" : "Follow"} />
+        <Button
+          style={styles.button}
+          title={following ? "Unfollow" : "Follow"}
+          onPress={handleButtonPress}
+        />
     </View>
   )
 }
