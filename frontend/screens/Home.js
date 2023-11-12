@@ -27,12 +27,6 @@ export const Home = () => {
 
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
 
-  // ALso added this function (handleSelectedRestaurant--- EDuardo
-  const handleSelectRestaurant = (restaurant) => {
-    setSelectedRestaurant(restaurant);
-    navigation.navigate("Restaurant");
-   
-  };
 
   useEffect(() => {
     if (userDetails?.zipcode) {
@@ -56,16 +50,16 @@ export const Home = () => {
               'Authorization': `Bearer ${accessToken}`
             }
           }
-        );
+          );
 
-        if (response.ok) {
-          const data = await response.json();
-          setRestaurants(data)
-          console.log("Fetched filtered restaurants", data)
-        } else {
-          throw new Error(data.error || "Failed to fetch");
-        }
-      } catch (error) {
+          if (response.ok) {
+            const data = await response.json();
+            setRestaurants(data)
+            console.log("Fetched filtered restaurants", data)
+          } else {
+            throw new Error(data.error || "Failed to fetch");
+          }
+        } catch (error) {
         console.error('Error fetching filtered restaurants', error)
       }
     }
@@ -82,6 +76,12 @@ export const Home = () => {
     return <Text>Error fetching restaurants: {error}</Text>;
   }
 
+  // ALso added this function (handleSelectedRestaurant--- EDuardo
+  const handleSelectRestaurant = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+    navigation.navigate("Restaurant", { yelpId: restaurant.id });
+
+  };
   const handleSubmit = async () => {
     await logout();
   };
@@ -125,21 +125,22 @@ export const Home = () => {
           <AntDesign style={styles.icon} name="adduser" />
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={restaurants.businesses}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <RestaurantCard
-          onPress={() => handleSelectRestaurant(item)} // ADDED by eduardo
-            restaurantName={item.name}
-            imageUrl={item.image_url}
-            cuisine={item.categories
-              .map((category) => category.title)
-              .join(", ")}
-          />
-        )}
-        ListEmptyComponent={<Text>No restaurants found for this zipcode.</Text>}
-      />
+        <FlatList
+          data={restaurants.businesses}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <RestaurantCard
+              onPress={() => handleSelectRestaurant(item)} // ADDED by eduardo
+              onReviewPress={() => navigation.navigate("Review", { yelpId: item.id })}
+              restaurantName={item.name}
+              imageUrl={item.image_url}
+              cuisine={item.categories
+                .map((category) => category.title)
+                .join(", ")}
+            />
+          )}
+          ListEmptyComponent={<Text>No restaurants found for this zipcode.</Text>}
+        />
       <Button title="logout" onPress={handleSubmit} />
     </View>
   );

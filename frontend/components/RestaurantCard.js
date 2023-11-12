@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Fontisto from "react-native-vector-icons/Fontisto";
 
 const RestaurantCard = ({
   onPress,
+  onReviewPress,
   restaurantName,
   imageUrl,
   cuisine,
@@ -13,34 +11,27 @@ const RestaurantCard = ({
   isIndividual,
   address,
 }) => {
-  // const [showMoreInfo, setShowMoreInfo] = useState(false);
+
   return isIndividual ? (
     <View style={styles.gridItem}>
-     
-        <View>
-          <Image
-            source={{
-              uri: imageUrl,
-            }}
-            style={styles.restaurantImage}
-          />
-        </View>
-
-     
-        <Text style={styles.title}>{restaurantName}</Text>
-        <Text style={styles.icon}>
-          <AntDesign name="star" style={styles.icon} />
-          <AntDesign name="star" style={styles.icon} />
-          <AntDesign name="star" style={styles.icon} />
-          <AntDesign name="star" style={styles.icon} />
-        </Text>
-        <Text style={styles.subTitle}>{rating}</Text>
-        <Text style={styles.address}>{address}</Text>
-      
-
-
-
-      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review}>
+      <View>
+        <Image
+          source={{
+            uri: imageUrl,
+          }}
+          style={styles.restaurantImage}
+        />
+      </View>
+      <Text style={styles.title}>{restaurantName}</Text>
+      <Text style={styles.icon}>
+        <AntDesign name="star" style={styles.icon} />
+        <AntDesign name="star" style={styles.icon} />
+        <AntDesign name="star" style={styles.icon} />
+        <AntDesign name="star" style={styles.icon} />
+      </Text>
+      <Text style={styles.subTitle}>{rating}</Text>
+      <Text style={styles.address}>{address}</Text>
+      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -69,8 +60,7 @@ const RestaurantCard = ({
           <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>
-
-      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review}>
+      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -154,5 +144,5 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: 'white'
   },
-  
+
 });
