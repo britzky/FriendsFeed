@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
 from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine
+from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id
 from app import db
 
 ##### Fetch from yelp #####
