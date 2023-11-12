@@ -40,6 +40,24 @@ def get_restaurants():
 
     return jsonify(restaurants)
 
+# Get restaurant by id from yelp
+@main.route('/restaurants/<string:yelp_restaurant_id>', methods=['GET'])
+@jwt_required()
+def get_restaurant(yelp_restaurant_id):
+    # Call the Yelp API function
+    results = get_restaurant_by_id(yelp_restaurant_id)
+
+    # Check if there was an error in the results and return accordingly
+    if 'error' in results:
+        # Structure the error response for the client
+        return jsonify({
+            "error": results["error"],
+            "message": "Failed to fetch data from Yelp API",
+            "status_code": results["status_code"]
+        }), results["status_code"]
+
+    return jsonify(results)
+
 ##### Cuisines ######
 
 @main.route('/get-cuisines', methods=['GET'])
