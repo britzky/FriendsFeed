@@ -4,8 +4,14 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  Dimensions
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const isLargeScreen = windowWidth > 600;
 
 const LandingPage = () => {
   const navigate = useNavigation();
@@ -73,7 +79,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   buttonText: {
-    paddingHorizontal: 150, // Add horizontal padding to make the button wider
+    paddingHorizontal: isLargeScreen ? 150 : 80, // Add horizontal padding to make the button wider
     paddingVertical: 15, // Add vertical padding for height
     backgroundColor: '#3d85c6', // Your desired background color
     borderRadius: 5, // Rounded corners

@@ -26,6 +26,12 @@ export const Home = () => {
 
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
 
+  // ALso added this function (handleSelectedRestaurant--- EDuardo
+  const handleSelectRestaurant = (restaurant) => {
+    setSelectedRestaurant(restaurant);
+    navigation.navigate("Restaurant", { restaurant });
+   
+  };
 
   useEffect(() => {
     if (userDetails?.zipcode) {
@@ -75,12 +81,8 @@ export const Home = () => {
     return <Text>Error fetching restaurants: {error}</Text>;
   }
 
-  // ALso added this function (handleSelectedRestaurant--- EDuardo
-  const handleSelectRestaurant = (restaurant) => {
-    setSelectedRestaurant(restaurant);
-    navigation.navigate("Restaurant", { yelpId: restaurant.id });
-
-  };
+ 
+  
   const handleSubmit = async () => {
     await logout();
   };

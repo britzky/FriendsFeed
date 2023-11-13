@@ -26,7 +26,6 @@ export const AppNavigator = () => {
             <Stack.Screen name="Friend" component={Friend} />
             <Stack.Screen name="Restaurant" component={Restaurant} />
             <Stack.Screen name="Review" component={Review} />
-
           </Stack.Group>
         ) : (
           <Stack.Group>
