@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Text, StyleSheet, Pressable } from "react-native";
+import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from '../context/AuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,7 +22,7 @@ export default function Register() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleRegistration = async (data) => {
+  const handleRegistration = async () => {
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
-    
-    
+
+
   },
   button: {
     backgroundColor: 'blue',

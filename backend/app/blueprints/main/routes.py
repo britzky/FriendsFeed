@@ -219,7 +219,7 @@ def create_review():
     current_user_id = get_jwt_identity()
 
     # Extract the data from the request
-    data = request.json()
+    data = request.json
     yelp_restaurant_id = data.get('yelp_restaurant_id')
     comment = data.get('comment')
     rating = data.get('rating')
