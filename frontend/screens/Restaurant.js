@@ -1,26 +1,83 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import RestaurantCard from "../components/RestaurantCard";
-// import { useGetRestaurants } from "../hooks/useGetRestaurants";
 import ReviewsCard from "../components/ReviewsCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useRoute } from "@react-navigation/native";
 
-const Restaurant = ({route}) => {
+const Restaurant = () => {
+  const [restaurantDetails, setRestaurantDetails] = useState(null);
+  const [friendsReviews, setFriendsReviews] = useState([]);
+  const { accessToken } = useAuth();
+  const route = useRoute();
+  const { yelpId } = route.params;
 
 
+  // fetch restaurant details using the yelpId
+  useEffect(() => {
+    const fetchRestaurantDetails = async (yelpId) => {
+      try {
+        const response = await fetch(`https://colab-test.onrender.com/restaurants/${yelpId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        data = await response.json();
+        setRestaurantDetails(data)
+        console.log("This is the restaurant details: ", data)
+      }
+      catch (error) {
+        console.error('There was a problem fetching restaurant details:', error);
+      }
+    }
+    fetchRestaurantDetails(yelpId);
+  }, [yelpId, accessToken])
 
+  //fetch friends reviews
+  useEffect(() => {
+    const fetchFriendsReviews = async (yelpId) => {
+      try {
+        const response = await fetch(`https://colab-test.onrender.com/restaurants/${yelpId}/friend-reviews'`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setFriendsReviews(data)
+        console.log("This is the friends reviews: ", data)
+      } catch (error) {
+        console.error('There was a problem fetching friends reviews:', error);
+      }
+    }
+    if (restaurantDetails) {
+      fetchFriendsReviews(restaurantDetails.id);
+    }
+  }, [yelpId, accessToken])
 
-  const {restaurant} = route.params
-
+  console.log("This is the yelpId: ", yelpId)
   return (
     <View style={styles.container}>
-      <RestaurantCard
-        restaurantName={restaurant.name}
-        imageUrl={restaurant.image_url}
-        cuisine={restaurant.categories.map(category => category.title).join(", ")}
-        rating={restaurant.rating}
-        address={restaurant.location.display_address.join(", ")}
-        isIndividual={true}
-      />
+      {restaurantDetails && (
+        <RestaurantCard
+          restaurantName={restaurantDetails.name}
+          imageUrl={restaurantDetails.image_url}
+          rating=""
+          address={restaurantDetails.location.display_address.join(", ")}
+          isIndividual={true}
+          onPress=""
+        />
+      )
+        }
 
       <ReviewsCard />
     </View>

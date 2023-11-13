@@ -3,11 +3,18 @@ import { View, FlatList } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { Searchbar } from '../components/Searchbar';
 import { FriendCard } from '../components/FriendCard';
+import { useFriends } from '../context/FriendContext';
+import { FriendList } from '../components/FriendList';
 
 export const Friend = () => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState('');
   const { accessToken } = useAuth();
+  const { fetchFriends } = useFriends();
+
+  useEffect(() => {
+    fetchFriends(accessToken);
+  }, [fetchFriends, accessToken]);
 
   // Fetch the user name
   useEffect(() => {
@@ -41,6 +48,8 @@ export const Friend = () => {
   const handleSearch = (searchedUsername) => {
     setUsername(searchedUsername);
   }
+
+
   return (
     <View>
         <Searchbar onSearch={handleSearch} placeholder="Search for a friend."/>
@@ -48,13 +57,17 @@ export const Friend = () => {
           data={friend}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item}) => (
-            <FriendCard
-              username={item.username}
-              profile_picture={item.profile_picture}
-              following={item.following}
-            />
+            !item.following && (
+              <FriendCard
+                username={item.username}
+                profile_picture={item.profile_picture}
+                following={item.following}
+                onFollowChange={() => setFriend(null)}
+              />
+            )
           )}
         />
+        <FriendList />
     </View>
   )
 }

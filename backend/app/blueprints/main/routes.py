@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
 from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine
+from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id
 from app import db
 
 ##### Fetch from yelp #####
@@ -39,6 +39,24 @@ def get_restaurants():
     restaurants = get_restaurants_by_zipcode_and_cuisine(zipcode, cuisine)
 
     return jsonify(restaurants)
+
+# Get restaurant by id from yelp
+@main.route('/restaurants/<string:yelp_restaurant_id>', methods=['GET'])
+@jwt_required()
+def get_restaurant(yelp_restaurant_id):
+    # Call the Yelp API function
+    results = get_restaurant_by_id(yelp_restaurant_id)
+
+    # Check if there was an error in the results and return accordingly
+    if 'error' in results:
+        # Structure the error response for the client
+        return jsonify({
+            "error": results["error"],
+            "message": "Failed to fetch data from Yelp API",
+            "status_code": results["status_code"]
+        }), results["status_code"]
+
+    return jsonify(results)
 
 ##### Cuisines ######
 
@@ -201,7 +219,7 @@ def create_review():
     current_user_id = get_jwt_identity()
 
     # Extract the data from the request
-    data = request.json()
+    data = request.json
     yelp_restaurant_id = data.get('yelp_restaurant_id')
     comment = data.get('comment')
     rating = data.get('rating')

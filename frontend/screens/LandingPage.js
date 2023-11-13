@@ -1,6 +1,5 @@
 import {
   View,
-  Button,
   Text,
   StyleSheet,
   Image,
@@ -11,14 +10,6 @@ import { useNavigation } from "@react-navigation/native";
 const LandingPage = () => {
   const navigate = useNavigation();
 
-  // const navigateToRegister = () => {
-  //   navigate.navigate("Register");
-  // };
-
-  // const navigateToLogin = () => {
-  //   navigate.navigate("Login");
-  // };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Food.Finder</Text>
@@ -28,38 +19,18 @@ const LandingPage = () => {
       <Text style={styles.text2}>
          one friend at a time
       </Text>
-
       <Image
         source={{
           uri: "https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg",
         }} // Using a remote placeholder image
         style={styles.logo}
       />
-     
-
-     <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register")}>
+      <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register")}>
         <Text style={styles.text} >Sign-up</Text>
       </Pressable>
-
-
-      {/* <Button
-        title="Already have an account? Login"
-        onPress={navigateToLogin}
-      /> */}
-
-<Pressable
-        style={styles.buttonTwo}
-        onPress={() => navigate.navigate("Login")}
-      >
+      <Pressable style={styles.buttonTwo} onPress={() => navigate.navigate("Login")}>
         <Text style={{fontSize: 15}}>Already have an account? Login</Text>
       </Pressable>
-
-{/* <Pressable
-        style={styles.buttonTwo}
-        onPress={() => navigate.navigate("Login")}
-      >
-        <Text style={{fontSize: 15}}>Already have an account? Login</Text>
-      </Pressable> */}
     </View>
   );
 };
