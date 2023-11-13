@@ -30,7 +30,7 @@ export const Home = () => {
   // ALso added this function (handleSelectedRestaurant--- EDuardo
   const handleSelectRestaurant = (restaurant) => {
     setSelectedRestaurant(restaurant);
-    navigation.navigate("Restaurant");
+    navigation.navigate("Restaurant", { restaurant });
    
   };
 

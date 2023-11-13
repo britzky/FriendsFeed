@@ -1,25 +1,25 @@
 import { View, Text, StyleSheet } from "react-native";
-// import RestaurantDetailsCard from "../components/RestaurantDetailsCard";
 import RestaurantCard from "../components/RestaurantCard";
-import { useGetRestaurants } from "../hooks/useGetRestaurants";
+// import { useGetRestaurants } from "../hooks/useGetRestaurants";
 import ReviewsCard from "../components/ReviewsCard";
 import { useState } from "react";
 
-const Restaurant = () => {
-  const [restaurantDetails, setRestaurantDetails] = useState(null);
+const Restaurant = ({route}) => {
 
-  const { restaurants, setRestaurants } = useGetRestaurants();
+
+
+
+  const {restaurant} = route.params
 
   return (
     <View style={styles.container}>
       <RestaurantCard
-        restaurantName="CHillis"
-        imageUrl="https://cdn.britannica.com/66/218266-050-77C3D624/Cookie-Monster-Sesame-Street-2016.jpg"
-        cuisine="tacos"
-        rating=""
-        address="102 place st"
+        restaurantName={restaurant.name}
+        imageUrl={restaurant.image_url}
+        cuisine={restaurant.categories.map(category => category.title).join(", ")}
+        rating={restaurant.rating}
+        address={restaurant.location.display_address.join(", ")}
         isIndividual={true}
-        onPress=""
       />
 
       <ReviewsCard />

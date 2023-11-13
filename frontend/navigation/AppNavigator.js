@@ -10,7 +10,6 @@ import LandingPage from "../screens/LandingPage";
 import { Friend } from "../screens/Friend";
 import Restaurant from "../screens/Restaurant";
 
-
 enableScreens();
 
 const Stack = createStackNavigator();
@@ -25,8 +24,6 @@ export const AppNavigator = () => {
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="Friend" component={Friend} />
             <Stack.Screen name="Restaurant" component={Restaurant} />
-           
-            
           </Stack.Group>
         ) : (
           <Stack.Group>
