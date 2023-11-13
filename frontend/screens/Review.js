@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { useAuth } from '../context/AuthContext';
-import StarRating from 'react-native-star-rating';
+// import StarRating from 'react-native-star-rating';
 
 
 export const Review = () => {
@@ -41,12 +41,12 @@ export const Review = () => {
     return (
         <View>
             <Text>Rate your experience:</Text>
-            <StarRating
+            {/* <StarRating
                 disabled={false}
                 maxStars={5}
                 rating={rating}
                 selectedStar={handleRatingChange}
-            />
+            /> */}
             <Text>Leave a comment:</Text>
             <TextInput
                 multiline={true}
