@@ -12,7 +12,6 @@ import { useAuth } from "../context/AuthContext";
 import { useGetRestaurants } from "../hooks/useGetRestaurants";
 import RestaurantCard from "../components/RestaurantCard";
 import { Searchbar } from "../components/Searchbar";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { CuisineFilter } from '../components/CuisineFilter';
 import AntDesign from "react-native-vector-icons/AntDesign";

@@ -2,21 +2,11 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
-// Your component code
-const ReviewsCard = ({ username, review, avatarUrl }) => {
-  // Generate stars based on rating
-  const stars = Array(5).fill(<AntDesign name="star" style={styles.star} />);
-
-  const comments = "Optimus Prime: Autobots, our courage and strength will lead us to victory against the Decepticons. We must fight not just for ourselves, but for the peace of all worlds."
-
+const ReviewsCard = ({ review }) => {
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <Image source={{ uri: avatarUrl }} style={styles.avatar} />
-        <Text style={styles.username}>{username}</Text>
-      </View>
-      <View style={styles.rating}>{stars}</View>
-      <Text style={styles.reviewText}>{comments}</Text>
+      <Text>{review.comment}</Text>
+      <Text>{review.rating}</Text>
     </View>
   );
 };

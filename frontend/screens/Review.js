@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { useAuth } from '../context/AuthContext';
-import StarRating from 'react-native-star-rating';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { Rating } from 'react-native-ratings';
 
 
 export const Review = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const { accessToken } = useAuth();
+    const route = useRoute();
+    const { yelpId } = route.params;
+    const navigation = useNavigation();
 
     const handleRatingChange = (rating) => {
         setRating(rating);
@@ -26,6 +31,7 @@ export const Review = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    yelp_restaurant_id: yelpId,
                     rating,
                     comment
                 })
@@ -33,6 +39,9 @@ export const Review = () => {
 
             const result = await response.json();
             console.log("This is the review being sent to the backend", result);
+            if (response.ok) {
+                navigation.goBack();
+            }
         } catch (error) {
             console.error(error);
         }
@@ -41,11 +50,10 @@ export const Review = () => {
     return (
         <View>
             <Text>Rate your experience:</Text>
-            <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={rating}
-                selectedStar={handleRatingChange}
+            <Rating
+                showRating
+                onFinishRating={handleRatingChange}
+                style={{ paddingVertical: 10 }}
             />
             <Text>Leave a comment:</Text>
             <TextInput
