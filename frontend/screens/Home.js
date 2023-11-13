@@ -82,12 +82,8 @@ export const Home = () => {
     return <Text>Error fetching restaurants: {error}</Text>;
   }
 
-  // ALso added this function (handleSelectedRestaurant--- EDuardo
-  const handleSelectRestaurant = (restaurant) => {
-    setSelectedRestaurant(restaurant);
-    navigation.navigate("Restaurant", { yelpId: restaurant.id });
-
-  };
+ 
+  
   const handleSubmit = async () => {
     await logout();
   };
