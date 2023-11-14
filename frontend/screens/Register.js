@@ -6,7 +6,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const REGISTER_URL = "https://colab-test.onrender.com/register";
 
-
 export default function Register() {
   const { setIsLoggedIn, setUserDetails } = useAuth();
   const navigate = useNavigation()
@@ -31,21 +30,15 @@ export default function Register() {
     if (!formData.password) {
       validationErrors.password = "Password is required";
     }
-
     if (!formData.email) {
       validationErrors.email = "email is required";
     }
-
     if (!formData.zipcode) {
       validationErrors.zipcode = "zipcode is required";
     }
-
-
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the API
       try {
-        // const response = await api.post(REGISTER_URL, userData); // Assuming your API utility handles the request
-
         const response = await fetch(REGISTER_URL, {
           method: "POST",
 
@@ -55,7 +48,6 @@ export default function Register() {
 
           body: JSON.stringify(formData),
         });
-        console.log(formData);
         if (response.status === 201) {
           // Registration was successful, navigate to the user's dashboard or login screen
           const data = await response.json();
@@ -80,10 +72,6 @@ export default function Register() {
     }
   };
 
-
-
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Food.Finder</Text>
@@ -93,7 +81,6 @@ export default function Register() {
       <Text style={styles.text2}>
          one friend at a time
       </Text>
-
       <TextInput
       style={styles.input}
         placeholder="email"
@@ -132,14 +119,9 @@ export default function Register() {
       {errors.zipcode && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
-
-<Pressable style={styles.buttonText} onPress={handleRegistration}>
-          <Text style={styles.text} >Sign Up</Text>
-        </Pressable>
-
-
-      {/* <Button style={styles.buttonText} title="Sign-Up" onPress={handleRegistration} /> */}
-
+      <Pressable style={styles.buttonText} onPress={handleRegistration}>
+        <Text style={styles.text} >Sign Up</Text>
+      </Pressable>
     </View>
   );
 }

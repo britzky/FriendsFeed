@@ -5,16 +5,9 @@ import ReviewsCard from "../components/ReviewsCard";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const Restaurant = () => {
-
   const route = useRoute();
   const { restaurant } = route.params;
-
-
   const navigation = useNavigation();
-
-
-
-
 
   return (
     <View style={styles.container}>
@@ -26,7 +19,6 @@ const Restaurant = () => {
         address={restaurant.location.display_address.join(", ")}
         isIndividual={true}
       />
-
       <ReviewsCard  />
     </View>
   );

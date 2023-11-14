@@ -35,16 +35,13 @@ export default function Login() {
     if (!formData.password) {
       validationErrors.password = "Password is required";
     }
-
     if (Object.keys(validationErrors).length === 0) {
       try {
         const response = await fetch(SIGNIN_URL, {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json",
           },
-
           body: JSON.stringify(formData),
         });
         console.log(formData);
@@ -76,36 +73,30 @@ export default function Login() {
       <Text style={styles.title}>Food.Finder</Text>
       <Text style={styles.subtitle}>Discover new restaurants</Text>
       <Text style={styles.text2}>one friend at a time</Text>
-      {isLoggedIn ? (
-        <Text>Your logged in</Text>
-      ) : (
-        <>
-          <TextInput
-            style={styles.input}
-            placeholder="username"
-            value={formData.username}
-            onChangeText={(text) => handleChange("username", text)}
-          />
-          {errors.email && (
-            <Text style={styles.errorText}>{errors.username}</Text>
-          )}
-
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={formData.password}
-            onChangeText={(text) => handleChange("password", text)}
-            secureTextEntry
-          />
-          {errors.password && (
-            <Text style={styles.errorText}>{errors.password}</Text>
-          )}
-
-          <Pressable style={styles.buttonText} onPress={handleSubmit}>
-            <Text style={styles.text}>Login</Text>
-          </Pressable>
-        </>
+      <TextInput
+        style={styles.input}
+        placeholder="username"
+        value={formData.username}
+        onChangeText={(text) => handleChange("username", text)}
+      />
+      {errors.email && (
+        <Text style={styles.errorText}>{errors.username}</Text>
       )}
+
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={formData.password}
+        onChangeText={(text) => handleChange("password", text)}
+        secureTextEntry
+      />
+      {errors.password && (
+        <Text style={styles.errorText}>{errors.password}</Text>
+      )}
+
+      <Pressable style={styles.buttonText} onPress={handleSubmit}>
+        <Text style={styles.text}>Login</Text>
+      </Pressable>
     </View>
   );
 }

@@ -73,15 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 16,
     height: 310, /// adjust the length of the card
-    // borderRadius: 0,
-    // elevation: 4,
-    // backgroundColor: "white",
-    // shadowColor: "black",
-    // shadowOpacity: 0.25,
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowRadius: 8,
     marginTop: 25,
-    // overflow: Platform.OS === "android" ? "hidden" : "visible",                                   /// COME BACK TO THIS
     borderBottomColor: "#999999", // Light grey color for the divider
     borderBottomWidth: 1, // One pixel bottom border
     marginVertical: 8, // You can adjust vertical margin as needed
@@ -110,7 +102,6 @@ const styles = StyleSheet.create({
   restaurantImage: {
     width: "100%", // or some fixed width
     height: 160, // or some fixed height
-    // borderRadius: 8, // if you want rounded corners
   },
   review: {
     paddingHorizontal: 135,

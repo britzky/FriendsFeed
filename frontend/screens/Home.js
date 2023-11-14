@@ -23,14 +23,13 @@ export const Home = () => {
   const navigation = useNavigation();
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
-
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
 
   // ALso added this function (handleSelectedRestaurant--- EDuardo
   const handleSelectRestaurant = (restaurant) => {
     setSelectedRestaurant(restaurant);
     navigation.navigate("Restaurant", { restaurant });
-   
+
   };
 
   useEffect(() => {
@@ -81,8 +80,8 @@ export const Home = () => {
     return <Text>Error fetching restaurants: {error}</Text>;
   }
 
- 
-  
+
+
   const handleSubmit = async () => {
     await logout();
   };

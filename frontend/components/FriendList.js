@@ -4,7 +4,6 @@ import { useFriends } from '../context/FriendContext';
 
 export const FriendList = ({ onFollowPress }) => {
     const { friends } = useFriends();
-    console.log("Friends in FriendList:", friends); // Add this line to check the friends list
 
   return (
     <View>
