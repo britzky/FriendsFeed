@@ -1,4 +1,5 @@
 import React from "react";
+import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Home } from "../screens/Home";
@@ -16,7 +17,15 @@ enableScreens();
 const Stack = createStackNavigator();
 
 export const AppNavigator = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" />
+      </View>
+    )
+  }
   const initialRouteName = isLoggedIn ? "Home" : "LandingPage";
 
   return (

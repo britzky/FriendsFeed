@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userDetails, setUserDetails] = useState(null);
     const [accessToken, setAccessToken] = useState(null)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         console.log('Access Token Updated:', accessToken)
@@ -39,9 +40,11 @@ export const AuthProvider = ({ children }) => {
             if (user) {
                 setUserDetails(user);
             }
+            setLoading(false);
 
         } catch (error) {
             console.error('Error retrieving login info from AsyncStorage: ', error)
+            setLoading(false);
         }
 
     }, [refreshToken])
@@ -84,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading }}>
         {children}
     </AuthContext.Provider>
   )
