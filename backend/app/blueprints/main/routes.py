@@ -266,13 +266,17 @@ def get_reviews_for_restaurant(yelp_restaurant_id):
     # Serialize the review data
     reviews_data = []
     for review in reviews:
+        # Fetch the user who wrote the review
+        review_author = User.find_by_id(review.user_id)
         review_data = {
             "id": review.id,
             "yelp_restaurant_id": review.yelp_restaurant_id,
             "comment": review.comment,
             "rating": review.rating,
             "date": review.date.strftime("%Y-%m-%d %H:%M:%S"),
-            "user_id": review.user_id
+            "user_id": review.user_id,
+            "username": review_author.username,
+            "profile_picture": review_author.profile_picture if review_author.profile_picture else ""
         }
         reviews_data.append(review_data)
 
