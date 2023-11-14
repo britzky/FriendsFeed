@@ -6,6 +6,7 @@ import {
   Alert,
   StyleSheet,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
@@ -14,19 +15,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { isLoggedIn, setIsLoggedIn, setUserDetails } = useAuth();
+  const { setIsLoggedIn, setUserDetails } = useAuth();
   const navigate = useNavigation();
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     password: "",
     username: "",
   });
-  const [errors, setErrors] = useState({});
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -44,7 +47,6 @@ export default function Login() {
           },
           body: JSON.stringify(formData),
         });
-        console.log(formData);
         if (response.ok) {
           Alert.alert("Alert Title", "You are successfully logged in");
           const data = await response.json();
@@ -54,6 +56,7 @@ export default function Login() {
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
           setIsLoggedIn(true);
           setUserDetails(data.user);
+          setLoading(false);
           navigate.navigate("Home");
         } else {
           console.log("Login Failed:", response.status);
@@ -94,8 +97,11 @@ export default function Login() {
         <Text style={styles.errorText}>{errors.password}</Text>
       )}
 
-      <Pressable style={styles.buttonText} onPress={handleSubmit}>
-        <Text style={styles.text}>Login</Text>
+      <Pressable style={styles.buttonText} onPress={handleSubmit} disabled={loading}>
+        {loading ?
+          <ActivityIndicator size="small" color="#fff" />:
+          <Text style={styles.text}>Login</Text>
+        }
       </Pressable>
     </View>
   );

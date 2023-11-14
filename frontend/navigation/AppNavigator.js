@@ -17,9 +17,11 @@ const Stack = createStackNavigator();
 
 export const AppNavigator = () => {
   const { isLoggedIn } = useAuth();
+  const initialRouteName = isLoggedIn ? "Home" : "LandingPage";
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="LandingPage">
+      <Stack.Navigator initialRouteName={initialRouteName}>
         {isLoggedIn ? (
           <Stack.Group>
             <Stack.Screen name="Home" component={Home} />

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
+import { View, TextInput, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from '../context/AuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,19 +9,21 @@ const REGISTER_URL = "https://colab-test.onrender.com/register";
 export default function Register() {
   const { setIsLoggedIn, setUserDetails } = useAuth();
   const navigate = useNavigation()
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     zipcode: "",
   });
-  const [errors, setErrors] = useState({});
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
   const handleRegistration = async () => {
+    setLoading(true);
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -57,6 +59,7 @@ export default function Register() {
 
           setIsLoggedIn(true);
           setUserDetails(data.user);
+          setLoading(false);
           navigate.navigate("Home");
         } else {
           // Handle registration errors here
@@ -82,7 +85,7 @@ export default function Register() {
          one friend at a time
       </Text>
       <TextInput
-      style={styles.input}
+        style={styles.input}
         placeholder="email"
         value={formData.email}
         onChangeText={(text) => handleChange("email", text)}
@@ -119,8 +122,11 @@ export default function Register() {
       {errors.zipcode && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
-      <Pressable style={styles.buttonText} onPress={handleRegistration}>
-        <Text style={styles.text} >Sign Up</Text>
+      <Pressable style={styles.buttonText} onPress={handleRegistration} disabled={loading}>
+        {loading ?
+          <ActivityIndicator size="small" color="#fff" />:
+          <Text style={styles.text}>Sign Up</Text>
+        }
       </Pressable>
     </View>
   );
