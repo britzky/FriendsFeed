@@ -1,12 +1,23 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { Rating } from "react-native-ratings";
 
-const ReviewsCard = ({ review }) => {
+const ReviewsCard = ({ reviews }) => {
   return (
-    <View style={styles.card}>
-      <Text>{review.comment}</Text>
-      <Text>{review.rating}</Text>
+    <View>
+      {reviews.map((review) => (
+        <View key={review.id} style={styles.card}>
+          <View style={styles.header}>
+            <Text>{review.username}</Text>
+          </View>
+          <Rating
+            imageSize={20}
+            readonly
+            startingValue={review.rating}
+          />
+          <Text>{review.comment}</Text>
+        </View>
+      ))}
     </View>
   );
 };

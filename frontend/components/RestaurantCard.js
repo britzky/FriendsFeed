@@ -72,8 +72,9 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 16,
-    height: 310, /// adjust the length of the card
+    // height: 310, /// adjust the length of the card
     marginTop: 25,
+    marginBottom: 20,
     borderBottomColor: "#999999", // Light grey color for the divider
     borderBottomWidth: 1, // One pixel bottom border
     marginVertical: 8, // You can adjust vertical margin as needed
