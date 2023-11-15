@@ -91,26 +91,10 @@ def register():
             username=data['username'],
             email=data['email'],
             zipcode=data['zipcode'],
-            profile_picture=data.get('profile_picture', None) # Optional field
+            profile_picture=data['profile_picture']
         )
         # Hash the users password before stroing it
         new_user.password = new_user.hash_password(data['password'])
-
-        # Check if the request has the file part
-        if 'profile_picture' in request.files:
-            file = request.files['profile_picture']
-
-            #if user doesn't select a file, the browser submits an empty file without a filename
-            if file.filename == '':
-                return jsonify({"message": "No selected file"}), 400
-
-            #Secure the filename
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-
-            # Update the new_user object with the saved file path
-            new_user.profile_picture = file_path
 
         # Save the new user to the database
         new_user.save_to_db()
