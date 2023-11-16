@@ -183,22 +183,24 @@ def remove_friend():
         return jsonify({"message": "Could not unfollow friend", "error": str(e)}), 500
 
 @main.route('/find-friend/<string:username>', methods=['GET'])
-@jwt_required()
 def find_friend(username):
-    # Define the current user ID using the jwt
+    # Define the current user ID using the JWT, if present
     current_user_id = get_jwt_identity()
-    # Define the current user
-    current_user = User.find_by_id(current_user_id)
-    if not current_user:
-        return jsonify({"message": "Current user not found"}), 404
+    is_already_friend = False
+
     # Find the user by the provided username
     user_to_find = User.find_by_username(username)
     #Check if the user exisits
     if not user_to_find:
         return jsonify({"message": "User not found"}), 404
 
-    # Check if the found user is already a friend
-    is_already_friend = current_user.is_friend(user_to_find)
+    # If a current userID is provided, check if the user is already a friend
+    if current_user_id:
+        current_user = User.find_by_id(current_user_id)
+        if not current_user:
+            return jsonify({"message": "User not found"}), 404
+        # Check if the found user is already a friend
+        is_already_friend = current_user.is_friend(user_to_find)
 
     # Structure response
     user_data = {
