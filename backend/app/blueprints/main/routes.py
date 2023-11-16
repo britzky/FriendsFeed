@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
 from app.models import User, Cuisine, Review
-from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id
 from app import db
 
@@ -183,7 +183,7 @@ def remove_friend():
         return jsonify({"message": "Could not unfollow friend", "error": str(e)}), 500
 
 @main.route('/find-friend/<string:username>', methods=['GET'])
-@jwt_optional()
+@jwt_required(optional=True) # optional jwt because we want to allow users to see other users profiles without being logged in
 def find_friend(username):
     # Define the current user ID using the JWT, if present
     current_user_id = get_jwt_identity()
