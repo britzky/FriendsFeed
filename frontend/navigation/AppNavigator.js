@@ -11,6 +11,7 @@ import LandingPage from "../screens/LandingPage";
 import { Friend } from "../screens/Friend";
 import Restaurant from "../screens/Restaurant";
 import { Review } from "../screens/Review";
+import { ChooseAvatar } from "../screens/ChooseAvatar";
 
 enableScreens();
 
@@ -42,6 +43,7 @@ export const AppNavigator = () => {
           <Stack.Group>
             <Stack.Screen name="LandingPage" component={LandingPage} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="ChooseAvatar" component={ChooseAvatar} />
             <Stack.Screen name="Login" component={Login} />
           </Stack.Group>
         )}

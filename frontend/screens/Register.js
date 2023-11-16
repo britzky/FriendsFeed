@@ -4,13 +4,10 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from '../context/AuthContext';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const REGISTER_URL = "https://colab-test.onrender.com/register";
-
 export default function Register() {
-  const { setIsLoggedIn, setUserDetails } = useAuth();
+  const { setUserDetails } = useAuth();
   const navigate = useNavigation()
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -22,8 +19,7 @@ export default function Register() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleRegistration = async () => {
-    setLoading(true);
+  const handleRegistration = () => {
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -39,37 +35,10 @@ export default function Register() {
       validationErrors.zipcode = "zipcode is required";
     }
     if (Object.keys(validationErrors).length === 0) {
-      // Form is valid, you can submit the data to the API
-      try {
-        const response = await fetch(REGISTER_URL, {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify(formData),
-        });
-        if (response.status === 201) {
-          // Registration was successful, navigate to the user's dashboard or login screen
-          const data = await response.json();
-          console.log("Registration successful", data);
-          await AsyncStorage.setItem('access_token', data.access_token)
-          await AsyncStorage.setItem('user_details', JSON.stringify(data.user))
-
-          setIsLoggedIn(true);
-          setUserDetails(data.user);
-          setLoading(false);
-          navigate.navigate("Home");
+      // Form is valid, you can submit the data to the Context
+          setUserDetails(formData);
+          navigate.navigate("ChooseAvatar");
         } else {
-          // Handle registration errors here
-          console.log("Registration failed", response.status);
-        }
-      } catch (error) {
-        // Handle network or server errors here
-        console.error("An error occurred:", error);
-      }
-    } else {
       // Form is not valid, update the errors state
       setErrors(validationErrors);
     }
@@ -122,11 +91,8 @@ export default function Register() {
       {errors.zipcode && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
-      <Pressable style={styles.buttonText} onPress={handleRegistration} disabled={loading}>
-        {loading ?
-          <ActivityIndicator size="small" color="#fff" />:
-          <Text style={styles.text}>Sign Up</Text>
-        }
+      <Pressable style={styles.buttonText} onPress={handleRegistration}>
+          <Text style={styles.text}>Continue</Text>
       </Pressable>
     </View>
   );
