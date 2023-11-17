@@ -1,8 +1,10 @@
 import { Button, Image, View, Text, StyleSheet } from 'react-native'
 import { useFriends } from '../context/FriendContext';
+import { avatars } from '../assets';
 
 export const FriendCard = ({username, profile_picture, following, onFollowChange}) => {
   const { unfollowFriend, followFriend } = useFriends();
+  const avatarImage = avatars[profile_picture];
 
   const handleButtonPress = () => {
     if (following) {
@@ -16,7 +18,7 @@ export const FriendCard = ({username, profile_picture, following, onFollowChange
   return (
     <View style={styles.cardContainer}>
         <Text style={styles.name}>{username}</Text>
-        <Image  style={styles.image} source={profile_picture} />
+        <Image  style={styles.image} source={avatarImage} />
         <Button
           style={styles.button}
           title={following ? "Unfollow" : "Follow"}

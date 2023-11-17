@@ -24,24 +24,21 @@ export const Home = () => {
   }, []);
 
   useEffect(() => {
-    const checkNewUser = async () => {
+    const initFetchRestaurants = async () => {
       const isNewUser = await AsyncStorage.getItem('isNewUser');
-      console.log('Checking New User Status:', isNewUser);
-      console.log('Current states:', { isLoggedIn, userDetails, accessToken });
-      if (isNewUser !== 'true' && isLoggedIn && userDetails?.zipcode && accessToken) {
-        console.log('All data available, fetching restaurants...');
+      console.log('Checking user status for fetching restaurants', { isNewUser });
+
+      // Fetch restaurants if user is logged in, has necessary details, and is not in the registration flow
+      if ((isNewUser === 'false' || isNewUser === null) && isLoggedIn && userDetails?.zipcode && accessToken) {
+        console.log('Returning user or new user who completed registration. Fetching restaurants...');
         setSearchZipcode(userDetails.zipcode);
         fetchRestaurants();
       } else {
-        console.log('Conditions not met for fetching restaurants:', {
-          isNewUser,
-          isLoggedIn,
-          userDetails,
-          accessToken
-        });
+        console.log('User is in registration flow or missing necessary details', { isNewUser, isLoggedIn, userDetails, accessToken });
       }
     }
-    checkNewUser();
+
+    initFetchRestaurants();
   }, [isLoggedIn, userDetails, accessToken]);
 
   useEffect(() => {
@@ -82,11 +79,6 @@ export const Home = () => {
       getRestaurants();
 
     }, [selectedCuisine, searchZipcode, accessToken, setRestaurants])
-
-    // if (!isLoggedIn || !searchZipcode || !accessToken || fetching) {
-    //   console.log('Spinner active due to missing data', { isLoggedIn, searchZipcode, accessToken });
-    //   return <ActivityIndicator size="large" />;
-    // }
 
     if (error) {
       return <Text>Error fetching restaurants: {error}</Text>;

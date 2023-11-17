@@ -3,7 +3,6 @@ import {
   View,
   TextInput,
   Text,
-  Alert,
   StyleSheet,
   Pressable,
   ActivityIndicator,
@@ -53,16 +52,9 @@ export default function Login() {
           await AsyncStorage.setItem("access_token", data.access_token);
           await AsyncStorage.setItem("refresh_token", data.refresh_token);
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
-
-            // Update states and wait for them to be set
-            await new Promise((resolve) => {
-            setIsLoggedIn(true, resolve);
-            setUserDetails(data.user, resolve);
-            setAccessToken(data.access_token, resolve);
-        });
-
-        // After states are set, navigate to Home
-        navigate.navigate("Home");
+          setIsLoggedIn(true);
+          setUserDetails(data.user);
+          setAccessToken(data.access_token);
         } else {
           console.log("Login Failed:", response.status);
         }
@@ -75,6 +67,16 @@ export default function Login() {
       setErrors(validationErrors);
     }
   };
+
+  useEffect(() => {
+    const navigateIfReady = () => {
+      // Check if all necessary conditions are met
+      if (isLoggedIn && userDetails && accessToken) {
+        navigate.navigate("Home");
+      }
+    };
+    navigateIfReady();
+  }, [isLoggedIn, userDetails, accessToken, navigate]);
 
   return (
     <View style={styles.container}>
