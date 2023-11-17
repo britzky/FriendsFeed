@@ -17,10 +17,19 @@ export const Home = () => {
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
+  const [isNewUserStatus, setIsNewUserStatus] = useState(null);
 
   useEffect(() => {
     console.log('Initial States:', { isLoggedIn, userDetails, accessToken });
   }, []);
+
+  useEffect(() => {
+    const getIsNewUserStatus = async () => {
+      const isNewUserValue = await AsyncStorage.getItem('isNewUser');
+      setIsNewUserStatus(isNewUserValue);
+    }
+    getIsNewUserStatus();
+  }, [])
 
   useEffect(() => {
     if (userDetails?.user?.zipcode) {

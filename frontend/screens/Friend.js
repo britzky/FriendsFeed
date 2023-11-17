@@ -6,11 +6,12 @@ import { FriendCard } from '../components/FriendCard';
 import { useFriends } from '../context/FriendContext';
 import { FriendList } from '../components/FriendList';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState('');
-  const { accessToken } = useAuth();
+  const { accessToken, waitForAuthDetails } = useAuth();
   const { fetchFriends } = useFriends();
   const { registrationFlow } = route.params || {};
   const navigation = useNavigation();
@@ -54,6 +55,15 @@ export const Friend = ({ route }) => {
     setUsername(searchedUsername);
   }
 
+  const navigateToHome = async () => {
+    const isNewUser = await AsyncStorage.getItem('isNewUser');
+    if (isNewUser === 'true') {
+      await AsyncStorage.removeItem('isNewUser');
+    }
+    await waitForAuthDetails();
+    navigation.navigate('Home');
+  }
+
 
   return (
     <View>
@@ -77,10 +87,10 @@ export const Friend = ({ route }) => {
         </View>
         {registrationFlow ? (
           <View>
-            <Pressable onPress={() => navigation.navigate('Home')}>
+            <Pressable onPress={navigateToHome}>
               <Text>Sign Up</Text>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('Home')}>
+            <Pressable onPress={navigateToHome}>
               <Text>Skip for now</Text>
             </Pressable>
           </View>
