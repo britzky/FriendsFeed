@@ -8,9 +8,15 @@ import ReviewsCard from "../components/ReviewsCard";
 const Restaurant = () => {
   const route = useRoute();
   const { restaurant } = route.params;
-  const { accessToken } = useAuth();
+  const { accessToken, isLoggedIn } = useAuth();
   const navigation = useNavigation();
   const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigation.navigate("LandingPage");
+    }
+  }, [isLoggedIn, navigation]);
 
   useEffect(() => {
     const fetchReviews = async () => {

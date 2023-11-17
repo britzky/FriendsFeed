@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useRoute } from '@react-navigation/native';
@@ -13,6 +13,12 @@ export const Review = () => {
     const route = useRoute();
     const { yelpId } = route.params;
     const navigation = useNavigation();
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+          navigation.navigate("LandingPage");
+        }
+      }, [isLoggedIn, navigation]);
 
     const handleRatingChange = (rating) => {
         setRating(rating);

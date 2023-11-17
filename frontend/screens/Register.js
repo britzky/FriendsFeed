@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from '../context/AuthContext';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Register() {
+export default function Register({ route }) {
   const { setUserDetails } = useAuth();
   const navigate = useNavigation()
   const [errors, setErrors] = useState({});
@@ -14,12 +13,15 @@ export default function Register() {
     password: "",
     zipcode: "",
   });
+  const { registrationFlow } = route.params;
+  console.log("This is the Register registration flow status: ", registrationFlow)
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
 
   const handleRegistration = () => {
+
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -37,7 +39,7 @@ export default function Register() {
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the Context
           setUserDetails(formData);
-          navigate.navigate("ChooseAvatar");
+          navigate.navigate("ChooseAvatar", { registrationFlow });
         } else {
       // Form is not valid, update the errors state
       setErrors(validationErrors);

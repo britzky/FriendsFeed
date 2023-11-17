@@ -1,24 +1,29 @@
 import { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Pressable, Text } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { Searchbar } from '../components/Searchbar';
 import { FriendCard } from '../components/FriendCard';
 import { useFriends } from '../context/FriendContext';
 import { FriendList } from '../components/FriendList';
+import { useNavigation } from '@react-navigation/native';
 
-export const Friend = () => {
+export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState('');
   const { accessToken } = useAuth();
   const { fetchFriends } = useFriends();
+  const { registrationFlow } = route.params || {};
+  const navigation = useNavigation();
 
   useEffect(() => {
-    fetchFriends(accessToken);
+    if(accessToken) {
+      fetchFriends(accessToken);
+    }
   }, [fetchFriends, accessToken]);
 
   // Fetch the user name
   useEffect(() => {
-    if (username) {
+    if (username && accessToken) {
       const fetchFriendDetails = async () => {
         try {
           const response = await fetch(`https://colab-test.onrender.com/find-friend/${username}`, {
@@ -67,7 +72,19 @@ export const Friend = () => {
             )
           )}
         />
-        <FriendList />
+        <View>
+          <FriendList />
+        </View>
+        {registrationFlow ? (
+          <View>
+            <Pressable onPress={() => navigation.navigate('Home')}>
+              <Text>Sign Up</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('Home')}>
+              <Text>Skip for now</Text>
+            </Pressable>
+          </View>
+        ): null}
     </View>
   )
 }

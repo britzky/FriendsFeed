@@ -11,32 +11,31 @@ export const useGetRestaurants = (zipcode) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        // Define a function to fetch restaurants
-        const fetchRestaurants = async () => {
-            // handle case where no zipcode is provided
-            if (!zipcode || !isLoggedIn) return;
+    // Define a function to fetch restaurants
+    const fetchRestaurants = async () => {
+        // handle case where no zipcode is provided
+        if (!zipcode || !isLoggedIn || !accessToken) {
+            return;
+        }
 
-            setLoading(true)
-            let currentToken = accessToken;
-            if(!currentToken) {
-                currentToken = await AsyncStorage.getItem('access_token');
-            }
+        setLoading(true)
+        let currentToken = accessToken || await AsyncStorage.getItem('access_token');
 
-            try {
-                let response = await fetchRestaurantFromAPI(accessToken);
+        try {
+            let response = await fetchRestaurantFromAPI(currentToken);
 
-                if (response.status === 401) {
-                    //Attempt to refresh the token
-                    newToken = await refreshToken();
-                    if (newToken) {
-                        currentToken = newToken;
-                        setAccessToken(newToken);
-                        await AsyncStorage.setItem('access_token', newToken)
-                        // Re-fetch after refreshing the token
-                        response = await fetchRestaurantFromAPI(currentToken);
-                    } else {
-                        throw new Error('Authenticatiion failed');
+            if (response.status === 401) {
+                //Attempt to refresh the token
+                newToken = await refreshToken();
+                if (newToken) {
+                    currentToken = newToken;
+                    setAccessToken(newToken);
+                    await AsyncStorage.setItem('access_token', newToken)
+                    // Re-fetch after refreshing the token
+
+                    response = await fetchRestaurantFromAPI(currentToken);
+                } else {
+                    throw new Error('Authenticatiion failed');
                     }
                 }
 
@@ -52,19 +51,22 @@ export const useGetRestaurants = (zipcode) => {
                 setLoading(false)
             }
         }
+        const fetchRestaurantFromAPI = async (token) => {
+            return await fetch (`${BASE_URL}/restaurants?zipcode=${zipcode}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        }
 
+    useEffect(() => {
+        if (zipcode && accessToken && isLoggedIn) {
         fetchRestaurants();
-    }, [zipcode, accessToken, refreshToken])
+        }
+    }, [zipcode, accessToken, isLoggedIn])
 
-    const fetchRestaurantFromAPI = async (token) => {
-        return await fetch (`${BASE_URL}/restaurants?zipcode=${zipcode}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-    }
 
-  return { restaurants, setRestaurants, loading, error };
+  return { restaurants, setRestaurants, loading, error, fetchRestaurants };
 
 }

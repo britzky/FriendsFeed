@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -15,7 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { setIsLoggedIn, setUserDetails } = useAuth();
+  const { setIsLoggedIn, setUserDetails, isLoggedIn, userDetails, accessToken, setAccessToken } = useAuth();
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -48,16 +48,21 @@ export default function Login() {
           body: JSON.stringify(formData),
         });
         if (response.ok) {
-          Alert.alert("Alert Title", "You are successfully logged in");
           const data = await response.json();
           console.log("Login successful:", data);
           await AsyncStorage.setItem("access_token", data.access_token);
           await AsyncStorage.setItem("refresh_token", data.refresh_token);
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
-          setIsLoggedIn(true);
-          setUserDetails(data.user);
-          setLoading(false);
-          navigate.navigate("Home");
+
+            // Update states and wait for them to be set
+            await new Promise((resolve) => {
+            setIsLoggedIn(true, resolve);
+            setUserDetails(data.user, resolve);
+            setAccessToken(data.access_token, resolve);
+        });
+
+        // After states are set, navigate to Home
+        navigate.navigate("Home");
         } else {
           console.log("Login Failed:", response.status);
         }

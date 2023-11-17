@@ -31,7 +31,7 @@ const LandingPage = () => {
         }} // Using a remote placeholder image
         style={styles.logo}
       />
-      <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register")}>
+      <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register", { registrationFlow: true })}>
         <Text style={styles.text} >Sign-up</Text>
       </Pressable>
       <Pressable style={styles.buttonTwo} onPress={() => navigate.navigate("Login")}>

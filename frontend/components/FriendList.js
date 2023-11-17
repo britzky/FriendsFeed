@@ -2,7 +2,7 @@ import { View, FlatList, Text } from 'react-native';
 import { FriendCard } from './FriendCard';
 import { useFriends } from '../context/FriendContext';
 
-export const FriendList = ({ onFollowPress }) => {
+export const FriendList = () => {
     const { friends } = useFriends();
 
   return (
@@ -16,7 +16,6 @@ export const FriendList = ({ onFollowPress }) => {
                     username={item.username}
                     profile_picture={item.profile_picture}
                     following={item.following}
-                    onFollowPress={onFollowPress}
                 />
             )}
         />
