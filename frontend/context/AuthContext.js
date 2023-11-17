@@ -85,9 +85,15 @@ export const AuthProvider = ({ children }) => {
         checkLoginStatus()
     }, [checkLoginStatus]);
 
+    const waitForAuthDetails = async () => {
+        while (!isLoggedIn || !accessToken || !userDetails) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+    }
+
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading, waitForAuthDetails }}>
         {children}
     </AuthContext.Provider>
   )

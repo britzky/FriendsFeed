@@ -14,12 +14,6 @@ export const Review = () => {
     const { yelpId } = route.params;
     const navigation = useNavigation();
 
-    useEffect(() => {
-        if (!isLoggedIn) {
-          navigation.navigate("LandingPage");
-        }
-      }, [isLoggedIn, navigation]);
-
     const handleRatingChange = (rating) => {
         setRating(rating);
     };

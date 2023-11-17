@@ -11,41 +11,58 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Home = () => {
   const { userDetails, logout, accessToken, isLoggedIn } = useAuth();
-  const [searchZipcode, setSearchZipcode] = useState(userDetails?.zipcode);
+  const [searchZipcode, setSearchZipcode] = useState(null);
   const { restaurants, loading, error, setRestaurants, fetchRestaurants } = useGetRestaurants(searchZipcode, accessToken, isLoggedIn);
   const navigation = useNavigation();
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
-  const [fetching, setFetching] = useState(true);
 
   useEffect(() => {
     console.log('Initial States:', { isLoggedIn, userDetails, accessToken });
   }, []);
 
   useEffect(() => {
+    if (userDetails?.user?.zipcode) {
+      setSearchZipcode(userDetails.user.zipcode)
+    }
+  }, [userDetails])
+
+  useEffect(() => {
+    if (accessToken) {
+      fetchRestaurants();
+    }
+  }, [accessToken]);
+
+  useEffect(() => {
     const initFetchRestaurants = async () => {
       const isNewUser = await AsyncStorage.getItem('isNewUser');
-      console.log('Checking user status for fetching restaurants', { isNewUser });
+      console.log('isNewUser:', isNewUser, 'Type:', typeof isNewUser);
+      console.log('isLoggedIn:', isLoggedIn);
+      console.log('userDetails:', userDetails);
+      console.log('accessToken:', accessToken);
 
-      // Fetch restaurants if user is logged in, has necessary details, and is not in the registration flow
-      if ((isNewUser === 'false' || isNewUser === null) && isLoggedIn && userDetails?.zipcode && accessToken) {
-        console.log('Returning user or new user who completed registration. Fetching restaurants...');
+      const isNewUserCheck = isNewUser !== 'true';
+      const isLoggedInCheck = isLoggedIn;
+      const userDetailsCheck = userDetails ? true : false;
+      const accessTokenCheck = accessToken ? true : false;
+
+      console.log('isNewUserCheck:', isNewUserCheck);
+      console.log('isLoggedInCheck:', isLoggedInCheck);
+      console.log('userDetailsCheck:', userDetailsCheck);
+      console.log('accessTokenCheck:', accessTokenCheck);
+
+      if (isNewUserCheck && isLoggedInCheck && userDetailsCheck && accessTokenCheck) {
+        console.log('Fetching restaurants...');
         setSearchZipcode(userDetails.zipcode);
         fetchRestaurants();
       } else {
-        console.log('User is in registration flow or missing necessary details', { isNewUser, isLoggedIn, userDetails, accessToken });
+        console.log('Condition not met for fetching restaurants');
       }
     }
 
     initFetchRestaurants();
   }, [isLoggedIn, userDetails, accessToken]);
-
-  useEffect(() => {
-    if (!loading && restaurants) {
-      setFetching(false)
-    }
-  }, [loading, restaurants])
 
   useEffect(() => {
     const getRestaurants = async () => {
@@ -82,6 +99,10 @@ export const Home = () => {
 
     if (error) {
       return <Text>Error fetching restaurants: {error}</Text>;
+    }
+
+    if (!userDetails || !accessToken) {
+      return <ActivityIndicator size="large" />;
     }
 
 

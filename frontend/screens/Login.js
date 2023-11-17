@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { setIsLoggedIn, setUserDetails, isLoggedIn, userDetails, accessToken, setAccessToken } = useAuth();
+  const { setIsLoggedIn, setUserDetails, waitForAuthDetails, setAccessToken } = useAuth();
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -54,7 +54,10 @@ export default function Login() {
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
           setIsLoggedIn(true);
           setUserDetails(data.user);
+          console.log("These are the user details set in the login component:", data.user)
           setAccessToken(data.access_token);
+          await waitForAuthDetails();
+          navigate.navigate("Home");
         } else {
           console.log("Login Failed:", response.status);
         }
@@ -68,15 +71,15 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    const navigateIfReady = () => {
-      // Check if all necessary conditions are met
-      if (isLoggedIn && userDetails && accessToken) {
-        navigate.navigate("Home");
-      }
-    };
-    navigateIfReady();
-  }, [isLoggedIn, userDetails, accessToken, navigate]);
+  // useEffect(() => {
+  //   const navigateIfReady = () => {
+  //     // Check if all necessary conditions are met
+  //     if (isLoggedIn && userDetails && accessToken) {
+  //       navigate.navigate("Home");
+  //     }
+  //   };
+  //   navigateIfReady();
+  // }, [isLoggedIn, userDetails, accessToken, navigate]);
 
   return (
     <View style={styles.container}>

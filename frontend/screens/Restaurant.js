@@ -13,12 +13,6 @@ const Restaurant = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigation.navigate("LandingPage");
-    }
-  }, [isLoggedIn, navigation]);
-
-  useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
