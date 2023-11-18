@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet,} from "react-native";
 import { AuthProvider } from "./context/AuthContext";
 import { FriendProvider } from "./context/FriendContext";
+import { ReviewProvider } from "./context/ReviewContext";
 import { AppNavigator } from "./navigation/AppNavigator";
 
 
@@ -19,7 +20,9 @@ export default function App() {
   return (
     <AuthProvider>
       <FriendProvider>
-        <AppNavigator style={styles.container} />
+        <ReviewProvider>
+          <AppNavigator style={styles.container} />
+        </ReviewProvider>
         <StatusBar style="auto" />
       </FriendProvider>
     </AuthProvider>

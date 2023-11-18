@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { Rating } from "react-native-ratings";
+import { avatars } from "../assets";
 
 const ReviewsCard = ({ reviews }) => {
   return (
@@ -9,6 +10,7 @@ const ReviewsCard = ({ reviews }) => {
         <View key={review.id} style={styles.card}>
           <View style={styles.header}>
             <Text>{review.username}</Text>
+            <Image source={avatars[review.profile_picture]}/>
           </View>
           <Rating
             imageSize={20}

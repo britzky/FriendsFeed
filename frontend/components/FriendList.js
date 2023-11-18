@@ -16,6 +16,7 @@ export const FriendList = () => {
                     username={item.username}
                     profile_picture={item.profile_picture}
                     following={item.following}
+                    onFollowChange={() => {}}
                 />
             )}
         />

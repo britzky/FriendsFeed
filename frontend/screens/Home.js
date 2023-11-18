@@ -8,20 +8,35 @@ import { useNavigation } from "@react-navigation/native";
 import { CuisineFilter } from '../components/CuisineFilter';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useReview } from "../context/ReviewContext";
+import { avatars } from "../assets";
 
 export const Home = () => {
   const { userDetails, logout, accessToken, isLoggedIn } = useAuth();
   const [searchZipcode, setSearchZipcode] = useState(null);
   const { restaurants, loading, error, setRestaurants, fetchRestaurants } = useGetRestaurants(searchZipcode, accessToken, isLoggedIn);
   const navigation = useNavigation();
+  const { reviews, fetchReviews, fetchedRestaurants } = useReview();
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
   const [isNewUserStatus, setIsNewUserStatus] = useState(null);
 
-  useEffect(() => {
-    console.log('Initial States:', { isLoggedIn, userDetails, accessToken });
-  }, []);
+  const avatarsArray = reviews.map((review) => review.profile_picture);
+
+  const alreadyFetched = (restaurantId) => {
+    return fetchedRestaurants.has(restaurantId);
+  }
+
+  // useEffect(() => {
+  //   if (restaurants && Array.isArray(restaurants.businesses)) {
+  //   restaurants.businesses.forEach((restaurant) => {
+  //     if (!alreadyFetched(restaurant.id)) {
+  //      fetchReviews(restaurant.id, accessToken);
+  //     }
+  //   });
+  // }
+  // }, [restaurants, accessToken, fetchReviews, alreadyFetched]);
 
   useEffect(() => {
     const getIsNewUserStatus = async () => {
@@ -46,20 +61,11 @@ export const Home = () => {
   useEffect(() => {
     const initFetchRestaurants = async () => {
       const isNewUser = await AsyncStorage.getItem('isNewUser');
-      console.log('isNewUser:', isNewUser, 'Type:', typeof isNewUser);
-      console.log('isLoggedIn:', isLoggedIn);
-      console.log('userDetails:', userDetails);
-      console.log('accessToken:', accessToken);
 
       const isNewUserCheck = isNewUser !== 'true';
       const isLoggedInCheck = isLoggedIn;
       const userDetailsCheck = userDetails ? true : false;
       const accessTokenCheck = accessToken ? true : false;
-
-      console.log('isNewUserCheck:', isNewUserCheck);
-      console.log('isLoggedInCheck:', isLoggedInCheck);
-      console.log('userDetailsCheck:', userDetailsCheck);
-      console.log('accessTokenCheck:', accessTokenCheck);
 
       if (isNewUserCheck && isLoggedInCheck && userDetailsCheck && accessTokenCheck) {
         console.log('Fetching restaurants...');
@@ -174,6 +180,7 @@ export const Home = () => {
               onReviewPress={() => navigation.navigate("Review", { yelpId: item.id })}
               restaurantName={item.name}
               imageUrl={item.image_url}
+              friendAvatars={avatarsArray}
               cuisine={item.categories
                 .map((category) => category.title)
                 .join(", ")}
