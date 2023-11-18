@@ -6,7 +6,7 @@ import {
   Button,
   TouchableOpacity,
   StyleSheet,
-  
+  Dimensions
 } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useRoute } from "@react-navigation/native";
@@ -14,7 +14,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
 
 
+const windowWidth = Dimensions.get('window').width;
 
+const isLargeScreen = windowWidth > 600;
+const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
+const isSmallScreen = windowWidth <= 400;
 
 export const Review = () => {
   const [rating, setRating] = useState(0);
@@ -82,7 +86,7 @@ export const Review = () => {
       <TouchableOpacity style={styles.review} onPress={handleSubmit}>
         <Text style={styles.text}>Post Review</Text>
       </TouchableOpacity>
-      {/* <Button title="Submit" onPress={handleSubmit} /> */}
+      
     </View>
   );
 };
@@ -147,6 +151,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 16,
+    marginLeft: 150
   },
   buttonText: {
     paddingHorizontal: 155,
@@ -162,7 +167,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   review: {
-    // paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 135 : 200, 
+    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200, 
     paddingVertical: 15,
     backgroundColor: "#739072",
     marginVertical: 30,

@@ -24,7 +24,7 @@ const Stack = createStackNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={Home} options={{ headerShown: false }}/>
       <Tab.Screen name="Friend" component={Friend} />
       
     </Tab.Navigator>
@@ -48,7 +48,7 @@ export const AppNavigator = () => {
       <Stack.Navigator initialRouteName={initialRouteName}>
         {isLoggedIn ? (
           <Stack.Group>
-            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }}/>
             <Stack.Screen name="Restaurant" component={Restaurant} />
             <Stack.Screen name="Review" component={Review} />
           </Stack.Group>

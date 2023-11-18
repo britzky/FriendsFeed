@@ -189,7 +189,7 @@ export const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
+    paddingTop: 70,
   },
   header: {
     fontSize: 20,
