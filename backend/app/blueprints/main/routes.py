@@ -46,6 +46,10 @@ def restaurants_friend_reviewed():
     reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
     filtered_results = [restaurant for restaurant in results if restaurant['id'] in reviewed_restaurant_ids]
 
+    # Add average rating to each restaurant
+    for restaurant in filtered_results:
+        restaurant['average_rating_by_friends'] = user.get_average_rating_by_friends(restaurant['id'])
+
     return jsonify(filtered_results)
 
 @main.route('/restaurants-cuisine', methods=['GET'])
@@ -68,6 +72,10 @@ def get_restaurants():
     # Filter the results to only include restaurants that have been reviewed by friends
     reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
     filtered_results = [restaurant for restaurant in restaurants if restaurant['id'] in reviewed_restaurant_ids]
+
+    # Add average rating to each restaurant
+    for restaurant in filtered_results:
+        restaurant['average_rating_by_friends'] = user.get_average_rating_by_friends(restaurant['id'])
 
     return jsonify(filtered_results)
 
