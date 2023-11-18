@@ -1,44 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
+import { useReview } from "../context/ReviewContext";
 import RestaurantCard from "../components/RestaurantCard";
 import ReviewsCard from "../components/ReviewsCard";
 
 const Restaurant = () => {
   const route = useRoute();
   const { restaurant } = route.params;
-  const { accessToken, isLoggedIn } = useAuth();
+  const { accessToken } = useAuth();
+  const { fetchReviews, reviews } = useReview();
   const navigation = useNavigation();
-  const [reviews, setReviews] = useState([]);
+
+  const avatarsArray = reviews.map((review) => review.profile_picture);
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(
-          `https://colab-test.onrender.com/restaurants/${restaurant.id}/friend-reviews`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          setReviews(data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    fetchReviews();
+    fetchReviews(restaurant.id, accessToken);
   }, [restaurant.id, accessToken]);
-
-
 
   return (
       <View style={styles.container}>
@@ -50,6 +29,7 @@ const Restaurant = () => {
           address={restaurant.location.display_address.join(", ")}
           onReviewPress={() => navigation.navigate("Review", { yelpID: restaurant.id })}
           isIndividual={true}
+          friendAvatars={avatarsArray}
         />
       <View style={styles.reviewsContainer}>
         <ScrollView contentContainerStyle={{ paddingBottom: 20}}>
