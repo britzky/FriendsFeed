@@ -4,20 +4,19 @@ import {
   StyleSheet,
   Image,
   Pressable,
-  Dimensions
+  ImageBackground
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import image from '../assets/Landing_Page.jpeg'
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
-const isLargeScreen = windowWidth > 600;
 
 const LandingPage = () => {
   const navigate = useNavigation();
 
   return (
     <View style={styles.container}>
+      <ImageBackground source={image} style={styles.image}>
       <Text style={styles.title}>Food.Finder</Text>
       <Text style={styles.subtitle}>
         Discover new restaurants
@@ -25,18 +24,14 @@ const LandingPage = () => {
       <Text style={styles.text2}>
          one friend at a time
       </Text>
-      <Image
-        source={{
-          uri: "https://i.natgeofe.com/k/6f2282df-1c6a-474a-9216-ed97b3dce858/Panda-Bamboo_Panda-Quiz_KIDS_1021.jpg",
-        }} // Using a remote placeholder image
-        style={styles.logo}
-      />
-      <Pressable style={styles.buttonText} onPress={() => navigate.navigate("Register", { registrationFlow: true })}>
+  
+      <Pressable  android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={() => navigate.navigate("Register", { registrationFlow: true })}>
         <Text style={styles.text} >Sign-up</Text>
       </Pressable>
       <Pressable style={styles.buttonTwo} onPress={() => navigate.navigate("Login")}>
-        <Text style={{fontSize: 15}}>Already have an account? Login</Text>
+        <Text style={{fontSize: 15, fontWeight: 400, marginLeft: 60 }}>Already have an account? Login</Text>
       </Pressable>
+      </ImageBackground>
     </View>
   );
 };
@@ -46,21 +41,24 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5F5F5",
+   
+   
+    
   },
   title: {
-    fontSize: 30, // was 24, now larger
-    fontWeight: "bold",
+    fontSize: 40,
     marginBottom: 20,
+    color: "#3A4D39",
+    marginLeft: 90
   },
   subtitle: {
     fontSize: 16,
-    color: "gray",
+    color: "#000",
     marginBottom: 0,
     margin: 0,
     width: 180,
-    padding: 0
+    padding: 0,
+    marginLeft: 110,
   },
   button: {
     backgroundColor: "brown",
@@ -75,17 +73,17 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 5,
     backgroundColor: "transparent",
-    color: "blue",
+
     margin: 20,
   },
   buttonText: {
-    paddingHorizontal: isLargeScreen ? 150 : 80, // Add horizontal padding to make the button wider
-    paddingVertical: 15, // Add vertical padding for height
-    backgroundColor: '#3d85c6', // Your desired background color
-    borderRadius: 5, // Rounded corners
-    // Add any other styling you want for the button here, like margin
+    paddingHorizontal: 170,
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
     marginVertical: 10,
-    color: 'white',
+    color: "white",
+    
   },
   loginText: {
     color: "blue",
@@ -96,22 +94,32 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 80,
     borderRadius: 10,
-    margin: 30
+    margin: 30,
   },
   text: {
-    color: 'white',
-    fontSize: 18,
+    color: "white",
+    fontSize: 20,
   },
   subTitle2: {
     margin: 10,
   },
   text2: {
     fontSize: 16,
-    color: "gray",
+    color: "#000",
     marginBottom: 20,
     margin: 0,
     width: 150,
     padding: 0,
-    marginTop: 2
-  }
+    marginTop: 2,
+    marginLeft: 125
+  },
+  image: {
+  
+    justifyContent: 'center',
+    flex: 1,
+    width: null, // Set width to null
+    height: null, // Set height to null
+    resizeMode: 'cover',
+    
+  },
 });

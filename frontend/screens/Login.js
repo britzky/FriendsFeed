@@ -107,7 +107,7 @@ export default function Login() {
         <Text style={styles.errorText}>{errors.password}</Text>
       )}
 
-      <Pressable style={styles.buttonText} onPress={handleSubmit} disabled={loading}>
+      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleSubmit} disabled={loading}>
         {loading ?
           <ActivityIndicator size="small" color="#fff" />:
           <Text style={styles.text}>Login</Text>
@@ -119,20 +119,20 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+ 
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
-    width: "100%", // Ensure it's 100% of the parent
-    paddingHorizontal: 20,
+    width: "100%", 
+   
   },
   title: {
-    fontSize: 30, // was 24, now larger
+    fontSize: 40, 
     fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
-    height: 40,
+    height: 50,
     width: "80%",
     borderColor: "gray",
     borderWidth: 1,
@@ -140,37 +140,36 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   button: {
-    backgroundColor: "blue",
     padding: 10,
     width: "80%",
     alignItems: "center",
   },
   buttonText: {
-    paddingHorizontal: 118, // Add horizontal padding to make the button wider
-    paddingVertical: 15, // Add vertical padding for height
-    backgroundColor: "#3d85c6", // Your desired background color
-    borderRadius: 5, // Rounded corners
-    // Add any other styling you want for the button here, like margin
+    paddingHorizontal: 155, 
+    paddingVertical: 15, 
+    backgroundColor: "#739072", 
+    borderRadius: 5, 
     marginVertical: 10,
     color: "white",
-    marginTop: 100,
+    marginTop: 30,
+    
   },
   subtitle: {
     fontSize: 16,
-    color: "gray",
+    color: "#000",
     marginBottom: 0,
   },
   errorText: {
     color: "red",
-    fontSize: 13, // Adjust the font size as needed
-    marginTop: 0, // Reduced top margin to bring it closer to the input field
+    fontSize: 13, 
+    marginTop: 0, 
     marginBottom: 15,
-    padding: 0, // Add bottom margin for spacing before the next input
+    padding: 0, 
   },
   text2: {
     fontSize: 16,
-    color: "gray",
-    marginBottom: 70,
+    color: "#000",
+    marginBottom: 30,
     margin: 0,
     width: 150,
     padding: 0,
@@ -181,3 +180,4 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 });
+
