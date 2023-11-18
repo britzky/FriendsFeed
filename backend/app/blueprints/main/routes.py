@@ -48,7 +48,7 @@ def restaurants_friend_reviewed():
 
     # Add average rating to each restaurant
     for restaurant in filtered_results:
-        restaurant['average_rating_by_friends'] = user.get_average_rating_by_friends(restaurant['id'])
+        restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
 
     return jsonify(filtered_results)
 
@@ -75,7 +75,7 @@ def get_restaurants():
 
     # Add average rating to each restaurant
     for restaurant in filtered_results:
-        restaurant['average_rating_by_friends'] = user.get_average_rating_by_friends(restaurant['id'])
+        restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
 
     return jsonify(filtered_results)
 
