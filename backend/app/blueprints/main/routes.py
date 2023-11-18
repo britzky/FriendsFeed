@@ -27,6 +27,27 @@ def restaurants():
 
     return jsonify(results)
 
+@main.route('/restaurants/friend-reviewed', methods=['GET'])
+@jwt_required()
+def restaurants_friend_reviewed():
+    # Get zipcode from the query parameter
+    zipcode = request.args.get('zipcode')
+
+    # Call the yelp API function
+    results = get_restaurants_by_zipcode(zipcode)
+
+    # Get the current users id and fetch friends reviews
+    current_user_id = get_jwt_identity()
+    user = User.find_by_id(current_user_id)
+    friend_ids = [friend.id for friend in user.get_all_friends()]
+    friend_reviews = Review.query.filter(Review.user_id.in_(friend_ids)).all()
+
+    # Filter the results to only include restaurants that have been reviewed by friends
+    reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
+    filtered_results = [restaurant for restaurant in results if restaurant['id'] in reviewed_restaurant_ids]
+
+    return jsonify(filtered_results)
+
 @main.route('/restaurants-cuisine', methods=['GET'])
 @jwt_required()
 def get_restaurants():
