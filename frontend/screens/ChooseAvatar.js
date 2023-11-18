@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { avatars } from '../assets';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../context/AuthContext';
@@ -54,14 +54,46 @@ export const ChooseAvatar = ({ route }) => {
     }, [isLoggedIn, userDetails, accessToken, navigation, route.params]);
 
   return (
-    <View>
-        <Text>Pick an avatar for your Friends Feed profile.</Text>
+    <View style={styles.container}>
+        <Text style={styles.title}>Friends Feed</Text>
+        <Text style={styles.subTitle}>Pick an avatar for your Friends Feed profile.</Text>
+        <View style={styles.avatarGrid}>
         {Object.keys(avatars).map((key) => (
             <TouchableOpacity key={key} onPress={() => handleCompleteRegistration(key)}>
-                <Image source={avatars[key]} style={{width: 100, height: 100}} />
+                <Image source={avatars[key]} style={styles.avatar} />
             </TouchableOpacity>
         ))}
+        </View>
     </View>
   )
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      paddingTop: 20,
+    },
+    title: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      marginBottom: 10,
+    },
+    subTitle: {
+      fontSize: 14,
+      color: 'gray',
+      marginBottom: 20,
+    },
+    avatarGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'center',
+    },
+    avatar: {
+      width: 80,
+      height: 80,
+      margin: 10, // Adjust the margin as needed
+    },
+  });
 

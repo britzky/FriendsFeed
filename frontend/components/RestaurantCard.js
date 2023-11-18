@@ -1,5 +1,12 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
+
+
+const windowWidth = Dimensions.get('window').width;
+
+const isLargeScreen = windowWidth > 600;
+const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
+const isSmallScreen = windowWidth <= 400;
 
 const RestaurantCard = ({
   onPress,
@@ -31,7 +38,7 @@ const RestaurantCard = ({
       </Text>
       <Text style={styles.subTitle}>{rating}</Text>
       <Text style={styles.address}>{address}</Text>
-      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review} onPress={onReviewPress}>
+      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -60,7 +67,7 @@ const RestaurantCard = ({
           <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>
-      <Pressable android_ripple={{ color: "#ccc" }} style={styles.review} onPress={onReviewPress}>
+      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -72,12 +79,11 @@ const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
     margin: 16,
-    // height: 310, /// adjust the length of the card
     marginTop: 25,
     marginBottom: 20,
-    borderBottomColor: "#999999", // Light grey color for the divider
-    borderBottomWidth: 1, // One pixel bottom border
-    marginVertical: 8, // You can adjust vertical margin as needed
+    borderBottomColor: "#999999", 
+    borderBottomWidth: 1, 
+    marginVertical: 8, 
     alignSelf: "stretch",
   },
   button: {
@@ -95,21 +101,23 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 18,
-    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    fontSize: 20,
+    alignItems: "flex-start", 
     alignSelf: "stretch",
-    marginTop: 5,
+  marginBottom: 4,
   },
   restaurantImage: {
-    width: "100%", // or some fixed width
-    height: 160, // or some fixed height
+    width: "100%", 
+    height: 140, 
+    borderRadius: 10,
   },
   review: {
-    paddingHorizontal: 135,
+    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 135 : 200, 
     paddingVertical: 15,
-    backgroundColor: "#3d85c6",
-    marginVertical: 10,
+    backgroundColor: "#739072",
+    marginVertical: 30,
     padding: 0,
+    borderRadius: 10
   },
   text: {
     color: "white",
@@ -121,20 +129,29 @@ const styles = StyleSheet.create({
   icon: {
     color: "#f1c232",
     fontSize: 18,
-    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    alignItems: "flex-start", 
     alignSelf: "stretch",
   },
   cuisine: {
-    alignItems: "flex-start", // Align items to the start of the cross axis (top for a column, left for a row)
+    alignItems: "flex-start", 
     alignSelf: "stretch",
+    fontSize: 16,
+   
+    
   },
   icon2: {
-    flexDirection: "row", // Align children horizontally
-    alignItems: "center", // Center children vertically in the cross axis
+    flexDirection: "row", 
+    alignItems: "center",
     justifyContent: "center",
     marginTop: 5,
     marginRight: 10,
     color: 'white'
   },
+  friends: {
+    alignItems: "flex-start", 
+    alignSelf: "stretch",
+    fontSize: 16,
+    fontFamily: "Roboto"
+  }
 
 });

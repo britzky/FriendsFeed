@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "gray",
     borderRadius: 5,
-    width: 300,
+    width: 380,
     marginLeft: 15,
   },
   input: {
@@ -46,10 +46,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 0,
     paddingHorizontal: 5,
-    // Add horizontal padding to make the button wider
+    width: 320, 
+    height: 46// You can adjust this value to make the input text longer
+    
+
   },
   icon: {
-    fontSize: 24,
+    fontSize: 27,
     color: "grey",
     marginLeft: 10,
   },

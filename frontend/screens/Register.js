@@ -93,7 +93,7 @@ export default function Register({ route }) {
       {errors.zipcode && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
-      <Pressable style={styles.buttonText} onPress={handleRegistration}>
+      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleRegistration}>
           <Text style={styles.text}>Continue</Text>
       </Pressable>
     </View>
@@ -106,22 +106,27 @@ const styles = StyleSheet.create({
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#FFF',
-  width: '100%', // Ensure it's 100% of the parent
+  width: '100%', 
   paddingHorizontal: 20,
+  gap: 8,
+  
 
   },
   title: {
-    fontSize: 30, // was 24, now larger
+    fontSize: 30,
   fontWeight: 'bold',
   marginBottom: 20,
   },
   input: {
-    height: 40,
-    width: '80%',
+    height:55,
+    width: '90%',
     borderColor: 'gray',
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
+    borderRadius: 5,
+    gap: 10,
+    flexShrink: 0
 
 
   },
@@ -132,39 +137,47 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    paddingHorizontal: 118, // Add horizontal padding to make the button wider
-    paddingVertical: 15, // Add vertical padding for height
-    backgroundColor: '#3d85c6', // Your desired background color
-    borderRadius: 5, // Rounded corners
-    // Add any other styling you want for the button here, like margin
+    
+    paddingHorizontal: 150,
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
     marginVertical: 10,
-    color: 'white',
-    marginTop: 100
+    color: "white",
+    marginTop: 180
   },
   subtitle: {
     fontSize: 16,
-    color: 'gray',
+    color: "gray",
     marginBottom: 0,
+    margin: 0,
+    width: 180,
+    padding: 0,
+    fontFamily: "Roboto",
   },
   errorText: {
-    color: 'red',
-    fontSize: 13, // Adjust the font size as needed
-    marginTop: 0, // Reduced top margin to bring it closer to the input field
-    marginBottom: 15,
-    padding: 0, // Add bottom margin for spacing before the next input
+    color: "red",
+    fontSize: 12, // Reduce font size
+   
+ 
   },
   text: {
     color: 'white',
-    fontSize: 18,
+    fontSize: 16,
   },
   text2: {
     fontSize: 16,
     color: "gray",
-    marginBottom: 70,
+    marginBottom: 20,
     margin: 0,
     width: 150,
     padding: 0,
-    marginTop: 2
-  }
+    marginTop: 2,
+  },
+  title: {
+    fontSize: 40,
+    marginBottom: 20,
+    color: "#3A4D39",
+  },
 });
 

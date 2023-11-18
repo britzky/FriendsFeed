@@ -2,6 +2,7 @@ import React from "react";
 import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Home } from "../screens/Home";
 import Register from "../screens/Register";
 import Login from "../screens/Login";
@@ -15,7 +16,20 @@ import { ChooseAvatar } from "../screens/ChooseAvatar";
 
 enableScreens();
 
+const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+
+
+function HomeTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Friend" component={Friend} />
+      
+    </Tab.Navigator>
+  );
+}
 
 export const AppNavigator = () => {
   const { isLoggedIn, loading } = useAuth();
@@ -34,14 +48,13 @@ export const AppNavigator = () => {
       <Stack.Navigator initialRouteName={initialRouteName}>
         {isLoggedIn ? (
           <Stack.Group>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Friend" component={Friend} />
+            <Stack.Screen name="HomeTabs" component={HomeTabs} />
             <Stack.Screen name="Restaurant" component={Restaurant} />
             <Stack.Screen name="Review" component={Review} />
           </Stack.Group>
         ) : (
           <Stack.Group>
-            <Stack.Screen name="LandingPage" component={LandingPage} />
+            <Stack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }}/>
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="ChooseAvatar" component={ChooseAvatar} />
             <Stack.Screen name="Login" component={Login} />

@@ -32,19 +32,20 @@ const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start", // Adjusted to align items to the start
     padding: 10,
     backgroundColor: "#fff",
-    borderBottomWidth: 1,
+    borderBottomWidth: 5,
     borderBottomColor: "#eee",
   },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25, // Makes it a circle
+    marginRight: 10,// Makes it a circle
   },
   name: {
-    marginLeft: 10,
+  
     flex: 1,
     color: "black",
   },
