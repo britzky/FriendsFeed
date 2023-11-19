@@ -34,7 +34,10 @@ def restaurants_friend_reviewed():
     zipcode = request.args.get('zipcode')
 
     # Call the yelp API function
-    results = get_restaurants_by_zipcode(zipcode)
+    response = get_restaurants_by_zipcode(zipcode)
+
+    # Extract the 'businesses' list from the response
+    results = response.get('businesses', []) if isinstance(response, dict) else []
 
     # Get the current users id and fetch friends reviews
     current_user_id = get_jwt_identity()
