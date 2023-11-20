@@ -34,7 +34,10 @@ def restaurants_friend_reviewed():
     zipcode = request.args.get('zipcode')
 
     # Call the yelp API function
-    results = get_restaurants_by_zipcode(zipcode)
+    response = get_restaurants_by_zipcode(zipcode)
+
+    # Extract the 'businesses' list from the response
+    results = response.get('businesses', []) if isinstance(response, dict) else []
 
     # Get the current users id and fetch friends reviews
     current_user_id = get_jwt_identity()
@@ -46,7 +49,46 @@ def restaurants_friend_reviewed():
     reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
     filtered_results = [restaurant for restaurant in results if restaurant['id'] in reviewed_restaurant_ids]
 
+    # Add average rating to each restaurant
+    for restaurant in filtered_results:
+        restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
+
     return jsonify(filtered_results)
+
+@main.route('/restaurants/<string:yelp_restaurant_id>/friend-avatars', methods=['GET'])
+@jwt_required()
+def get_friend_avatars_for_restaurant(yelp_restaurant_id):
+    # Get the current users id
+    current_user_id = get_jwt_identity()
+    # Find the current user by id
+    user = User.find_by_id(current_user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # List of possible friend avatars
+    avatars = ["Avocado", "Bread", "Broccoli", "Coffee", "Cupcake",
+                "Hamburger", "Ramen", "Taco"]
+
+    # Get the IDs of the user's friends
+    friend_ids = []
+    for friend in user.get_all_friends():
+        friend_ids.append(friend.id)
+
+    # Query the database for reviews with the given restaurant ID
+    reviews = Review.query.filter(Review.yelp_restaurant_id == yelp_restaurant_id, Review.user_id.in_(friend_ids)).all()
+
+    # Extract only the avatars from the reviews
+    friend_avatar_map = {}
+    for review in reviews:
+        # Fetch the user who wrote the review
+        review_author = User.find_by_id(review.user_id)
+        # if the friend hasn't been assigned ann avater yet, assign the next one
+        if review_author.id not in friend_avatar_map:
+            friend_avatar_map[review_author.id] = avatars[len(friend_avatar_map) % len(avatars)]
+
+    friend_avatars = [friend_avatar for _, friend_avatar in friend_avatar_map.items()]
+
+    return jsonify(friend_avatars), 200
 
 @main.route('/restaurants-cuisine', methods=['GET'])
 @jwt_required()
@@ -68,6 +110,10 @@ def get_restaurants():
     # Filter the results to only include restaurants that have been reviewed by friends
     reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
     filtered_results = [restaurant for restaurant in restaurants if restaurant['id'] in reviewed_restaurant_ids]
+
+    # Add average rating to each restaurant
+    for restaurant in filtered_results:
+        restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
 
     return jsonify(filtered_results)
 

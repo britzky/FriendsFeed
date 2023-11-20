@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { setIsLoggedIn, setUserDetails, waitForAuthDetails, setAccessToken } = useAuth();
+  const { isLoggedIn, userDetails, accessToken, setIsLoggedIn, setUserDetails, setAccessToken } = useAuth();
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -48,16 +48,11 @@ export default function Login() {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log("Login successful:", data);
           await AsyncStorage.setItem("access_token", data.access_token);
           await AsyncStorage.setItem("refresh_token", data.refresh_token);
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
-          setIsLoggedIn(true);
           setUserDetails(data.user);
-          console.log("These are the user details set in the login component:", data.user)
           setAccessToken(data.access_token);
-          await waitForAuthDetails();
-          navigate.navigate("Home");
         } else {
           console.log("Login Failed:", response.status);
         }
@@ -71,15 +66,19 @@ export default function Login() {
     }
   };
 
-  // useEffect(() => {
-  //   const navigateIfReady = () => {
-  //     // Check if all necessary conditions are met
-  //     if (isLoggedIn && userDetails && accessToken) {
-  //       navigate.navigate("Home");
-  //     }
-  //   };
-  //   navigateIfReady();
-  // }, [isLoggedIn, userDetails, accessToken, navigate]);
+  // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
+  useEffect(() => {
+    if (accessToken && userDetails) {
+      setIsLoggedIn(true);
+    }
+  }, [accessToken, userDetails]);
+
+  // Side effect to navigate to Home screen if user is logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate.navigate("HomeTabs", { screen: "Home" });
+    }
+  }, [isLoggedIn, navigate])
 
   return (
     <View style={styles.container}>
@@ -119,15 +118,15 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
- 
+
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
-    width: "100%", 
-   
+    width: "100%",
+
   },
   title: {
-    fontSize: 40, 
+    fontSize: 40,
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -145,14 +144,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    paddingHorizontal: 155, 
-    paddingVertical: 15, 
-    backgroundColor: "#739072", 
-    borderRadius: 5, 
+    paddingHorizontal: 155,
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
     marginVertical: 10,
     color: "white",
     marginTop: 30,
-    
+
   },
   subtitle: {
     fontSize: 16,
@@ -161,10 +160,10 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: "red",
-    fontSize: 13, 
-    marginTop: 0, 
+    fontSize: 13,
+    marginTop: 0,
     marginBottom: 15,
-    padding: 0, 
+    padding: 0,
   },
   text2: {
     fontSize: 16,

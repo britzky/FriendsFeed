@@ -33,13 +33,14 @@ export const AuthProvider = ({ children }) => {
                 if (decodedToken.exp * 1000 < Date.now()) {
                     await refreshToken()
                 } else {
-                    setIsLoggedIn(true);
+                    setAccessToken(token);
+                    if (user) {
+                        setUserDetails(user);
+                        setIsLoggedIn(true);
+                    }
                 }
             }
 
-            if (user) {
-                setUserDetails(user);
-            }
             setLoading(false);
 
         } catch (error) {
