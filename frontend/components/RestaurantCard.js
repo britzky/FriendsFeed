@@ -19,6 +19,7 @@ const RestaurantCard = ({
       <View>
         <Image source={{ uri: imageUrl,}} style={styles.restaurantImage} />
       </View>
+        <Text style={styles.title}>{restaurantName}</Text>
       <View>
         {friendAvatars && friendAvatars.map((avatar, index) => (
           <Image
@@ -28,7 +29,6 @@ const RestaurantCard = ({
           />
         ))}
       </View>
-      <Text style={styles.title}>{restaurantName}</Text>
       <Text style={styles.icon}>
         <AntDesign name="star" style={styles.icon} />
         <AntDesign name="star" style={styles.icon} />
@@ -162,8 +162,9 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto"
   },
   avatar: {
-    height: 50,
-    width: 50,
+    height: 25,
+    width: 25,
+    marginTop: 0
   }
 
 });

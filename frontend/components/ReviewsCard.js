@@ -5,19 +5,23 @@ import { avatars } from "../assets";
 
 const ReviewsCard = ({ reviews }) => {
   return (
-    <View>
+    <View style={styles.container}>
       {reviews.map((review) => (
         <View key={review.id} style={styles.card}>
           <View style={styles.header}>
-            <Text>{review.username}</Text>
-            <Image source={avatars[review.profile_picture]}/>
+            <Image
+              style={styles.avatar}
+              source={avatars[review.profile_picture]}
+            />
+            <Text style={styles.username}>{review.username}</Text>
           </View>
           <Rating
+            style={styles.rating}
             imageSize={20}
             readonly
             startingValue={review.rating}
           />
-          <Text>{review.comment}</Text>
+          <Text style={styles.reviewText}>{review.comment}</Text>
         </View>
       ))}
     </View>
@@ -26,47 +30,48 @@ const ReviewsCard = ({ reviews }) => {
 
 export default ReviewsCard;
 
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f0f0f0", // Assuming a light grey background similar to the image
+  },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 20,
-    borderRadius: 6,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    margin: 10,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 4, // Add space between the header and the review text
   },
   username: {
-    marginLeft: 10,
-    fontWeight: 'bold',
+    position: "relative",
+    left: 10,
+    bottom: 10,
+    fontSize: 16,
+   
+    
   },
   rating: {
-    flexDirection: 'row',
-    marginTop: 4,
+    position: "relative", // Use absolute positioning to place the rating on the right
+  // Align to the top of the header
+    right: 85,
+    bottom: 20 // Align to the right of the card
   },
-  star: {
-    marginRight: 4,
-    color: 'orange', 
+  date: {
+    fontSize: 12,
+    color: "#a9a9a9", // A lighter grey for the date to differentiate it from the main text
+    marginBottom: 10, // Add space between the date and the review text
   },
   reviewText: {
-    marginTop: 8,
+    marginTop: 10,
     fontSize: 16,
-    lineHeight: 24, 
+    lineHeight: 24,
   },
   avatar: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 20, 
-    backgroundColor: '#C4C4C4',
+    width: 45,
+    height: 45,
+    borderRadius: 22.5, // Make it perfectly round
+    backgroundColor: "#C4C4C4",
   },
 });
