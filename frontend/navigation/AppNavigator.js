@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Home } from "../screens/Home";
+import { TempHome } from "../screens/TempHome";
 import Register from "../screens/Register";
 import Login from "../screens/Login";
 import { enableScreens } from "react-native-screens";
@@ -13,6 +13,7 @@ import { Friend } from "../screens/Friend";
 import Restaurant from "../screens/Restaurant";
 import { Review } from "../screens/Review";
 import { ChooseAvatar } from "../screens/ChooseAvatar";
+import { Home } from "../screens/Home";
 
 enableScreens();
 
@@ -24,9 +25,9 @@ const Stack = createStackNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator>
+      <Tab.Screen name="TempHome" component={TempHome}  />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Friend" component={Friend} />
-      
     </Tab.Navigator>
   );
 }
@@ -41,14 +42,14 @@ export const AppNavigator = () => {
       </View>
     )
   }
-  const initialRouteName = isLoggedIn ? "Home" : "LandingPage";
+  const initialRouteName = isLoggedIn ? "HomeTabs" : "LandingPage";
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRouteName}>
         {isLoggedIn ? (
           <Stack.Group>
-            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown: false}} />
             <Stack.Screen name="Restaurant" component={Restaurant} />
             <Stack.Screen name="Review" component={Review} />
           </Stack.Group>

@@ -29,7 +29,6 @@ export const ChooseAvatar = ({ route }) => {
                 await AsyncStorage.setItem('user_details', JSON.stringify(data));
                 await AsyncStorage.setItem('access_token', data.access_token);
                 await AsyncStorage.setItem('refresh_token', data.refresh_token);
-                setIsLoggedIn(true);
                 setUserDetails(data.user);
                 setAccessToken(data.access_token);
                 await AsyncStorage.setItem('isNewUser', 'true');
@@ -41,17 +40,24 @@ export const ChooseAvatar = ({ route }) => {
         }
     }
 
+    // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
+    useEffect(() => {
+        if (accessToken && userDetails) {
+            setIsLoggedIn(true);
+        }
+    }, [accessToken, userDetails]);
+
     useEffect(() => {
         const navigateIfReady = async () => {
             const isNewUser = await AsyncStorage.getItem('isNewUser');
             // Check if all necessary conditions are met
-            if (isNewUser === 'true' && isLoggedIn && userDetails && accessToken && route.params?.registrationFlow) {
+            if (isNewUser === 'true' && isLoggedIn) {
                 navigation.navigate('Friend', { registrationFlow: true });
                 await AsyncStorage.removeItem('isNewUser'); // Optional: Clear isNewUser flag
             }
         };
         navigateIfReady();
-    }, [isLoggedIn, userDetails, accessToken, navigation, route.params]);
+    }, [isLoggedIn, navigation, route.params]);
 
   return (
     <View style={styles.container}>

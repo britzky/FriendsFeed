@@ -11,11 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState('');
-  const { accessToken, waitForAuthDetails } = useAuth();
+  const { accessToken, waitForAuthDetails, isLoggedIn } = useAuth();
   const { fetchFriends } = useFriends();
   const { registrationFlow } = route.params || {};
   const navigation = useNavigation();
 
+  //fetch the friend list
   useEffect(() => {
     if(accessToken) {
       fetchFriends(accessToken);
@@ -51,17 +52,20 @@ export const Friend = ({ route }) => {
     };
   }, [username, accessToken])
 
+  // function to set the searched username
   const handleSearch = (searchedUsername) => {
     setUsername(searchedUsername);
   }
 
+  // navigate to home
   const navigateToHome = async () => {
     const isNewUser = await AsyncStorage.getItem('isNewUser');
     if (isNewUser === 'true') {
       await AsyncStorage.removeItem('isNewUser');
     }
-    await waitForAuthDetails();
-    navigation.navigate('Home');
+    if (isLoggedIn) {
+      navigation.navigate("HomeTabs", { screen: "Home" });
+    }
   }
 
 

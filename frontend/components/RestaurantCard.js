@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { avatars } from "../assets";
+import { Rating } from "react-native-ratings";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -13,6 +14,16 @@ const RestaurantCard = ({
   onPress, onReviewPress, restaurantName, imageUrl, cuisine, rating,
   isIndividual, address, friendAvatars
 }) => {
+
+  //Turn friend rating into stars
+  const ratingComponent = (
+    <Rating
+      readonly
+      startingValue={rating}
+      imageSize={20}
+      style={styles.icon2}
+    />
+  )
 
   return isIndividual ? (
     <View style={styles.gridItem}>
@@ -29,13 +40,7 @@ const RestaurantCard = ({
         ))}
       </View>
       <Text style={styles.title}>{restaurantName}</Text>
-      <Text style={styles.icon}>
-        <AntDesign name="star" style={styles.icon} />
-        <AntDesign name="star" style={styles.icon} />
-        <AntDesign name="star" style={styles.icon} />
-        <AntDesign name="star" style={styles.icon} />
-      </Text>
-      <Text style={styles.subTitle}>{rating}</Text>
+      {ratingComponent}
       <Text style={styles.address}>{address}</Text>
       <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>
@@ -65,13 +70,7 @@ const RestaurantCard = ({
         </View>
         <View style={[styles.innerContainer]}>
           <Text style={styles.title}>{restaurantName}</Text>
-          <Text style={styles.icon}>
-            <AntDesign name="star" style={styles.icon} />
-            <AntDesign name="star" style={styles.icon} />
-            <AntDesign name="star" style={styles.icon} />
-            <AntDesign name="star" style={styles.icon} />
-          </Text>
-          <Text style={styles.subTitle}>{rating}</Text>
+          {ratingComponent}
           <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>
