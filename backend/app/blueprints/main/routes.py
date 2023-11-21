@@ -28,6 +28,7 @@ def restaurants():
     return jsonify(results)
 
 @main.route('/search_restaurant', methods=['GET'])
+@jwt_required()
 def search_restaurant():
     # Extract name and zipcode from the query parameters
     name = request.args.get('name')
