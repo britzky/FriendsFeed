@@ -224,5 +224,9 @@ def refresh():
     new_access_token = create_access_token(identity=current_user_id)
     return jsonify({"access_token": new_access_token}), 200
 
+@auth.route('/health', methods=['GET'])
+def health():
+    return jsonify({"message": "OK"}), 200
+
 
 
