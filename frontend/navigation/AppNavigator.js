@@ -25,9 +25,9 @@ const Stack = createStackNavigator();
 function HomeTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="TempHome" component={TempHome}  />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Friend" component={Friend} />
+      <Tab.Screen name="TempHome" component={TempHome}  />
     </Tab.Navigator>
   );
 }

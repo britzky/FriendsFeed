@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
 from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id
+from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id, get_restaurant_by_name
 from app import db
 
 ##### Fetch from yelp #####
@@ -26,6 +26,26 @@ def restaurants():
         }), results["status_code"]
 
     return jsonify(results)
+
+@main.route('/search_restaurant', methods=['GET'])
+def search_restaurant():
+    # Extract name and zipcode from the query parameters
+    name = request.args.get('name')
+    zipcode = request.args.get('zipcode')
+
+    #Check if both name and zipcode are provided
+    if not name or not zipcode:
+        return jsonify({"error": "Missing required parameters"}), 400
+
+    # Call the Yelp API function
+    result = get_restaurant_by_name(name, zipcode)
+
+    # Check if the result contains an error
+    if 'error' in result:
+        return jsonify(result), 400
+
+    #return the result
+    return jsonify(result)
 
 @main.route('/restaurants/friend-reviewed', methods=['GET'])
 @jwt_required()

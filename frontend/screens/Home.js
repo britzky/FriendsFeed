@@ -6,7 +6,7 @@ import { CuisineFilter } from '../components/CuisineFilter';
 import { RestaurantList } from '../components/RestaurantList';
 
 export const Home = () => {
-  const { logout, isLoggedIn, userDetails, loading } = useAuth();
+  const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
   const [searchZipcode, setSearchZipcode] = useState(userDetails?.zipcode || "");
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
@@ -41,7 +41,7 @@ export const Home = () => {
   const handleLogout = async () => {
     await logout();
   }
-   if (loading) {
+   if (loading || !accessToken || !userDetails || !searchZipcode) {
     return (
       <View>
         <ActivityIndicator size="large" />

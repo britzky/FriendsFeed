@@ -20,7 +20,7 @@ export const RestaurantList = ({ zipcode, selectedCuisine }) => {
         } else {
             fetchFriendReviewedRestaurants(zipcode);
         }
-    }, [zipcode, selectedCuisine]);
+    }, [zipcode, selectedCuisine, accessToken]);
 
     // Side effect to fetch avatars for each restaurant
     useEffect(() => {

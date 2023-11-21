@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState('');
-  const { accessToken, waitForAuthDetails, isLoggedIn } = useAuth();
+  const { accessToken, isLoggedIn } = useAuth();
   const { fetchFriends } = useFriends();
   const { registrationFlow } = route.params || {};
   const navigation = useNavigation();
