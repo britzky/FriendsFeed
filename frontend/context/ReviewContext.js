@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
 
 const ReviewContext = createContext();
 
@@ -7,15 +7,17 @@ export const useReview = () => {
 }
 
 export const ReviewProvider = ({ children }) => {
-    const [reviews, setReviews] = useState([]); // fetch all reviews for the restaurant selected
-    const [avatars, setAvatars] = useState([]); // fetch all avatars for friends who have reviewed the restaurant
-    const [fetchedRestaurants, setFetchedRestaurants] = useState(new Set());
+    const [reviews, setReviews] = useState({}); // fetch all reviews for the restaurant selected
+    const [avatars, setAvatars] = useState({}); // fetch all avatars for friends who have reviewed the restaurant
+    const [fetchedRestaurants, setFetchedRestaurants] = useState(new Set()); // To track fetched restaurants
 
-    const fetchReviews = async (restaurantId, accessToken) => {
+
+    const fetchReviews = useCallback(async (restaurantId, accessToken) => {
         if (fetchedRestaurants.has(restaurantId)) {
+            console.log(`Already fetched avatars for restaurant ID: ${restaurantId}`);
             return;
         }
-
+        console.log(`Fetching reviews for restaurant ${restaurantId}`)
         try {
             const response = await fetch(
                 `https://colab-test.onrender.com/restaurants/${restaurantId}/friend-reviews`,
@@ -30,20 +32,23 @@ export const ReviewProvider = ({ children }) => {
                 if (response.ok) {
                     const data = await response.json();
                     console.log("These are the reviews", data);
-                    setReviews(data);
-                    setFetchedRestaurants(prev => new Set(prev.add(restaurantId)));
+                    setReviews(prevReviews => ({ ...prevReviews, [restaurantId]: data }));
+                    setFetchedRestaurants(prev => {
+                        console.log(`Current fetched restaurants before update: ${Array.from(prev).join(', ')}`);
+                        const newSet = new Set(prev);
+                        newSet.add(restaurantId);
+                        return newSet;
+                    });
                 }
             } catch (error) {
                 console.log(error);
             }
-        };
+        }, [fetchedRestaurants]);
 
-        const fetchAvatars = async (restaurantId, accessToken) => {
-            // Avoid fetching avatars for the same restaurant twice
+        const fetchAvatars = useCallback(async (restaurantId, accessToken) => {
             if (fetchedRestaurants.has(restaurantId)) {
                 return;
             }
-
             try {
                 const response = await fetch(
                     `https://colab-test.onrender.com/restaurants/${restaurantId}/friend-avatars`,
@@ -57,12 +62,7 @@ export const ReviewProvider = ({ children }) => {
                 );
                 if (response.ok) {
                     const data = await response.json();
-                    console.log("These are the avatars", data);
-                    setAvatars(prevAvatars => ({
-                        ...prevAvatars,
-                        [restaurantId]: data,
-                    }));
-                    //Update the fetchedRestaurants to avoid fetching avatars for the same restaurant twice
+                    setAvatars(prevAvatars => ({ ...prevAvatars, [restaurantId]: data }));
                     setFetchedRestaurants(prev => new Set(prev.add(restaurantId)));
                 } else {
                     console.log("Error fetching avatars:", response.status, await response.text());
@@ -71,11 +71,15 @@ export const ReviewProvider = ({ children }) => {
             } catch (error) {
                 console.log(error);
             }
-        }
+        }, [fetchedRestaurants]);
+
+        const contextValue = useMemo(() => ({
+            reviews, avatars, fetchReviews, fetchAvatars
+        }), [reviews, avatars, fetchReviews, fetchAvatars]);
 
 
     return (
-        <ReviewContext.Provider value={{ reviews, avatars, fetchReviews, fetchAvatars, fetchedRestaurants }}>
+        <ReviewContext.Provider value={contextValue}>
             {children}
         </ReviewContext.Provider>
     )

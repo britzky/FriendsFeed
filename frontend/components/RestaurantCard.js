@@ -59,7 +59,7 @@ const RestaurantCard = ({
         <View>
           <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
-        <View>
+        <View style={styles.avatarContainer}>
         {friendAvatars && friendAvatars.map((avatar, index) => (
           <Image
             key={index}
@@ -163,6 +163,11 @@ const styles = StyleSheet.create({
   avatar: {
     height: 50,
     width: 50,
-  }
+  },
+  avatarContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    // Add additional styling as needed, e.g., padding or margin
+  },
 
 });

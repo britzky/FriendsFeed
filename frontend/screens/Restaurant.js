@@ -10,10 +10,8 @@ const Restaurant = () => {
   const route = useRoute();
   const { restaurant } = route.params;
   const { accessToken } = useAuth();
-  const { fetchReviews, reviews } = useReview();
+  const { fetchReviews, fetchAvatars, avatars } = useReview();
   const navigation = useNavigation();
-
-  const avatarsArray = reviews.map((review) => review.profile_picture);
 
   useEffect(() => {
     fetchReviews(restaurant.id, accessToken);
@@ -33,7 +31,7 @@ const Restaurant = () => {
         />
       <View style={styles.reviewsContainer}>
         <ScrollView contentContainerStyle={{ paddingBottom: 20}}>
-          <ReviewsCard reviews={reviews} />
+          <ReviewsCard restaurantId={restaurant.id} />
         </ScrollView>
       </View>
     </View>

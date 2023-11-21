@@ -21,22 +21,6 @@ export const TempHome = () => {
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
   const [isNewUserStatus, setIsNewUserStatus] = useState(null);
 
-  const avatarsArray = reviews.map((review) => review.profile_picture);
-
-  const alreadyFetched = (restaurantId) => {
-    return fetchedRestaurants.has(restaurantId);
-  }
-
-  // useEffect(() => {
-  //   if (restaurants && Array.isArray(restaurants.businesses)) {
-  //   restaurants.businesses.forEach((restaurant) => {
-  //     if (!alreadyFetched(restaurant.id)) {
-  //      fetchReviews(restaurant.id, accessToken);
-  //     }
-  //   });
-  // }
-  // }, [restaurants, accessToken, fetchReviews, alreadyFetched]);
-
   useEffect(() => {
     const getIsNewUserStatus = async () => {
       const isNewUserValue = await AsyncStorage.getItem('isNewUser');
@@ -179,7 +163,6 @@ export const TempHome = () => {
               onReviewPress={() => navigation.navigate("Review", { yelpId: item.id })}
               restaurantName={item.name}
               imageUrl={item.image_url}
-              friendAvatars={avatarsArray}
               cuisine={item.categories
                 .map((category) => category.title)
                 .join(", ")}

@@ -6,8 +6,8 @@ import { CuisineFilter } from '../components/CuisineFilter';
 import { RestaurantList } from '../components/RestaurantList';
 
 export const Home = () => {
-  const { logout, isLoggedIn, userDetails } = useAuth();
-  const [searchZipcode, setSearchZipcode] = useState(userDetails.zipcode);
+  const { logout, isLoggedIn, userDetails, loading } = useAuth();
+  const [searchZipcode, setSearchZipcode] = useState(userDetails?.zipcode || "");
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
 
@@ -15,7 +15,7 @@ export const Home = () => {
   useEffect(() => {
     if (isLoggedIn && userDetails)
       setSearchZipcode(userDetails.zipcode);
-  }, [isLoggedIn])
+  }, [isLoggedIn, userDetails])
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedZipcode) => {
@@ -41,7 +41,7 @@ export const Home = () => {
   const handleLogout = async () => {
     await logout();
   }
-   if (!isLoggedIn || !searchZipcode) {
+   if (loading) {
     return (
       <View>
         <ActivityIndicator size="large" />
@@ -52,7 +52,7 @@ export const Home = () => {
   return (
     <View style={styles.container}>
       <Text>Home</Text>
-      <View>
+      <View style={styles.searchContainer}>
         <Searchbar onSearch={handleSearch} placeholder="Enter Zipcode: 55555" />
       </View>
       <View>
@@ -65,7 +65,7 @@ export const Home = () => {
           />
         )}
       </View>
-      <View>
+      <View style={styles.RestaurantListContainer}>
         <RestaurantList zipcode={searchZipcode} selectedCuisine={selectedCuisine}/>
       </View>
       <View>
@@ -77,9 +77,20 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     width: '100%',
     height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  searchContainer: {
+    width: '50%',
+    height: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  RestaurantListContainer: {
+    width: '100%',
+    height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
   },

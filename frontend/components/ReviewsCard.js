@@ -2,11 +2,19 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { Rating } from "react-native-ratings";
 import { avatars } from "../assets";
+import { useReview } from "../context/ReviewContext";
 
-const ReviewsCard = ({ reviews }) => {
+const ReviewsCard = ({ restaurantId }) => {
+  const { reviews } = useReview();
+  const restaurantReviews = reviews[restaurantId];
+
+  if (!restaurantReviews || restaurantReviews.length === 0) {
+    return<Text> No reviews available</Text>
+  }
+
   return (
     <View>
-      {reviews.map((review) => (
+      {restaurantReviews.map((review) => (
         <View key={review.id} style={styles.card}>
           <View style={styles.header}>
             <Text>{review.username}</Text>
@@ -56,17 +64,17 @@ const styles = StyleSheet.create({
   },
   star: {
     marginRight: 4,
-    color: 'orange', 
+    color: 'orange',
   },
   reviewText: {
     marginTop: 8,
     fontSize: 16,
-    lineHeight: 24, 
+    lineHeight: 24,
   },
   avatar: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 20, 
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#C4C4C4',
   },
 });

@@ -29,7 +29,7 @@ export const RestaurantList = ({ zipcode, selectedCuisine }) => {
                 fetchAvatars(restaurant.id, accessToken);
             });
         }
-    }, [restaurants, fetchAvatars, accessToken]);
+    }, [restaurants, accessToken]);
 
     // If the loading state is active (true), display the ActivityIndicator
     if (loading) {
