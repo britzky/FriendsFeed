@@ -1,8 +1,27 @@
-import { Button, Image, View, Text, StyleSheet } from 'react-native'
-import { useFriends } from '../context/FriendContext';
-import { avatars } from '../assets';
+import {
+  Button,
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { useFriends } from "../context/FriendContext";
+import { avatars } from "../assets";
 
-export const FriendCard = ({username, profile_picture, following, onFollowChange}) => {
+const windowWidth = Dimensions.get("window").width;
+
+const isLargeScreen = windowWidth > 600;
+const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
+const isSmallScreen = windowWidth <= 400;
+
+export const FriendCard = ({
+  username,
+  profile_picture,
+  following,
+  onFollowChange,
+}) => {
   const { unfollowFriend, followFriend } = useFriends();
   const avatarImage = avatars[profile_picture];
 
@@ -17,41 +36,50 @@ export const FriendCard = ({username, profile_picture, following, onFollowChange
 
   return (
     <View style={styles.cardContainer}>
-        <Text style={styles.name}>{username}</Text>
-        <Image  style={styles.image} source={avatarImage} />
-        <Button
-          style={styles.button}
-          title={following ? "Unfollow" : "Follow"}
-          onPress={handleButtonPress}
-        />
+      <Image style={styles.image} source={avatarImage} />
+      <Text style={styles.name}>{username}</Text>
+
+      <TouchableOpacity
+        android_ripple={{ color: "#3A4D39" }}
+        style={styles.button}
+        onPress={handleButtonPress}
+      >
+        <Text style={styles.text}>{following ? "Unfollow" : "Follow"}</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start", // Adjusted to align items to the start
     padding: 10,
     backgroundColor: "#fff",
-    borderBottomWidth: 5,
-    borderBottomColor: "#eee",
   },
   image: {
     width: 50,
     height: 50,
     borderRadius: 25, // Makes it a circle
-    marginRight: 10,// Makes it a circle
+    marginRight: 10, // Makes it a circle
+      paddingRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   name: {
-  
     flex: 1,
     color: "black",
+    fontSize: 16
   },
   button: {
-    padding: 10,
-    backgroundColor: "green",
-    borderRadius: 5,
+    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 15 : 200,
+    paddingVertical: 8,
+    backgroundColor: "#739072",
+
+    padding: 0,
+    borderRadius: 10,
+  },
+  text: {
+    color: "white",
   },
 });
