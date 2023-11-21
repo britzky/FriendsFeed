@@ -220,9 +220,16 @@ def refresh():
     # get the current users id
     current_user_id = get_jwt_identity()
 
+    #fetch the user from the database using the ID
+    user = User.query.get(current_user_id)
+
+    #Check if the user exists
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
     # Generate a new access token
     new_access_token = create_access_token(identity=current_user_id)
-    return jsonify({"access_token": new_access_token}), 200
+    return create_user_response(user, "Token refreshed successfully", 200)
 
 @auth.route('/health', methods=['GET'])
 def health():
