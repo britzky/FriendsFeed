@@ -30,7 +30,6 @@ const RestaurantCard = ({
       <View>
         <Image source={{ uri: imageUrl,}} style={styles.restaurantImage} />
       </View>
-        <Text style={styles.title}>{restaurantName}</Text>
       <View>
         {friendAvatars && friendAvatars.map((avatar, index) => (
           <Image
@@ -41,7 +40,9 @@ const RestaurantCard = ({
         ))}
       </View>
       <Text style={styles.title}>{restaurantName}</Text>
-      {ratingComponent}
+      {rating && (
+        {ratingComponent}
+      )}
       <Text style={styles.address}>{address}</Text>
       <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>

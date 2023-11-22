@@ -4,16 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { Searchbar } from '../components/Searchbar';
 import { CuisineFilter } from '../components/CuisineFilter';
 import { RestaurantList } from '../components/RestaurantList';
+import { useLocation } from '../context/LocationContext';
 
 export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
-  const [searchLocation, setSearchLocation] = useState(userDetails?.location || "");
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
-
-  console.log("Initial searchLocation:", searchLocation);
-  console.log("Initial selectedCuisine:", selectedCuisine);
-  console.log("Initial showCuisineFilter:", showCuisineFilter);
+  const { setSearchLocation, searchLocation } = useLocation();
 
   // Side effect to make sure all of the details are loaded
   useEffect(() => {

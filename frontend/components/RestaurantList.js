@@ -15,9 +15,6 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
     const { friends } = useFriends(); // Custom hook to fetch the friends list
 
-    console.log("Initial States - Restaurants:", restaurants, "Loading:", loading, "Error:", error);
-
-
     // Side effect to fetch friend-reviewed restaurants
     useEffect(() => {
         if (selectedCuisine) {
@@ -25,8 +22,6 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
         } else {
             fetchFriendReviewedRestaurants(location);
         }
-        console.log("Updated States - Restaurants:", restaurants, "Loading:", loading, "Error:", error);
-
     }, [location, selectedCuisine, accessToken, friends]);
 
     // Side effect to fetch avatars for each restaurant

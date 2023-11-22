@@ -3,6 +3,7 @@ import { StyleSheet,} from "react-native";
 import { AuthProvider } from "./context/AuthContext";
 import { FriendProvider } from "./context/FriendContext";
 import { ReviewProvider } from "./context/ReviewContext";
+import { LocationProvider } from "./context/LocationContext";
 import { AppNavigator } from "./navigation/AppNavigator";
 
 
@@ -21,7 +22,9 @@ export default function App() {
     <AuthProvider>
       <FriendProvider>
         <ReviewProvider>
-          <AppNavigator style={styles.container} />
+          <LocationProvider>
+            <AppNavigator style={styles.container} />
+          </LocationProvider>
         </ReviewProvider>
         <StatusBar style="auto" />
       </FriendProvider>
