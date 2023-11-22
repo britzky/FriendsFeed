@@ -7,19 +7,23 @@ import { RestaurantList } from '../components/RestaurantList';
 
 export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
-  const [searchZipcode, setSearchZipcode] = useState(userDetails?.zipcode || "");
+  const [searchLocation, setSearchLocation] = useState(userDetails?.location || "");
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
+
+  console.log("Initial searchLocation:", searchLocation);
+  console.log("Initial selectedCuisine:", selectedCuisine);
+  console.log("Initial showCuisineFilter:", showCuisineFilter);
 
   // Side effect to make sure all of the details are loaded
   useEffect(() => {
     if (isLoggedIn && userDetails)
-      setSearchZipcode(userDetails.zipcode);
+      setSearchLocation(userDetails.location);
   }, [isLoggedIn, userDetails])
 
   //function to pass searched zipcode to the searchbar
-  const handleSearch = (searchedZipcode) => {
-    setSearchZipcode(searchedZipcode);
+  const handleSearch = (searchedLocation) => {
+    setSearchLocation(searchedLocation);
   }
 
   //function to pass selected cuisine to the cuisine filter
@@ -41,7 +45,7 @@ export const Home = () => {
   const handleLogout = async () => {
     await logout();
   }
-   if (loading || !accessToken || !userDetails || !searchZipcode) {
+   if (loading || !accessToken || !userDetails || !searchLocation) {
     return (
       <View>
         <ActivityIndicator size="large" />
@@ -53,7 +57,7 @@ export const Home = () => {
     <View style={styles.container}>
       <Text>Home</Text>
       <View style={styles.searchContainer}>
-        <Searchbar onSearch={handleSearch} placeholder="Enter Zipcode: 55555" />
+        <Searchbar onSearch={handleSearch} placeholder="Search Location (ex: Brooklyn, NY)" />
       </View>
       <View>
         {showCuisineFilter && (
@@ -61,12 +65,11 @@ export const Home = () => {
             onApplyFilter={handleApplyCuisineFilter}
             onClose={handleCloseFilter}
             fetchCuisinesUrl={'https://colab-test.onrender.com/get-cuisines'}
-            searchZipcode={searchZipcode}
           />
         )}
       </View>
       <View style={styles.RestaurantListContainer}>
-        <RestaurantList zipcode={searchZipcode} selectedCuisine={selectedCuisine}/>
+        <RestaurantList location={searchLocation} selectedCuisine={selectedCuisine}/>
       </View>
       <View>
         <Button title="Logout" onPress={handleLogout} />

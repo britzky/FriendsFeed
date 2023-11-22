@@ -8,10 +8,11 @@ export const useRestaurantFetch = () => {
 
     const { accessToken } = useAuth();
 
-    const fetchFriendReviewedRestaurants = async (zipcode) => {
+    const fetchFriendReviewedRestaurants = async (location) => {
         try {
             setLoading(true);
-            const response = await fetch(`https://colab-test.onrender.com/restaurants/friend-reviewed?zipcode=${zipcode}`, {
+            setRestaurants([]);
+            const response = await fetch(`https://colab-test.onrender.com/restaurants/friend-reviewed?location=${location}`, {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
@@ -21,21 +22,24 @@ export const useRestaurantFetch = () => {
             if (response.ok) {
                 const data = await response.json();
                 setRestaurants(data);
+                console.log("Friend reviewed restaurants", data);
             } else {
-                setError(new Error('Failed to fetch data'));
+                const errorText = await response.text();
+                setError(new Error(`Failed to fetch data: ${errorText}`));
             }
         } catch (err) {
             setError(err);
-            console.error(error);
+            console.error(err);
         } finally {
             setLoading(false);
         }
     }
 
-    const fetchRestaurantsByCuisine = async (zipcode, cuisine) => {
+    const fetchRestaurantsByCuisine = async (location, cuisine) => {
         try {
             setLoading(true);
-            const response = await fetch(`https://colab-test.onrender.com/restaurants-cuisine?zipcode=${zipcode}&cuisine=${cuisine}`, {
+            setRestaurants([]);
+            const response = await fetch(`https://colab-test.onrender.com/restaurants-cuisine?location=${location}&cuisine=${cuisine}`, {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
@@ -46,11 +50,12 @@ export const useRestaurantFetch = () => {
                 const data = await response.json();
                 setRestaurants(data);
             } else {
-                setError(new Error('Failed to fetch data'));
+                const errorText = await response.text();
+                setError(new Error(`Failed to fetch data: ${errorText}`));
             }
         } catch (err) {
             setError(err);
-            console.error(error);
+            console.error(err);
         } finally {
             setLoading(false);
         }

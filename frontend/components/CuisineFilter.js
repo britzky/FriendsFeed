@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, FlatList, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
-export const CuisineFilter = ({ onApplyFilter, onClose, fetchCuisinesUrl, searchZipcode, getCuisines }) => {
+export const CuisineFilter = ({ onApplyFilter, onClose, fetchCuisinesUrl }) => {
     const [input, setInput] = useState('');
     const [cuisines, setCuisines] = useState([])
     const [filteredCuisines, setFilteredCuisines] = useState([]);

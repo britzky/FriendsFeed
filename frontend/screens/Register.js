@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from '../context/AuthContext';
 
 export default function Register({ route }) {
-  const { setUserDetails } = useAuth();
   const navigate = useNavigation()
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
-    zipcode: "",
+    location: "",
   });
   const { registrationFlow } = route.params;
   console.log("This is the Register registration flow status: ", registrationFlow)
@@ -33,13 +31,12 @@ export default function Register({ route }) {
     if (!formData.email) {
       validationErrors.email = "email is required";
     }
-    if (!formData.zipcode) {
-      validationErrors.zipcode = "zipcode is required";
+    if (!formData.location) {
+      validationErrors.location = "location is required";
     }
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the Context
-          setUserDetails(formData);
-          navigate.navigate("ChooseAvatar", { registrationFlow });
+          navigate.navigate("ChooseAvatar", { registrationFlow, formData });
         } else {
       // Form is not valid, update the errors state
       setErrors(validationErrors);
@@ -86,11 +83,11 @@ export default function Register({ route }) {
 
       <TextInput
        style={styles.input}
-        placeholder="zipcode"
-        value={formData.zipcode}
-        onChangeText={(text) => handleChange("zipcode", text)}
+        placeholder="location Ex: San Francisco, CA"
+        value={formData.location}
+        onChangeText={(text) => handleChange("location", text)}
       />
-      {errors.zipcode && (
+      {errors.location && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
       <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleRegistration}>
@@ -106,10 +103,10 @@ const styles = StyleSheet.create({
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: '#FFF',
-  width: '100%', 
+  width: '100%',
   paddingHorizontal: 20,
   gap: 8,
-  
+
 
   },
   title: {
@@ -127,8 +124,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     gap: 10,
     flexShrink: 0
-
-
   },
   button: {
     backgroundColor: 'blue',
@@ -137,7 +132,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    
     paddingHorizontal: 150,
     paddingVertical: 15,
     backgroundColor: "#739072",
@@ -158,8 +152,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     fontSize: 12, // Reduce font size
-   
- 
   },
   text: {
     color: 'white',

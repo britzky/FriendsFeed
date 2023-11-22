@@ -108,10 +108,11 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        await AsyncStorage.removeItem('access_token');
-        await AsyncStorage.removeItem('user_details');
+        await AsyncStorage.clear(); // Clear all AsyncStorage data
+        console.log("AsyncStorage after clear: ", await AsyncStorage.getAllKeys()); // This should return an empty array
         setIsLoggedIn(false);
         setUserDetails(null);
+        setAccessToken(null);
     };
 
 

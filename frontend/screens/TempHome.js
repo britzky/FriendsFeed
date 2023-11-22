@@ -12,10 +12,9 @@ import { useReview } from "../context/ReviewContext";
 
 export const TempHome = () => {
   const { userDetails, logout, accessToken, isLoggedIn } = useAuth();
-  const [searchZipcode, setSearchZipcode] = useState(null);
-  const { restaurants, loading, error, setRestaurants, fetchRestaurants } = useGetRestaurants(searchZipcode, accessToken, isLoggedIn);
+  const [searchLocation, setSearchLocation] = useState(null);
+  const { restaurants, loading, error, setRestaurants, fetchRestaurants } = useGetRestaurants(searchLocation, accessToken, isLoggedIn);
   const navigation = useNavigation();
-  const { reviews, fetchReviews, fetchedRestaurants } = useReview();
   const [showCuisineFilter, setShowCuisineFilter] = useState(false);
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null); // added for a selected restaurant - Eduardo
@@ -30,8 +29,8 @@ export const TempHome = () => {
   }, [])
 
   useEffect(() => {
-    if (userDetails?.user?.zipcode) {
-      setSearchZipcode(userDetails.user.zipcode)
+    if (userDetails?.user?.location) {
+      setSearchLocation(userDetails.user.location)
     }
   }, [userDetails])
 
@@ -52,7 +51,7 @@ export const TempHome = () => {
 
       if (isNewUserCheck && isLoggedInCheck && userDetailsCheck && accessTokenCheck) {
         console.log('Fetching restaurants...');
-        setSearchZipcode(userDetails.zipcode);
+        setSearchLocation(userDetails.location);
         fetchRestaurants();
       } else {
         console.log('Condition not met for fetching restaurants');
@@ -64,12 +63,12 @@ export const TempHome = () => {
 
   useEffect(() => {
     const getRestaurants = async () => {
-      if (!selectedCuisine || !searchZipcode) {
+      if (!selectedCuisine || !searchLocation) {
         return;
       }
       try {
         const response = await fetch(
-          `https://colab-test.onrender.com/restaurants-cuisine?zipcode=${searchZipcode}&cuisine=${selectedCuisine}`,
+          `https://colab-test.onrender.com/restaurants-cuisine?location=${searchLocation}&cuisine=${selectedCuisine}`,
           {
             method: 'GET',
             headers: {
@@ -93,7 +92,7 @@ export const TempHome = () => {
 
       getRestaurants();
 
-    }, [selectedCuisine, searchZipcode, accessToken, setRestaurants])
+    }, [selectedCuisine, searchLocation, accessToken, setRestaurants])
 
     if (error) {
       return <Text>Error fetching restaurants: {error}</Text>;
@@ -119,8 +118,8 @@ export const TempHome = () => {
     navigation.navigate("Friend");
   };
 
-  const handleSearch = (newZipcode) => {
-    setSearchZipcode(newZipcode);
+  const handleSearch = (newLocation) => {
+    setSearchLocation(newLocation);
   };
 
   const handleOpenFilter = () => {
@@ -145,11 +144,10 @@ export const TempHome = () => {
           onApplyFilter={handleApplyCuisineFilter}
           onClose={handleCloseFilter}
           fetchCuisinesUrl={'https://colab-test.onrender.com/get-cuisines'}
-          searchZipcode={searchZipcode}
         />
       )}
       <View style={styles.headerContainer}>
-        <Searchbar onSearch={handleSearch} placeholder="Enter Zipcode: 55555" />
+        <Searchbar onSearch={handleSearch} placeholder="Search Location (ex: Brooklyn, NY)" />
         <TouchableOpacity onPress={handlePress}>
           <AntDesign style={styles.icon} name="adduser" />
         </TouchableOpacity>

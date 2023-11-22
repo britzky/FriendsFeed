@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Define the base url
 const BASE_URL = 'https://colab-test.onrender.com'
 
-export const useGetRestaurants = (zipcode) => {
+export const useGetRestaurants = (location) => {
     const { accessToken, setAccessToken, refreshToken, isLoggedIn } = useAuth();
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -14,7 +14,7 @@ export const useGetRestaurants = (zipcode) => {
     // Define a function to fetch restaurants
     const fetchRestaurants = async () => {
         // handle case where no zipcode is provided
-        if (!zipcode || !isLoggedIn || !accessToken) {
+        if (!location || !isLoggedIn || !accessToken) {
             return;
         }
 
@@ -52,7 +52,7 @@ export const useGetRestaurants = (zipcode) => {
             }
         }
         const fetchRestaurantFromAPI = async (token) => {
-            return await fetch (`${BASE_URL}/restaurants?zipcode=${zipcode}`, {
+            return await fetch (`${BASE_URL}/restaurants?location=${location}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -61,10 +61,10 @@ export const useGetRestaurants = (zipcode) => {
         }
 
     useEffect(() => {
-        if (zipcode && accessToken && isLoggedIn) {
+        if (location && accessToken && isLoggedIn) {
         fetchRestaurants();
         }
-    }, [zipcode, accessToken, isLoggedIn])
+    }, [location, accessToken, isLoggedIn])
 
 
   return { restaurants, setRestaurants, loading, error, fetchRestaurants };

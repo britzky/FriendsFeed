@@ -8,11 +8,11 @@ import { useAuth } from '../context/AuthContext';
 export const ChooseAvatar = ({ route }) => {
     const { userDetails, setIsLoggedIn, isLoggedIn, setUserDetails, setAccessToken, accessToken } = useAuth();
     const navigation = useNavigation();
-    const { registrationFlow } = route.params;
+    const { registrationFlow, formData } = route.params;
     console.log("This is the ChooseAvatar registration flow status: ", registrationFlow)
 
     const handleCompleteRegistration = async (selectedAvatar) => {
-        const completedUserDetails = { ...userDetails, profile_picture: selectedAvatar };
+        const completedUserDetails = { ...formData, profile_picture: selectedAvatar };
 
         try {
             const response = await fetch('https://colab-test.onrender.com/register', {

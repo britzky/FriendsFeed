@@ -5,22 +5,29 @@ import { useNavigation } from '@react-navigation/native';
 import RestaurantCard from './RestaurantCard';
 import { useReview } from '../context/ReviewContext';
 import { useAuth } from '../context/AuthContext';
+import { useFriends } from '../context/FriendContext';
 
-export const RestaurantList = ({ zipcode, selectedCuisine }) => {
+export const RestaurantList = ({ location, selectedCuisine }) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Restaurant selected by the user
     const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurantFetch(); // Custom hook to fetch restaurants with loading and error states
     const navigation = useNavigation(); // Navigation hook
     const { avatars, fetchAvatars } = useReview(); // Custom hook to fetch and use friend avatars
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
+    const { friends } = useFriends(); // Custom hook to fetch the friends list
+
+    console.log("Initial States - Restaurants:", restaurants, "Loading:", loading, "Error:", error);
+
 
     // Side effect to fetch friend-reviewed restaurants
     useEffect(() => {
         if (selectedCuisine) {
-            fetchRestaurantsByCuisine(zipcode, selectedCuisine);
+            fetchRestaurantsByCuisine(location, selectedCuisine);
         } else {
-            fetchFriendReviewedRestaurants(zipcode);
+            fetchFriendReviewedRestaurants(location);
         }
-    }, [zipcode, selectedCuisine, accessToken]);
+        console.log("Updated States - Restaurants:", restaurants, "Loading:", loading, "Error:", error);
+
+    }, [location, selectedCuisine, accessToken, friends]);
 
     // Side effect to fetch avatars for each restaurant
     useEffect(() => {

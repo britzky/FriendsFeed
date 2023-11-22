@@ -14,6 +14,7 @@ import Restaurant from "../screens/Restaurant";
 import { Review } from "../screens/Review";
 import { ChooseAvatar } from "../screens/ChooseAvatar";
 import { Home } from "../screens/Home";
+import { SearchRestaurant } from "../screens/SearchRestaurant";
 
 enableScreens();
 
@@ -28,6 +29,7 @@ function HomeTabs() {
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Friend" component={Friend} />
       <Tab.Screen name="TempHome" component={TempHome}  />
+      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant} />
     </Tab.Navigator>
   );
 }
