@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, current_app
 from app.blueprints.main import main
 from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from services.yelp_api import get_restaurants_by_zipcode, get_restaurants_by_zipcode_and_cuisine, get_restaurant_by_id, get_restaurant_by_name
+from services.yelp_api import get_restaurants_by_location, get_restaurants_by_location_and_cuisine, get_restaurant_by_id, get_restaurant_by_name
 from app import db
 
 ##### Fetch from yelp #####
@@ -11,10 +11,10 @@ from app import db
 @jwt_required()
 def restaurants():
     # Get zipcode from the query parameter
-    zipcode = request.args.get('zipcode')
+    location = request.args.get('location')
 
     # Call the Yelp API function
-    results = get_restaurants_by_zipcode(zipcode)
+    results = get_restaurants_by_location(location)
 
     # Check if there was an error in the results and return accordingly
     if 'error' in results:
@@ -32,14 +32,14 @@ def restaurants():
 def search_restaurant():
     # Extract name and zipcode from the query parameters
     name = request.args.get('name')
-    zipcode = request.args.get('zipcode')
+    location = request.args.get('location')
 
     #Check if both name and zipcode are provided
-    if not name or not zipcode:
+    if not name or not location:
         return jsonify({"error": "Missing required parameters"}), 400
 
     # Call the Yelp API function
-    result = get_restaurant_by_name(name, zipcode)
+    result = get_restaurant_by_name(name, location)
 
     # Check if the result contains an error
     if 'error' in result:
@@ -52,10 +52,10 @@ def search_restaurant():
 @jwt_required()
 def restaurants_friend_reviewed():
     # Get zipcode from the query parameter
-    zipcode = request.args.get('zipcode')
+    location = request.args.get('location')
 
     # Call the yelp API function
-    response = get_restaurants_by_zipcode(zipcode)
+    response = get_restaurants_by_location(location)
 
     # Extract the 'businesses' list from the response
     results = response.get('businesses', []) if isinstance(response, dict) else []
@@ -114,13 +114,13 @@ def get_friend_avatars_for_restaurant(yelp_restaurant_id):
 @main.route('/restaurants-cuisine', methods=['GET'])
 @jwt_required()
 def get_restaurants():
-    zipcode = request.args.get('zipcode')
+    location = request.args.get('location')
     cuisine = request.args.get('cuisine')
 
-    if not zipcode or not cuisine:
+    if not location or not cuisine:
         return jsonify({"error": "Missing required parameters"})
 
-    restaurants = get_restaurants_by_zipcode_and_cuisine(zipcode, cuisine)
+    restaurants = get_restaurants_by_location_and_cuisine(location, cuisine)
 
     # Get the current users id and fetch friends reviews
     current_user_id = get_jwt_identity()

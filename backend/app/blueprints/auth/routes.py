@@ -48,7 +48,7 @@ def create_user_response(user, message, status_code):
             "id": user.id,
             "username": user.username,
             "profile_picture": user.profile_picture,
-            "zipcode": user.zipcode
+            "location": user.location
         },
         "access_token": access_token,
         "refresh_token": refresh_token
@@ -90,7 +90,7 @@ def register():
         new_user = User(
             username=data['username'],
             email=data['email'],
-            zipcode=data['zipcode'],
+            location=data['location'],
             profile_picture=data['profile_picture']
         )
         # Hash the users password before stroing it
@@ -112,7 +112,7 @@ def register():
 @jwt_required()
 def update_zipcode():
     #get the new zipcode from the request
-    new_zipcode = request.json.get('zipcode')
+    new_location = request.json.get('location')
 
     # get the current user's ID from the JWT token
     current_user_id = get_jwt_identity()
@@ -125,7 +125,7 @@ def update_zipcode():
         return jsonify({"message": "User not found"}), 404
 
     # Update the user's zipcode using the the method in the User model
-    user.update_zipcode(new_zipcode)
+    user.update_zipcode(new_location)
 
     # Return a success response
     return jsonify({"message": "Zipcode updated successfully"}), 200

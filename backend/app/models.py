@@ -35,7 +35,7 @@ class User(db.Model):
     email = db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String)
-    zipcode = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=False)
     reviews = db.relationship(
         'Review', backref='user', lazy='dynamic'
     )
@@ -103,7 +103,7 @@ class User(db.Model):
     # search for users by username
     @classmethod
     def find_by_username(cls, username):
-        return cls.query.filter_by(username=username).first()
+        return cls.query.filter(cls.username.ilike(username)).first()
 
     # Search for users by if
     @classmethod
