@@ -135,6 +135,37 @@ class User(db.Model):
 
         return average_rating or 0
 
+    def get_restaurants_by_friend_rating(self, target_rating):
+        """
+        Fetch all restaurants that have been reviewed by the user's friends, where the reviews have a specific rating.
+
+        Parameters:
+            specific_rating (int): The specific star rating to filter the reviews by.
+
+        Returns:
+            A list of tuples containing restaurant IDs and their ratings.
+        """
+
+        # initialize a variable to hold all friend ids
+        friend_ids = []
+
+        # loop through all friends and add them to the friend_ids list
+        for friend in self.get_all_friends():
+            friend_ids.append(friend.id)
+
+        # use the friend_ids list to filter reviews
+        restaurants = db.session.query(
+            Review.yelp_restaurant_id,
+            Review.rating
+        ).filter(
+            Review.user_id.in_(friend_ids),
+            Review.rating == target_rating
+        ).group_by(
+            Review.yelp_restaurant_id
+        ).all()
+
+        return restaurants
+
 class Review(db.Model):
     """
     Review model for storing user reviews

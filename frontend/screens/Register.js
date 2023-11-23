@@ -1,3 +1,5 @@
+import React, { useState } from "react";
+import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -28,7 +30,7 @@ export default function Register({ route }) {
 
   const handleChange = (name, value) => {
 
-    
+
     setFormData({ ...formData, [name]: value });
   };
 
@@ -56,7 +58,7 @@ export default function Register({ route }) {
     }
   };
 
-  
+
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -75,7 +77,7 @@ export default function Register({ route }) {
     return null; // Or some loading component
   }
 
- 
+
 
   return (
     <View style={styles.container}>
@@ -122,7 +124,7 @@ export default function Register({ route }) {
         onChangeText={(text) => handleChange("location", text)}
       />
       {errors.location && (
-        <Text style={styles.errorText}>{errors.zipcode}</Text>
+        <Text style={styles.errorText}>{errors.location}</Text>
       )}
       <Text style={styles.zipcode}>
         Enter your city and state so we can start showing you recommendations
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#3A4D39",
     textAlign: "center",
-    fontFamily: 'LuckiestGuy-Regular' 
+    fontFamily: 'LuckiestGuy-Regular'
   },
   input: {
     height: 55,
@@ -183,14 +185,14 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: 15,
     color: "red",
-    fontSize: 12, 
-    
+    fontSize: 12,
+
 
   },
   text: {
     color: "white",
     fontSize: 16,
-    
+
   },
   text2: {
     position: 'relative',
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: "100%", // Full-width text
     marginBottom: 30,
-  
+
   },
   term: {
     position: "relative",

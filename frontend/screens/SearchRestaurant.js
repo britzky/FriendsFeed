@@ -4,12 +4,14 @@ import { useAuth } from '../context/AuthContext'
 import { Searchbar } from '../components/Searchbar'
 import RestaurantCard from '../components/RestaurantCard'
 import { useLocation } from '../context/LocationContext'
+import { useNavigation } from '@react-navigation/native'
 
 export const SearchRestaurant = () => {
     const [restaurants, setRestaurants] = useState(null)
     const [searchedRestaurant, setSearchedRestaurant] = useState('')
     const { accessToken, userDetails } = useAuth()
     const { searchLocation } = useLocation()
+    const navigation = useNavigation()
 
     // Side effect to fetch a restaurant's details
     useEffect(() => {
@@ -50,6 +52,7 @@ export const SearchRestaurant = () => {
                 imageUrl={item.image_url}
                 address={item.location.display_address.join(", ")}
                 isIndividual={true}
+                onReviewPress={() => navigation.navigate("Review", { yelpId: item.id })}
             />
         )
     }

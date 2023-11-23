@@ -138,6 +138,24 @@ def get_restaurants():
 
     return jsonify(filtered_results)
 
+@main.route('/restaurants-by-friend-rating', methods=['GET'])
+@jwt_required()
+def get_restaurants_by_friend_rating():
+    #Get the current users id
+    current_user_id = get_jwt_identity()
+    #Get the rating from the query parameter
+    target_rating = request.args.get('rating')
+
+    #Fetch the user from the database
+    user = User.find_by_id(current_user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    # Use the method from the User model to fetch restaurants
+    restaurants = user.get_restaurants_by_friend_rating(target_rating)
+
+    return jsonify({'restaurants': restaurants})
+
 # Get restaurant by id from yelp
 @main.route('/restaurants/<string:yelp_restaurant_id>', methods=['GET'])
 @jwt_required()

@@ -40,9 +40,7 @@ const RestaurantCard = ({
         ))}
       </View>
       <Text style={styles.title}>{restaurantName}</Text>
-      {rating && (
-        {ratingComponent}
-      )}
+      {rating && ratingComponent}
       <Text style={styles.address}>{address}</Text>
       <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
         <Text style={styles.text}>Write a Review</Text>

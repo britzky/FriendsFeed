@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Modal, Text, Button, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { Searchbar } from '../components/Searchbar';
 import { CuisineFilter } from '../components/CuisineFilter';
@@ -9,7 +9,7 @@ import { useLocation } from '../context/LocationContext';
 export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
-  const [showCuisineFilter, setShowCuisineFilter] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
 
   // Side effect to make sure all of the details are loaded
@@ -26,16 +26,7 @@ export const Home = () => {
   //function to pass selected cuisine to the cuisine filter
   const handleApplyCuisineFilter = (cuisine) => {
     setSelectedCuisine(cuisine);
-  }
-
-  //function to close the cuisine filter
-  const handleCloseFilter = () => {
-    setShowCuisineFilter(false);
-  }
-
-  //function to open the cuisine filter
-  const handleOpenFilter = () => {
-    setShowCuisineFilter(true);
+    console.log('Selected Cuisine: ', cuisine)
   }
 
   // function to logout
@@ -57,13 +48,25 @@ export const Home = () => {
         <Searchbar onSearch={handleSearch} placeholder="Search Location (ex: Brooklyn, NY)" />
       </View>
       <View>
-        {showCuisineFilter && (
-          <CuisineFilter
-            onApplyFilter={handleApplyCuisineFilter}
-            onClose={handleCloseFilter}
-            fetchCuisinesUrl={'https://colab-test.onrender.com/get-cuisines'}
-          />
-        )}
+        <Button title='Cuisine' onPress={() => setModalVisible(true)} />
+        <Modal
+          animationType="slide" // You can change this to 'fade' or 'none'
+          transparent={true} // Set to true if you want to show the underlying content
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <CuisineFilter
+                onApplyFilter={handleApplyCuisineFilter}
+                onClose={() => setModalVisible(false)}
+                fetchCuisinesUrl={'https://colab-test.onrender.com/get-cuisines'}
+              />
+            </View>
+          </View>
+        </Modal>
       </View>
       <View style={styles.RestaurantListContainer}>
         <RestaurantList location={searchLocation} selectedCuisine={selectedCuisine}/>
@@ -93,6 +96,26 @@ const styles = StyleSheet.create({
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center', // Centers the modal vertically in the container
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
   },
 
 });

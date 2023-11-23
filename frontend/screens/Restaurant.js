@@ -15,6 +15,7 @@ const Restaurant = () => {
 
   useEffect(() => {
     fetchReviews(restaurant.id, accessToken);
+    fetchAvatars(restaurant.id, accessToken);
   }, [restaurant.id, accessToken]);
 
   return (
@@ -27,7 +28,7 @@ const Restaurant = () => {
           address={restaurant.location.display_address.join(", ")}
           onReviewPress={() => navigation.navigate("Review", { yelpID: restaurant.id })}
           isIndividual={true}
-          friendAvatars={avatarsArray}
+          friendAvatars={avatars[restaurant.id]}
         />
       <View style={styles.reviewsContainer}>
         <ScrollView contentContainerStyle={{ paddingBottom: 20}}>

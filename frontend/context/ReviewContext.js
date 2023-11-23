@@ -13,10 +13,6 @@ export const ReviewProvider = ({ children }) => {
 
 
     const fetchReviews = useCallback(async (restaurantId, accessToken) => {
-        if (fetchedRestaurants.has(restaurantId)) {
-            console.log(`Already fetched avatars for restaurant ID: ${restaurantId}`);
-            return;
-        }
         console.log(`Fetching reviews for restaurant ${restaurantId}`)
         try {
             const response = await fetch(
@@ -39,9 +35,11 @@ export const ReviewProvider = ({ children }) => {
                         newSet.add(restaurantId);
                         return newSet;
                     });
+                } else {
+                    console.log("Error fetching reviews:", response.status, await response.text());
                 }
             } catch (error) {
-                console.log(error);
+                console.log("Caught an error fetching reviews: ", error);
             }
         }, [fetchedRestaurants]);
 
