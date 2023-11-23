@@ -45,7 +45,8 @@ def get_restaurants_by_location_and_cuisine(location, cuisine):
     # Check if the request was successful
     if response.status_code == 200:
         # Parse the JSON response
-        restaurants = response.json()
+        data = response.json()
+        restaurants = data.get('businesses', [])
         return restaurants
     else:
         logging.error(f"Yelp API request faild: {response.text}")
