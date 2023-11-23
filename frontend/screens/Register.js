@@ -1,9 +1,18 @@
-import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import * as Font from 'expo-font';
 
 export default function Register({ route }) {
-  const navigate = useNavigation()
+  const navigate = useNavigation();
+  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     username: "",
@@ -12,14 +21,18 @@ export default function Register({ route }) {
     location: "",
   });
   const { registrationFlow } = route.params;
-  console.log("This is the Register registration flow status: ", registrationFlow)
+  console.log(
+    "This is the Register registration flow status: ",
+    registrationFlow
+  );
 
   const handleChange = (name, value) => {
+
+    
     setFormData({ ...formData, [name]: value });
   };
 
   const handleRegistration = () => {
-
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -36,33 +49,60 @@ export default function Register({ route }) {
     }
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the Context
-          navigate.navigate("ChooseAvatar", { registrationFlow, formData });
-        } else {
+      navigate.navigate("ChooseAvatar", { registrationFlow, formData });
+    } else {
       // Form is not valid, update the errors state
       setErrors(validationErrors);
     }
   };
 
+  
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'LuckiestGuy-Regular': require('../assets/fonts/LuckiestGuy-Regular.ttf'),
+        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
+        'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
+        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // Or some loading component
+  }
+
+ 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder</Text>
-      <Text style={styles.subtitle}>
-        Discover new restaurants
-      </Text>
-      <Text style={styles.text2}>
-         one friend at a time
-      </Text>
+      <Text style={styles.title}>Friends Finder</Text>
+      <Text style={styles.subtitle}>Discover new restaurants</Text>
+      <Text style={styles.text2}>one friend at a time</Text>
       <TextInput
         style={styles.input}
-        placeholder="email"
+        placeholder="Email Address"
         value={formData.email}
         onChangeText={(text) => handleChange("email", text)}
       />
-      {errors.email && (
-        <Text style={styles.errorText}>{errors.email}</Text>
-      )}
+      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
       <TextInput
-      style={styles.input}
+        style={styles.input}
+        placeholder="@Username"
+        value={formData.username}
+        onChangeText={(text) => handleChange("username", text)}
+      />
+      {errors.username && (
+        <Text style={styles.errorText}>{errors.username}</Text>
+      )}
+      <Text style={styles.username}>
+        This is how you’ll appear to your friends on Friends Feed.
+      </Text>
+      <TextInput
+        style={styles.input}
         placeholder="Password"
         value={formData.password}
         onChangeText={(text) => handleChange("password", text)}
@@ -71,18 +111,12 @@ export default function Register({ route }) {
       {errors.password && (
         <Text style={styles.errorText}>{errors.password}</Text>
       )}
-      <TextInput
-      style={styles.input}
-        placeholder="username"
-        value={formData.username}
-        onChangeText={(text) => handleChange("username", text)}
-      />
-      {errors.username && (
-        <Text style={styles.errorText}>{errors.username}</Text>
-      )}
+      <Text style={styles.password}>
+        Password must include: 6 to 20 characters
+      </Text>
 
       <TextInput
-       style={styles.input}
+        style={styles.input}
         placeholder="location Ex: San Francisco, CA"
         value={formData.location}
         onChangeText={(text) => handleChange("location", text)}
@@ -90,8 +124,17 @@ export default function Register({ route }) {
       {errors.location && (
         <Text style={styles.errorText}>{errors.zipcode}</Text>
       )}
-      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleRegistration}>
-          <Text style={styles.text}>Continue</Text>
+      <Text style={styles.zipcode}>
+        Enter your city and state so we can start showing you recommendations
+        nearby.
+      </Text>
+      <Text style={styles.term}>By clicking Continue you are agreeing to out <Text style={styles.boldText}>Terms & Conditions.</Text></Text>
+      <Pressable
+        android_ripple={{ color: "#3A4D39" }}
+        style={styles.buttonText}
+        onPress={handleRegistration}
+      >
+        <Text style={styles.text}>Continue</Text>
       </Pressable>
     </View>
   );
@@ -100,76 +143,91 @@ export default function Register({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#FFF',
-  width: '100%',
-  paddingHorizontal: 20,
-  gap: 8,
-
-
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFF",
+    paddingHorizontal: 30, // Provides padding but allows for stretching
   },
   title: {
-    fontSize: 30,
-  fontWeight: 'bold',
-  marginBottom: 20,
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "#3A4D39",
+    textAlign: "center",
+    fontFamily: 'LuckiestGuy-Regular' 
   },
   input: {
-    height:55,
-    width: '90%',
-    borderColor: 'gray',
+    height: 55,
+    width: "100%", // Allows the input to fill the available space
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
     paddingLeft: 10,
     borderRadius: 5,
-    gap: 10,
-    flexShrink: 0
-  },
-  button: {
-    backgroundColor: 'blue',
-    padding: 10,
-    width: '80%',
-    alignItems: 'center',
   },
   buttonText: {
-    paddingHorizontal: 150,
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
-    marginVertical: 10,
-    color: "white",
-    marginTop: 180
+    marginTop: 70,
+    width: "100%", // Full-width button
+    alignItems: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: "gray",
-    marginBottom: 0,
-    margin: 0,
-    width: 180,
-    padding: 0,
-    fontFamily: "Roboto",
+    color: "#000",
+    marginBottom: 10,
+    textAlign: "center",
   },
   errorText: {
+    position: 'relative',
+    bottom: 15,
     color: "red",
-    fontSize: 12, // Reduce font size
+    fontSize: 12, 
+    
+
   },
   text: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
+    
   },
   text2: {
+    position: 'relative',
+    top: -10,
     fontSize: 16,
-    color: "gray",
-    marginBottom: 20,
-    margin: 0,
-    width: 150,
-    padding: 0,
-    marginTop: 2,
+    color: "#000",
+    marginBottom: 5,
+    textAlign: "center",
   },
-  title: {
-    fontSize: 40,
-    marginBottom: 20,
-    color: "#3A4D39",
+  username: {
+    position: "relative",
+    top: -10,
+    textAlign: "left",
+    width: "100%", // Full-width text
+    marginBottom: 10,
+    fontSize: 14,
   },
+  zipcode: {
+    position: "relative",
+    top: -10,
+    textAlign: "left",
+    width: "100%", // Full-width text
+    marginBottom: 10,
+  },
+  password: {
+    position: "relative",
+    top: -10,
+    textAlign: "left",
+    width: "100%", // Full-width text
+    marginBottom: 30,
+  
+  },
+  term: {
+    position: "relative",
+    top: 60,
+  },
+  boldText: {
+    fontWeight: 'bold'
+  }
 });
-

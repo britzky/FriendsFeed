@@ -7,7 +7,7 @@ export const FriendList = () => {
 
   return (
     <View>
-        <Text>Friends List:</Text>
+        
         <FlatList
             data={friends}
             keyExtractor={(item) => item.id.toString()}
