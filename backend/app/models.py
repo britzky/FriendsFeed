@@ -159,15 +159,18 @@ class User(db.Model):
         # use the friend_ids list to filter reviews
         restaurants = db.session.query(
             Review.yelp_restaurant_id,
-            Review.rating
         ).filter(
             Review.user_id.in_(friend_ids),
             Review.rating == target_rating
-        ).group_by(
-            Review.yelp_restaurant_id
-        ).all()
+        ).distinct().all()
 
-        return restaurants
+        #Create a list to hold the restuarant ids
+        restaurant_ids = []
+        for result in restaurants:
+            restaurant_ids.append(result.yelp_restaurant_id)
+
+
+        return restaurant_ids
 
 class Review(db.Model):
     """
