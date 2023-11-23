@@ -153,6 +153,9 @@ class User(db.Model):
         for friend in self.get_all_friends():
             friend_ids.append(friend.id)
 
+        if not friend_ids:
+            return []
+
         # use the friend_ids list to filter reviews
         restaurants = db.session.query(
             Review.yelp_restaurant_id,

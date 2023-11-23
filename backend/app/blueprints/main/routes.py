@@ -144,7 +144,7 @@ def get_restaurants_by_friend_rating():
     #Get the current users id
     current_user_id = get_jwt_identity()
     #Get the rating from the query parameter
-    target_rating = request.args.get('rating')
+    target_rating = int(request.args.get('rating'))
 
     #Fetch the user from the database
     user = User.find_by_id(current_user_id)
