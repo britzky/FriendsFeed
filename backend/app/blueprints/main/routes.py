@@ -161,7 +161,7 @@ def get_restaurants_by_friend_rating():
         if 'error' not in restaurant:
             restaurants.append(restaurant)
 
-    return jsonify({'restaurants': restaurants})
+    return jsonify(restaurants)
 
 # Get restaurant by id from yelp
 @main.route('/restaurants/<string:yelp_restaurant_id>', methods=['GET'])
