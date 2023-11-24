@@ -151,8 +151,15 @@ def get_restaurants_by_friend_rating():
     if not user:
         return jsonify({"message": "User not found"}), 404
 
-    # Use the method from the User model to fetch restaurants
-    restaurants = user.get_restaurants_by_friend_rating(target_rating)
+    # Use the method from the User model to fetch restaurant ids
+    restaurant_ids = user.get_restaurants_by_friend_rating(target_rating)
+
+    # Fetch the restaurants from the Yelp API
+    restaurants = []
+    for restaurant_id in restaurant_ids:
+        restaurant = get_restaurant_by_id(restaurant_id)
+        if 'error' not in restaurant:
+            restaurants.append(restaurant)
 
     return jsonify({'restaurants': restaurants})
 
