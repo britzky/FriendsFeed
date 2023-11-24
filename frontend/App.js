@@ -4,6 +4,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { FriendProvider } from "./context/FriendContext";
 import { ReviewProvider } from "./context/ReviewContext";
 import { LocationProvider } from "./context/LocationContext";
+import { RestaurantProvider } from "./context/RestaurantContext";
 import { AppNavigator } from "./navigation/AppNavigator";
 
 
@@ -23,7 +24,9 @@ export default function App() {
       <FriendProvider>
         <ReviewProvider>
           <LocationProvider>
-            <AppNavigator style={styles.container} />
+            <RestaurantProvider>
+              <AppNavigator style={styles.container} />
+            </RestaurantProvider>
           </LocationProvider>
         </ReviewProvider>
         <StatusBar style="auto" />

@@ -1,11 +1,16 @@
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useState, useContext, createContext } from 'react'
+import { useAuth } from '../context/AuthContext'
 
-export const useRestaurantFetch = () => {
+const RestaurantContext = createContext()
+
+export const useRestaurant = () => {
+    return useContext(RestaurantContext)
+}
+
+export const RestaurantProvider = ({ children }) => {
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-
     const { accessToken } = useAuth();
 
     const fetchFriendReviewedRestaurants = async (location) => {
@@ -60,5 +65,46 @@ export const useRestaurantFetch = () => {
             setLoading(false);
         }
     }
-    return { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine}
+
+    // function to pass selected rating to the ratings dropdown
+    const fetchRestaurantsByFriendRating = async (rating) => {
+        try {
+            setLoading(true);
+            setRestaurants([]);
+            const response = await fetch(`https://colab-test.onrender.com/restaurants-by-friend-rating?rating=${rating}`, {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+            },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log('These are the restaurants', data);
+            setRestaurants(data);
+        } else {
+            console.log('Error fetching restaurants:', response.status, await response.text());
+        }
+        } catch (error) {
+        console.error('Error fetching restaurants:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const contextValue = {
+        restaurants,
+        loading,
+        error,
+        fetchFriendReviewedRestaurants,
+        fetchRestaurantsByCuisine,
+        fetchRestaurantsByFriendRating,
+    };
+
+  return (
+    <RestaurantContext.Provider value={contextValue}>
+      {children}
+    </RestaurantContext.Provider>
+  )
 }
+

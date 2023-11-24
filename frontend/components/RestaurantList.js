@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { useRestaurantFetch } from '../hooks/useRestaurantFetch';
+import { useRestaurant } from '../context/RestaurantContext';
 import { useNavigation } from '@react-navigation/native';
 import RestaurantCard from './RestaurantCard';
 import { useReview } from '../context/ReviewContext';
@@ -9,12 +9,11 @@ import { useFriends } from '../context/FriendContext';
 
 export const RestaurantList = ({ location, selectedCuisine }) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Restaurant selected by the user
-    const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurantFetch(); // Custom hook to fetch restaurants with loading and error states
+    const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurant();
     const navigation = useNavigation(); // Navigation hook
     const { avatars, fetchAvatars } = useReview(); // Custom hook to fetch and use friend avatars
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
     const { friends } = useFriends(); // Custom hook to fetch the friends list
-    console.log("Selected Cuisine in RestaurantList: ", selectedCuisine)
     // Side effect to fetch friend-reviewed restaurants
     useEffect(() => {
         console.log("Use effect triggered in RestaurantList :", selectedCuisine)

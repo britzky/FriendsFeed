@@ -70,7 +70,7 @@ const RestaurantCard = ({
         </View>
         <View style={[styles.innerContainer]}>
           <Text style={styles.title}>{restaurantName}</Text>
-          {ratingComponent}
+          {rating && ratingComponent}
           <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>

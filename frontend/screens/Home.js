@@ -4,13 +4,17 @@ import { useAuth } from '../context/AuthContext';
 import { Searchbar } from '../components/Searchbar';
 import { CuisineFilter } from '../components/CuisineFilter';
 import { RestaurantList } from '../components/RestaurantList';
+import { RatingsDropdown } from '../components/RatingsDropdown';
 import { useLocation } from '../context/LocationContext';
+import { useRestaurant } from '../context/RestaurantContext';
 
 export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
+  const { fetchRestaurantsByFriendRating } = useRestaurant();
 
   // Side effect to make sure all of the details are loaded
   useEffect(() => {
@@ -33,13 +37,20 @@ export const Home = () => {
   const handleLogout = async () => {
     await logout();
   }
-   if (loading || !accessToken || !userDetails || !searchLocation) {
-    return (
-      <View>
-        <ActivityIndicator size="large" />
-      </View>
-    )
-   }
+
+  //function to filter restaurants by rating
+  const handleRatingSelection = (rating) => {
+    fetchRestaurantsByFriendRating(rating);
+    setShowRatingDropdown(false);
+  }
+
+  if (loading || !accessToken || !userDetails || !searchLocation) {
+   return (
+     <View>
+       <ActivityIndicator size="large" />
+     </View>
+   )
+  }
 
   return (
     <View style={styles.container}>
@@ -48,7 +59,11 @@ export const Home = () => {
         <Searchbar onSearch={handleSearch} placeholder="Search Location (ex: Brooklyn, NY)" />
       </View>
       <View>
-        <Button title='Cuisine' onPress={() => setModalVisible(true)} />
+        <View style={styles.ButtonContainer}>
+          <Button title="Ratings" onPress={() => setShowRatingDropdown(true)} />
+          <Button title='Cuisine' onPress={() => setModalVisible(true)} />
+        </View>
+        {showRatingDropdown && <RatingsDropdown onRatingSelect={handleRatingSelection} />}
         <Modal
           animationType="slide" // You can change this to 'fade' or 'none'
           transparent={true} // Set to true if you want to show the underlying content
@@ -117,5 +132,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center', // Centers the modal vertically in the container
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
   },
+  ButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '50%',
+    height: '25%',
+    marginRight: 20
+   },
 
 });
