@@ -159,6 +159,7 @@ def get_restaurants_by_friend_rating():
     for restaurant_id in restaurant_ids:
         restaurant = get_restaurant_by_id(restaurant_id)
         if 'error' not in restaurant:
+            restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
             restaurants.append(restaurant)
 
     return jsonify(restaurants)
