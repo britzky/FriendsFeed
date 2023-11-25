@@ -148,9 +148,7 @@ export const TempHome = () => {
       )}
       <View style={styles.headerContainer}>
         <Searchbar onSearch={handleSearch} placeholder="Search Location (ex: Brooklyn, NY)" />
-        <TouchableOpacity onPress={handlePress}>
-          <AntDesign style={styles.icon} name="adduser" />
-        </TouchableOpacity>
+  
       </View>
         <FlatList
           data={restaurants.businesses}

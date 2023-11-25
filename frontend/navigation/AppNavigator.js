@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -15,6 +15,12 @@ import { Review } from "../screens/Review";
 import { ChooseAvatar } from "../screens/ChooseAvatar";
 import { Home } from "../screens/Home";
 import { SearchRestaurant } from "../screens/SearchRestaurant";
+import Icon from 'react-native-vector-icons/Feather';
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Material from "react-native-vector-icons/Ionicons";
+import { Keyboard } from 'react-native';
+
+
 
 enableScreens();
 
@@ -24,12 +30,66 @@ const Stack = createStackNavigator();
 
 
 function HomeTabs() {
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // Keyboard is open
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // Keyboard is closed
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+
+
+
+
+
+
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Friend" component={Friend} />
+    <Tab.Navigator
+    screenOptions={{
+      tabBarActiveTintColor: '#739072',
+      tabBarStyle: { display: keyboardVisible ? 'none' : 'flex' },
+    }}
+    >
+      <Tab.Screen name="Home" component={Home} options={{
+        tabBarIcon: ({color, size}) => (
+          <Icon name="home" color={color} size={size}/>
+        ),
+        tabBarLabel: () => null,
+      
+      }}/>
+      <Tab.Screen name="Friend" component={Friend} 
+      options={{
+        tabBarIcon: ({color, size}) => (
+          <AntDesign name="addusergroup" color={color} size={size}/>
+        ),
+        tabBarLabel: () => null
+      }}
+      
+      />
       <Tab.Screen name="TempHome" component={TempHome}  />
-      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant} />
+      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant} 
+      options={{
+        tabBarIcon: ({color, size}) => (
+          <Material name="restaurant-outline" color={color} size={size}/>
+        ),
+        tabBarLabel: () => null
+      }}
+      />
     </Tab.Navigator>
   );
 }
