@@ -246,7 +246,7 @@ def follow_friend():
         return jsonify({'message': "Missing friend username in request"}), 400
 
     # define the user name of the friend we want to follow
-    friend_username = data['friend_username']
+    friend_username = data['friend_username'].strip()
     # fetch the data of the current user from the database
     current_user = User.find_by_id(current_user_id)
     # fetch the data of the friend user from the database
@@ -283,7 +283,7 @@ def remove_friend():
         return jsonify({"message": "Missing friend user name in request"}), 400
 
     # define the username of the friend we want to unfollow
-    friend_username = data['friend_username']
+    friend_username = data['friend_username'].strip()
     #fetch the current user from the database
     current_user = User.find_by_id(current_user_id)
     # fetch the friend user from the database
