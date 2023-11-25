@@ -1,20 +1,32 @@
-import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { avatars } from "../assets";
 import { Rating } from "react-native-ratings";
 
-
-const windowWidth = Dimensions.get('window').width;
+const windowWidth = Dimensions.get("window").width;
 
 const isLargeScreen = windowWidth > 600;
 const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
 const isSmallScreen = windowWidth <= 400;
 
 const RestaurantCard = ({
-  onPress, onReviewPress, restaurantName, imageUrl, cuisine, rating,
-  isIndividual, address, friendAvatars
+  onPress,
+  onReviewPress,
+  restaurantName,
+  imageUrl,
+  cuisine,
+  rating,
+  isIndividual,
+  address,
+  friendAvatars,
 }) => {
-
   //Turn friend rating into stars
   const ratingComponent = (
     <Rating
@@ -23,26 +35,27 @@ const RestaurantCard = ({
       imageSize={20}
       style={styles.icon2}
     />
-  )
+  );
 
   return isIndividual ? (
     <View style={styles.gridItem}>
       <View>
-        <Image source={{ uri: imageUrl,}} style={styles.restaurantImage} />
+        <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
       </View>
       <View>
-        {friendAvatars && friendAvatars.map((avatar, index) => (
-          <Image
-            key={index}
-            source={avatars[avatar]}
-            style={styles.avatar}
-          />
-        ))}
+        {friendAvatars &&
+          friendAvatars.map((avatar, index) => (
+            <Image key={index} source={avatars[avatar]} style={styles.avatar} />
+          ))}
       </View>
       <Text style={styles.title}>{restaurantName}</Text>
-      {rating && ratingComponent}
+      <Text>{rating && ratingComponent}</Text>
       <Text style={styles.address}>{address}</Text>
-      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
+      <Pressable
+        android_ripple={{ color: "#3A4D39" }}
+        style={styles.review}
+        onPress={onReviewPress}
+      >
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -59,22 +72,27 @@ const RestaurantCard = ({
         <View>
           <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
+        <Text style={styles.title}>{restaurantName}</Text>
         <View style={styles.avatarContainer}>
-        {friendAvatars && friendAvatars.map((avatar, index) => (
-          <Image
-            key={index}
-            source={avatars[avatar]}
-            style={styles.avatar}
-          />
-        ))}
+          {friendAvatars &&
+            friendAvatars.map((avatar, index) => (
+              <Image
+                key={index}
+                source={avatars[avatar]}
+                style={styles.avatar}
+              />
+            ))}
         </View>
         <View style={[styles.innerContainer]}>
-          <Text style={styles.title}>{restaurantName}</Text>
-          {rating && ratingComponent}
+          <Text style={styles.rating}>{rating && ratingComponent}</Text>
           <Text style={styles.cuisine}>{cuisine}</Text>
         </View>
       </Pressable>
-      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={onReviewPress}>
+      <Pressable
+        android_ripple={{ color: "#3A4D39" }}
+        style={styles.review}
+        onPress={onReviewPress}
+      >
         <Text style={styles.text}>Write a Review</Text>
       </Pressable>
     </View>
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     alignItems: "flex-start",
     alignSelf: "stretch",
-  marginBottom: 4,
+    marginBottom: 4,
   },
   restaurantImage: {
     width: "100%",
@@ -124,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#739072",
     marginVertical: 30,
     padding: 0,
-    borderRadius: 10
+    borderRadius: 10,
   },
   text: {
     color: "white",
@@ -143,8 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignSelf: "stretch",
     fontSize: 16,
-
-
+   
   },
   icon2: {
     flexDirection: "row",
@@ -152,23 +169,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 5,
     marginRight: 10,
-    color: 'white'
+    color: "white",
   },
   friends: {
     alignItems: "flex-start",
     alignSelf: "stretch",
     fontSize: 16,
-    fontFamily: "Roboto"
+    fontFamily: "Roboto",
   },
   avatar: {
     height: 25,
     width: 25,
-    marginTop: 0
+    marginTop: 0,
   },
   avatarContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     // Add additional styling as needed, e.g., padding or margin
   },
-
+  rating: {
+    marginRight: 300
+  }
 });
