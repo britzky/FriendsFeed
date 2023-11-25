@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from sqlalchemy import func
 from werkzeug.security import generate_password_hash, check_password_hash
 
 friendship = db.Table('friendship',
@@ -99,11 +100,10 @@ class User(db.Model):
     def get_all_reviews_by_friends(self):
         return Review.query.filter(Review.user_id.in_([friend.id for friend in self.get_all_friends()]))
 
-
-    # search for users by username
     @classmethod
     def find_by_username(cls, username):
-        return cls.query.filter(cls.username.ilike(username)).first()
+        # Trim whitespace from the stored username and compare it case-insensitively
+        return cls.query.filter(func.trim(cls.username).ilike(username)).first()
 
     # Search for users by if
     @classmethod
