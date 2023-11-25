@@ -4,6 +4,7 @@ from app.models import User, Cuisine, Review
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.yelp_api import get_restaurants_by_location, get_restaurants_by_location_and_cuisine, get_restaurant_by_id, get_restaurant_by_name
 from app import db
+import logging
 
 ##### Fetch from yelp #####
 
@@ -309,6 +310,8 @@ def remove_friend():
 @main.route('/find-friend/<string:username>', methods=['GET'])
 @jwt_required(optional=True) # optional jwt because we want to allow users to see other users profiles without being logged in
 def find_friend(username):
+    #Log the incoming request
+    logging.info(f"Finding friend with username: {username}")
     # Define the current user ID using the JWT, if present
     current_user_id = get_jwt_identity()
     is_already_friend = False
@@ -317,6 +320,7 @@ def find_friend(username):
     user_to_find = User.find_by_username(username)
     #Check if the user exisits
     if not user_to_find:
+        logging.error(f"User {username} not found in database")
         return jsonify({"message": "User not found"}), 404
 
     # If a current userID is provided, check if the user is already a friend
@@ -335,6 +339,7 @@ def find_friend(username):
         "following": is_already_friend
     }
 
+    logging.info(f"User found: {user_data}")
     return jsonify(user_data), 200
 
 
