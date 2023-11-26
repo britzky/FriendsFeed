@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Modal,
-  Text,
-  Button,
-  ActivityIndicator,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../context/AuthContext";
+import { useNavigation } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
 import { CuisineFilter } from "../components/CuisineFilter";
 import { RestaurantList } from "../components/RestaurantList";
@@ -21,14 +14,28 @@ export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [resetFilters, setResetFilters] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
   const { fetchRestaurantsByFriendRating } = useRestaurant();
+
+  const navigation = useNavigation();
 
   // Side effect to make sure all of the details are loaded
   useEffect(() => {
     if (isLoggedIn && userDetails) setSearchLocation(userDetails.location);
   }, [isLoggedIn, userDetails]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      // Reset filters when leaving the Home screen
+      setSelectedCuisine(null);
+      // Add any other filter resets here
+    });
+
+    return unsubscribe; // Clean up the listener when the component unmounts
+  }, [navigation]);
+
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedLocation) => {
@@ -38,7 +45,8 @@ export const Home = () => {
   //function to pass selected cuisine to the cuisine filter
   const handleApplyCuisineFilter = (cuisine) => {
     setSelectedCuisine(cuisine);
-    console.log("Selected Cuisine: ", cuisine);
+    setModalVisible(false);
+    setResetFilters(false);
   };
 
   // function to logout
@@ -62,7 +70,6 @@ export const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Home</Text>
       <View style={styles.searchContainer}>
         <Searchbar
           onSearch={handleSearch}
@@ -87,9 +94,6 @@ export const Home = () => {
             <Text style={styles.text}>Cuisines</Text>
             <Icon name="keyboard-arrow-down" size={24}/>
           </Pressable>
-
-          {/* <Button title="Ratings" onPress={() => setShowRatingDropdown(true)} />
-          <Button title="Cuisine" onPress={() => setModalVisible(true)} /> */}
         </View>
         {showRatingDropdown && (
           <RatingsDropdown onRatingSelect={handleRatingSelection} />
@@ -102,30 +106,31 @@ export const Home = () => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalView}>
-              <CuisineFilter
-                onApplyFilter={handleApplyCuisineFilter}
-                onClose={() => setModalVisible(false)}
-                fetchCuisinesUrl={
-                  "https://colab-test.onrender.com/get-cuisines"
-                }
-              />
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                <CuisineFilter
+                  onApplyFilter={handleApplyCuisineFilter}
+                  onClose={() => setModalVisible(false)}
+                  fetchCuisinesUrl={
+                    "https://colab-test.onrender.com/get-cuisines"
+                  }
+                />
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </View>
       <View style={styles.RestaurantListContainer}>
         <RestaurantList
           location={searchLocation}
           selectedCuisine={selectedCuisine}
-        />
+          />
       </View>
       <View>
         <Pressable onPress={handleLogout} style={styles.logout}>
                 <Text>Logout</Text>
         </Pressable >
-        <Button title="Logout"  />
       </View>
     </View>
   );
@@ -193,7 +198,7 @@ const styles = StyleSheet.create({
   alignItems: 'center', // Centers children vertically
   justifyContent: 'center',
   // ... other existing styles
-  marginRight: 15, 
+  marginRight: 15,
   },
   text: {
     fontSize: 16,
