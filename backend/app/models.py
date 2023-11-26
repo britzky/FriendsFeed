@@ -80,6 +80,9 @@ class User(db.Model):
 
     # remove friend
     def remove_friend(self, user):
+        # Prevent removing self friendship
+        if self.id == user.id:
+            raise ValueError("Cannot remove self from friends list")
         if self.is_friend(user):
             self.friends.remove(user)
             db.session.commit()
@@ -171,6 +174,28 @@ class User(db.Model):
 
 
         return restaurant_ids
+
+    def delete_account(self):
+        """
+        Deletes the user's account from the database.
+        """
+
+        # Delete the users reviews
+        for review in self.reviews.all():
+            db.session.delete(review)
+
+        # Remove user from friends lists
+        for friend in self.get_all_friends():
+            friend.remove_friend(self)
+
+        # Delete the user from followed_by lists
+        for follower in self.followed_by:
+            follower.remove_friend(self)
+
+        # Delete the user
+        db.session.delete(self)
+        db.session.commit()
+
 
 class Review(db.Model):
     """

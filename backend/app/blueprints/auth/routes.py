@@ -28,8 +28,8 @@ def create_user_response(user, message, status_code):
 
     Returns:
         response (Response): A Flask Response object containing a JSON payload
-                            and an HttpOnly cookie with the JWT token.
-
+                            with the user's details, a success message, and
+                            HTTP status code.
     Side Effects:
         Sets an HttpOnly cookie in the response object
 
@@ -98,6 +98,9 @@ def register():
 
         # Save the new user to the database
         new_user.save_to_db()
+
+        # Make the new user friends with themself
+        new_user.add_friend(new_user)
         # Generate a response containing the new user's details, JWT token and HTTP status code
         return create_user_response(new_user, "Logged in successfully", 201)
     except ValidationError as err:
@@ -128,7 +131,7 @@ def update_zipcode():
     user.update_zipcode(new_location)
 
     # Return a success response
-    return jsonify({"message": "Zipcode updated successfully"}), 200
+    return jsonify({"message": "Location updated successfully"}), 200
 
 
 @auth.route('/signin', methods=["POST"])
@@ -234,6 +237,31 @@ def refresh():
 @auth.route('/health', methods=['GET'])
 def health():
     return jsonify({"message": "OK"}), 200
+
+@auth.route('/delete-account', methods=['POST'])
+@jwt_required()
+def delete_account():
+    """
+    Deletes a user's account from the database
+    """
+    try:
+        # get the current users id
+        current_user_id = get_jwt_identity()
+
+        #fetch the user from the database using the ID
+        user = User.query.get(current_user_id)
+
+        #Check if the user exists
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+
+        # Delete the users reviews
+        user.delete_account()
+
+        # Return a success message
+        return jsonify({"message": "Account deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": "An error occurred during account deletion"}), 500
 
 
 
