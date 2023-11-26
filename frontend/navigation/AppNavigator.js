@@ -3,7 +3,6 @@ import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { TempHome } from "../screens/TempHome";
 import Register from "../screens/Register";
 import Login from "../screens/Login";
 import { enableScreens } from "react-native-screens";
@@ -20,14 +19,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Material from "react-native-vector-icons/Ionicons";
 import { Keyboard } from 'react-native';
 
-
-
 enableScreens();
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-
 
 function HomeTabs() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -52,12 +47,6 @@ function HomeTabs() {
     };
   }, []);
 
-
-
-
-
-
-
   return (
     <Tab.Navigator
     screenOptions={{
@@ -70,19 +59,18 @@ function HomeTabs() {
           <Icon name="home" color={color} size={size}/>
         ),
         tabBarLabel: () => null,
-      
+
       }}/>
-      <Tab.Screen name="Friend" component={Friend} 
+      <Tab.Screen name="Friend" component={Friend}
       options={{
         tabBarIcon: ({color, size}) => (
           <AntDesign name="addusergroup" color={color} size={size}/>
         ),
         tabBarLabel: () => null
       }}
-      
+
       />
-      <Tab.Screen name="TempHome" component={TempHome}  />
-      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant} 
+      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant}
       options={{
         tabBarIcon: ({color, size}) => (
           <Material name="restaurant-outline" color={color} size={size}/>

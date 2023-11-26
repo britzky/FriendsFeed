@@ -13,7 +13,7 @@ export const Friend = ({ route }) => {
   const [username, setUsername] = useState("");
   const { accessToken, isLoggedIn } = useAuth();
   const { fetchFriends } = useFriends();
-  const { registrationFlow } = route.params || {};
+  const { registrationFlow = false } = route.params || {};
   const navigation = useNavigation();
 
   //fetch the friend list
