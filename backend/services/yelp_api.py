@@ -55,7 +55,7 @@ def get_restaurants_by_location_and_cuisine(location, cuisine):
 # Get restaurants name and zipcode
 def get_restaurant_by_name(name, location):
     # Base URL for the Yelp Fusion API
-    api_url = f"https://api.yelp.com/v3/businesses/search?term={name}&location={location}"
+    api_url = f"https://api.yelp.com/v3/businesses/search?term={name}&location={location}&categories=restaurants"
 
     # Get the API key from the environment variable
     api_key = current_app.config['YELP_API_KEY']
