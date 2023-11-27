@@ -67,7 +67,7 @@ export const Review = () => {
   
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Rate your experience:</Text>
       <Rating
         style={styles.rating}
@@ -93,10 +93,9 @@ export const Review = () => {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    width: "100%",
+   
+    backgroundColor: "#FFFF",
+  
   },
   title: {
     fontSize: 40,
@@ -163,7 +162,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   rating: {
-    paddingVertical: 10,
+   
     backgroundColor: "#fff",
   },
   review: {

@@ -72,7 +72,7 @@ export default function Register({ route }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Friends Finder</Text>
+      <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.subtitle}>Discover new restaurants</Text>
       <Text style={styles.text2}>one friend at a time</Text>
       <TextInput

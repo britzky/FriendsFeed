@@ -41,7 +41,7 @@ const LandingPage = () => {
   return (
     <View style={styles.container}>
       <ImageBackground source={image} style={styles.image}>
-        <Text style={styles.title}>Friends Finder</Text>
+        <Text style={styles.title}>Friends Feed</Text>
         <Text style={styles.subtitle}>Discover new restaurants</Text>
         <Text style={styles.text2}>one friend at a time</Text>
 

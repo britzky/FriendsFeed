@@ -71,7 +71,7 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.paragraph}>
         Add friends so you can start seeing reviews right away. This is what
@@ -116,10 +116,7 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    paddingTop: 20,
-    justifyContent: "center",
+    backgroundColor: 'white'
   },
   title: {
     fontWeight: "bold",

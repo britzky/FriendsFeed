@@ -82,7 +82,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder</Text>
+      <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.subtitle}>Discover new restaurants</Text>
       <Text style={styles.text2}>one friend at a time</Text>
       <TextInput
