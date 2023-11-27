@@ -1,42 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  ImageBackground,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable, ImageBackground } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import image from "../assets/Landing_Page.jpeg";
-import { useFonts } from "expo-font";
-import { useEffect, useState } from "react";
-import * as Font from 'expo-font';
 
 const LandingPage = () => {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
-
   const navigate = useNavigation();
-
-  useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        'LuckiestGuy-Regular': require('../assets/fonts/LuckiestGuy-Regular.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
-      });
-      setFontsLoaded(true);
-    }
-
-    loadFonts();
-  }, []);
-
-  if (!fontsLoaded) {
-    return null; // Or some loading component
-  }
-
-  
-
 
   return (
     <View style={styles.container}>

@@ -129,7 +129,7 @@ export const Home = () => {
       </View>
       <View>
         <Pressable onPress={handleLogout} style={styles.logout}>
-                <Text>Logout</Text>
+            <Text style={styles.logoutText}>Logout</Text>
         </Pressable >
       </View>
     </View>
@@ -206,6 +206,10 @@ const styles = StyleSheet.create({
   },
   logout: {
     position: 'relative',
-    bottom: 50
+    bottom: 50,
+  },
+  logoutText: {
+    fontFamily: 'LuckiestGuy-Regular',
+    fontSize: 20,
   }
 });
