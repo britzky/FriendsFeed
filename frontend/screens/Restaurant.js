@@ -18,6 +18,7 @@ const Restaurant = () => {
     fetchAvatars(restaurant.id, accessToken);
   }, [restaurant.id, accessToken]);
 
+  console.log("These are the avatars in the Restaurant screen", avatars)
   return (
       <View style={styles.container}>
         <RestaurantCard
@@ -26,7 +27,7 @@ const Restaurant = () => {
           cuisine={restaurant.categories.map(category => category.title).join(", ")}
           rating={restaurant.rating}
           address={restaurant.location.display_address.join(", ")}
-          onReviewPress={() => navigation.navigate("Review", { yelpID: restaurant.id })}
+          onReviewPress={() => navigation.navigate("Review", { yelpId: restaurant.id })}
           isIndividual={true}
           friendAvatars={avatars[restaurant.id]}
         />

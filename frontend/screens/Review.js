@@ -1,17 +1,10 @@
-import React, { useState, useEffect,  } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
+import StarRating from "react-native-star-rating-widget";
 
 
 const windowWidth = Dimensions.get('window').width;
@@ -57,22 +50,26 @@ export const Review = () => {
       const result = await response.json();
       console.log("This is the review being sent to the backend", result);
       if (response.ok) {
-        navigation.goBack();
+        navigation.navigate("Home");
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-  
+
 
   return (
     <View>
       <Text>Rate your experience:</Text>
-      <Rating
-        style={styles.rating}
-        showRating
-        onFinishRating={handleRatingChange}
+      <StarRating
+        rating={rating}
+        onChange={setRating}
+        maxStars={5}
+        starSize={32}
+        color='black' // or any color you want
+        emptyColor='black' // or any other color for empty stars
+        enableHalfStar={false}
       />
       <Text>Share some details of your experience. Consider food, ambience and service.</Text>
       <TextInput
@@ -86,7 +83,7 @@ export const Review = () => {
       <TouchableOpacity style={styles.review} onPress={handleSubmit}>
         <Text style={styles.text}>Post Review</Text>
       </TouchableOpacity>
-      
+
     </View>
   );
 };
@@ -167,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   review: {
-    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200, 
+    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200,
     paddingVertical: 15,
     backgroundColor: "#739072",
     marginVertical: 30,

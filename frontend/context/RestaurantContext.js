@@ -27,7 +27,6 @@ export const RestaurantProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 setRestaurants(data);
-                console.log("Friend reviewed restaurants", data);
             } else {
                 const errorText = await response.text();
                 setError(new Error(`Failed to fetch data: ${errorText}`));
