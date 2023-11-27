@@ -39,9 +39,11 @@ const RestaurantCard = ({
 
   return isIndividual ? (
     <View style={styles.gridItem}>
-      <View>
-        <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
-      </View>
+      {imageUrl && (
+        <View>
+          <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
+        </View>
+      )}
       <View>
         {friendAvatars &&
           friendAvatars.map((avatar, index) => (
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignSelf: "stretch",
     fontSize: 16,
-   
+
   },
   icon2: {
     flexDirection: "row",
