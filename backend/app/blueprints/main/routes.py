@@ -104,11 +104,10 @@ def get_friend_avatars_for_restaurant(yelp_restaurant_id):
     for review in reviews:
         # Fetch the user who wrote the review
         review_author = User.find_by_id(review.user_id)
-        # if the friend hasn't been assigned ann avater yet, assign the next one
-        if review_author.id not in friend_avatar_map:
-            friend_avatar_map[review_author.id] = avatars[len(friend_avatar_map) % len(avatars)]
+        # Use the persistent profile_picture as the avatar
+        friend_avatar_map[review_author.id] = review_author.profile_picture
 
-    friend_avatars = [friend_avatar for _, friend_avatar in friend_avatar_map.items()]
+    friend_avatars = list(set(friend_avatar_map.values()))
 
     return jsonify(friend_avatars), 200
 
