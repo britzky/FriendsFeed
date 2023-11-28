@@ -61,6 +61,7 @@ export const ReviewProvider = ({ children }) => {
                 if (response.ok) {
                     const data = await response.json();
                     setAvatars(prevAvatars => ({ ...prevAvatars, [restaurantId]: data }));
+                    console.log("These are the avatars", data)
                     setFetchedRestaurants(prev => new Set(prev.add(restaurantId)));
                 } else {
                     console.log("Error fetching avatars:", response.status, await response.text());

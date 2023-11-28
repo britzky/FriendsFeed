@@ -1,14 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  Dimensions,
-} from "react-native";
-import AntDesign from "react-native-vector-icons/AntDesign";
+import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
 import { avatars } from "../assets";
-import { Rating } from "react-native-ratings";
+import StarRating from "react-native-star-rating-widget";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -29,14 +21,17 @@ const RestaurantCard = ({
 }) => {
   //Turn friend rating into stars
   const ratingComponent = (
-    <Rating
-      readonly
-      startingValue={rating}
-      imageSize={20}
-      style={styles.icon2}
+    <StarRating
+      rating={rating}
+      maxStars={5}
+      starSize={20}
+      color='black' // or any color you want
+      emptyColor='black' // or any other color for empty stars
+      enableHalfStar={true}
+      enableSwiping={false}
+      starStyle={{ margin: 1 }}
     />
   );
-
   return isIndividual ? (
     <View style={styles.gridItem}>
       {imageUrl && (
@@ -172,7 +167,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 5,
     marginRight: 10,
-    color: "white",
   },
   friends: {
     alignItems: "flex-start",
