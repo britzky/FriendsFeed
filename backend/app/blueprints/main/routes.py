@@ -63,8 +63,6 @@ def restaurants_friend_reviewed():
 
     # Extract the IDs from the results
     yelp_restaurant_ids = [restaurant['id'] for restaurant in results]
-    print("Yelp API Restaurant IDs:", yelp_restaurant_ids)
-
 
     # Get the current users id and fetch friends reviews
     current_user_id = get_jwt_identity()
@@ -82,7 +80,7 @@ def restaurants_friend_reviewed():
             if restaurant_details:
                 restaurant_details['friend_ratings'] = user.get_average_rating_by_friends(review.yelp_restaurant_id)
                 friend_reviewed_restaurants[review.yelp_restaurant_id] = restaurant_details
-    print("Friend-reviewed restaurants:", friend_reviewed_restaurants)
+
     return jsonify(list(friend_reviewed_restaurants.values()))
 
 @main.route('/restaurants/<string:yelp_restaurant_id>/friend-avatars', methods=['GET'])
