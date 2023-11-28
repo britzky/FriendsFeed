@@ -61,21 +61,29 @@ def restaurants_friend_reviewed():
     # Extract the 'businesses' list from the response
     results = response.get('businesses', []) if isinstance(response, dict) else []
 
+    # Extract the IDs from the results
+    yelp_restaurant_ids = [restaurant['id'] for restaurant in results]
+    print("Yelp API Restaurant IDs:", yelp_restaurant_ids)
+
+
     # Get the current users id and fetch friends reviews
     current_user_id = get_jwt_identity()
     user = User.find_by_id(current_user_id)
     friend_ids = [friend.id for friend in user.get_all_friends()]
     friend_reviews = Review.query.filter(Review.user_id.in_(friend_ids)).all()
 
-    # Filter the results to only include restaurants that have been reviewed by friends
-    reviewed_restaurant_ids = [review.yelp_restaurant_id for review in friend_reviews]
-    filtered_results = [restaurant for restaurant in results if restaurant['id'] in reviewed_restaurant_ids]
+    # Dictionary to store friend-reviewed restaurants with details
+    friend_reviewed_restaurants = {}
 
-    # Add average rating to each restaurant
-    for restaurant in filtered_results:
-        restaurant['friend_ratings'] = user.get_average_rating_by_friends(restaurant['id'])
-
-    return jsonify(filtered_results)
+    for review in friend_reviews:
+        # Check if the restaurant is already added to avoid duplicate fetches
+        if review.yelp_restaurant_id not in friend_reviewed_restaurants:
+            restaurant_details = get_restaurant_by_id(review.yelp_restaurant_id)
+            if restaurant_details:
+                restaurant_details['friend_ratings'] = user.get_average_rating_by_friends(review.yelp_restaurant_id)
+                friend_reviewed_restaurants[review.yelp_restaurant_id] = restaurant_details
+    print("Friend-reviewed restaurants:", friend_reviewed_restaurants)
+    return jsonify(list(friend_reviewed_restaurants.values()))
 
 @main.route('/restaurants/<string:yelp_restaurant_id>/friend-avatars', methods=['GET'])
 @jwt_required()
