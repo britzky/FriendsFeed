@@ -11,18 +11,15 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Restaurant selected by the user
     const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurant();
     const navigation = useNavigation(); // Navigation hook
-    const { avatars, fetchAvatars } = useReview(); // Custom hook to fetch and use friend avatars
+    const { avatars, fetchAvatars, reviews } = useReview(); // Custom hook to fetch and use friend avatars
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
     const { friends } = useFriends(); // Custom hook to fetch the friends list
     // Side effect to fetch friend-reviewed restaurants
     useEffect(() => {
-        console.log("Use effect triggered in RestaurantList :", selectedCuisine)
         if (selectedCuisine) {
             fetchRestaurantsByCuisine(location, selectedCuisine);
-        } else {
-            fetchFriendReviewedRestaurants(location);
         }
-    }, [location, selectedCuisine, accessToken, friends]);
+    }, [ selectedCuisine, accessToken, friends, reviews]);
 
     // Side effect to fetch avatars for each restaurant
     useEffect(() => {
@@ -31,7 +28,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
                 fetchAvatars(restaurant.id, accessToken);
             });
         }
-    }, [restaurants, accessToken]);
+    }, [restaurants, accessToken, friends, reviews]);
 
     // If the loading state is active (true), display the ActivityIndicator
     if (loading) {

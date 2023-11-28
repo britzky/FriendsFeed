@@ -11,6 +11,7 @@ export const RestaurantProvider = ({ children }) => {
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [updateRestaurants, setUpdateRestaurants] = useState(false); // Added this state to update the restaurants list after a review is posted
     const { accessToken } = useAuth();
 
     const fetchFriendReviewedRestaurants = async (location) => {
@@ -91,6 +92,10 @@ export const RestaurantProvider = ({ children }) => {
         }
     }
 
+    const refreshRestaurants = () => {
+        setUpdateRestaurants(prev => !prev);
+    }
+
     const contextValue = {
         restaurants,
         loading,
@@ -98,6 +103,8 @@ export const RestaurantProvider = ({ children }) => {
         fetchFriendReviewedRestaurants,
         fetchRestaurantsByCuisine,
         fetchRestaurantsByFriendRating,
+        refreshRestaurants,
+        updateRestaurants
     };
 
   return (

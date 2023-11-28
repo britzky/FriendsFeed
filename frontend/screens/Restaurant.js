@@ -18,7 +18,6 @@ const Restaurant = () => {
     fetchAvatars(restaurant.id, accessToken);
   }, [restaurant.id, accessToken]);
 
-  console.log("These are the avatars in the Restaurant screen", avatars)
   return (
       <View style={styles.container}>
         <RestaurantCard
