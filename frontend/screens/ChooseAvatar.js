@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { avatars } from "../assets";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
@@ -23,12 +16,20 @@ export const ChooseAvatar = ({ route }) => {
   } = useAuth();
   const navigation = useNavigation();
   const { registrationFlow, formData } = route.params;
-  console.log(
-    "This is the ChooseAvatar registration flow status: ",
-    registrationFlow
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleCompleteRegistration = async (selectedAvatar) => {
+  const handleSelectAvatar = (avatar) => {
+    setSelectedAvatar(avatar);
+  };
+
+  const handleCompleteRegistration = async () => {
+    if (!selectedAvatar) {
+      alert("Please select an avatar");
+      setLoading(false)
+      return;
+    }
+    setLoading(true);
     const completedUserDetails = {
       ...formData,
       profile_picture: selectedAvatar,
@@ -52,6 +53,7 @@ export const ChooseAvatar = ({ route }) => {
         setUserDetails(data.user);
         setAccessToken(data.access_token);
         await AsyncStorage.setItem("isNewUser", "true");
+        setLoading(false)
       } else {
         console.error("Error completing registration:", data);
       }
@@ -89,7 +91,8 @@ export const ChooseAvatar = ({ route }) => {
         {Object.keys(avatars).map((key) => (
           <TouchableOpacity
             key={key}
-            onPress={() => handleCompleteRegistration(key)}
+            onPress={() => handleSelectAvatar(key)}
+            style={selectedAvatar === key ? styles.selectedAvatar : null}
           >
             <Image source={avatars[key]} style={styles.avatar} />
           </TouchableOpacity>
@@ -98,21 +101,23 @@ export const ChooseAvatar = ({ route }) => {
       <Text style={styles.subTitle2}>
         Invite 10 friends to Friends Feed to unlock these special Avatars!
       </Text>
-
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
         style={styles.buttonText}
       >
         <Text style={styles.text}>Copy Invite Link</Text>
       </Pressable>
-
-    
-
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
         style={styles.continueButton}
+        onPress={handleCompleteRegistration}
+        disabled={loading}
       >
+      {loading ? (
+        <ActivityIndicator size="small" color="#FFFFFF" />
+      ) : (
         <Text style={styles.textButton}>Continue</Text>
+      )}
       </Pressable>
     </View>
   );
@@ -181,5 +186,10 @@ const styles = StyleSheet.create({
   textButton: {
     color: "white",
     fontSize: 18,
+  },
+  selectedAvatar: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'black',
+    paddingBottom: 5,
   },
 });

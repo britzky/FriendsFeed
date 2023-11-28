@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
-import { Rating } from "react-native-ratings";
 import { avatars } from "../assets";
 import { useReview } from "../context/ReviewContext";
 import StarRating from "react-native-star-rating-widget";
