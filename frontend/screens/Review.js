@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Pressable } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
@@ -80,9 +80,9 @@ export const Review = () => {
         value={comment}
       />
 
-      <TouchableOpacity style={styles.review} onPress={handleSubmit}>
+      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.review} onPress={handleSubmit}>
         <Text style={styles.text}>Post Review</Text>
-      </TouchableOpacity>
+      </Pressable>
 
     </View>
   );
@@ -92,6 +92,8 @@ const styles = StyleSheet.create({
   container: {
    
     backgroundColor: "#FFFF",
+    flex: 1
+    
   
   },
   title: {
@@ -104,7 +106,8 @@ const styles = StyleSheet.create({
     width: "90%",
     borderColor: "gray",
     borderWidth: 1,
-    marginBottom: 15,
+    marginTop: 30,
+   
     paddingLeft: 10,
     borderRadius: 8,
     marginLeft: 20,
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 16,
-    marginLeft: 150
+    marginLeft:8
   },
   buttonText: {
     paddingHorizontal: 155,
@@ -156,18 +159,27 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 5,
     color: "white",
-    marginTop: 20,
+   
   },
   rating: {
    
     backgroundColor: "#fff",
   },
   review: {
-    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200,
     paddingVertical: 15,
     backgroundColor: "#739072",
-    marginVertical: 30,
-    padding: 0,
-    borderRadius: 10
+    borderRadius: 5,
+    marginTop: 70,
+    width: "88%", // Full-width button
+    alignItems: "center",
+    marginTop: 20,
+    marginLeft: 30
+
+    // paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200,
+    // paddingVertical: 15,
+    // backgroundColor: "#739072",
+    // marginVertical: 30,
+
+    // borderRadius: 10
   },
 });

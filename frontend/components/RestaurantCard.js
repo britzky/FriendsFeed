@@ -39,12 +39,12 @@ const RestaurantCard = ({
           <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
       )}
-      <View>
+     
         {friendAvatars &&
           friendAvatars.map((avatar, index) => (
             <Image key={index} source={avatars[avatar]} style={styles.avatar} />
           ))}
-      </View>
+      
       <Text style={styles.title}>{restaurantName}</Text>
       <Text>{rating && ratingComponent}</Text>
       <Text style={styles.address}>{address}</Text>
@@ -71,12 +71,13 @@ const RestaurantCard = ({
         </View>
         <Text style={styles.title}>{restaurantName}</Text>
         <View style={styles.avatarContainer}>
+          
           {friendAvatars &&
             friendAvatars.map((avatar, index) => (
               <Image
                 key={index}
                 source={avatars[avatar]}
-                style={styles.avatar}
+                style={[styles.avatar, { marginLeft: index * -10 }]}
               />
             ))}
         </View>
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
   avatar: {
     height: 25,
     width: 25,
-    marginTop: 0,
+  
   },
   avatarContainer: {
     flexDirection: "row",
