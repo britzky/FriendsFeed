@@ -11,6 +11,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
+import Icon from "react-native-vector-icons/SimpleLineIcons";
+
+const images = {
+  image1: require("../assets/Avocado.png"),
+  image2: require("../assets/Hamburger.png"),
+  image3: require("../assets/Cupcake.png"),
+};
 
 export const ChooseAvatar = ({ route }) => {
   const {
@@ -106,7 +113,15 @@ export const ChooseAvatar = ({ route }) => {
         <Text style={styles.text}>Copy Invite Link</Text>
       </Pressable>
 
-    
+      <View style={styles.container2}>
+        {Object.keys(images).map((key) => (
+          <View key={key} style={styles.imageContainer}>
+            <Image source={images[key]} style={styles.image} />
+
+            <Icon name="lock" size={28} color="#000" style={styles.icon} />
+          </View>
+        ))}
+      </View>
 
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
@@ -125,14 +140,15 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   title: {
-    fontWeight: "bold",
     fontSize: 24,
-    marginBottom: 50,
+    marginBottom: 30,
+    fontFamily: "LuckiestGuy-Regular",
+    color: "#3A4D39",
   },
   subTitle: {
     fontSize: 18,
     color: "black",
-    marginBottom: 20,
+    marginBottom: 10,
     width: "61%",
     textAlign: "center",
   },
@@ -176,10 +192,33 @@ const styles = StyleSheet.create({
     marginTop: 70,
     width: "80%", // Full-width button
     alignItems: "center",
-    marginTop: 130,
+    marginTop: 80,
   },
   textButton: {
     color: "white",
     fontSize: 18,
+  },
+  imageContainer: {
+    position: "relative", // Position the icon absolutely within the container
+    margin: 5,
+  },
+  container2: {
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-around", // Space items evenly
+    alignItems: "center",
+    position: "relative",
+    top: 40,
+  },
+  image: {
+    width: 80, // Smaller width
+    height: 80, // Smaller height
+    borderRadius: 25, // Half the width/height to make it circular
+  },
+  icon: {
+    position: "absolute",
+    left: "50%", // Center the icon horizontally
+    top: "50%", // Center the icon vertically
+    marginLeft: -12, // Offset by half the icon's width to center
+    marginTop: -12, // Offset by half the icon's height to center
   },
 });

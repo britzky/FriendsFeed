@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 140,
     borderRadius: 10,
+    
   },
   review: {
     paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 135 : 200,

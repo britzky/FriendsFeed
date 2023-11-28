@@ -75,10 +75,10 @@ export const Friend = ({ route }) => {
       <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.paragraph}>
         Add friends so you can start seeing reviews right away. This is what
-        makes Friends Feed so greate!
+        makes Friends Feed so great!
       </Text>
       <Searchbar onSearch={handleSearch} placeholder="Search @Username" />
-      <Text style={styles.subTitle}>Your friends will appear here</Text>
+      <Text style={styles.subTitle}>Your friends will appear here.</Text>
       <FlatList
         data={friend}
         keyExtractor={(item) => item.id.toString()}
@@ -116,7 +116,8 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white'
+    backgroundColor: "white",
+    marginTop: 50,
   },
   title: {
     fontWeight: "bold",
@@ -128,8 +129,9 @@ const styles = StyleSheet.create({
   paragraph: {
     width: "85%",
     textAlign: "center",
-    marginLeft: 30,
+    alignSelf: "center", // Centers the paragraph
     marginBottom: 20,
+    fontSize: 18,
   },
   avatarGrid: {
     flexDirection: "row",
@@ -170,4 +172,5 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
   },
+ 
 });

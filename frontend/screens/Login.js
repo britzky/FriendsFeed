@@ -126,13 +126,14 @@ const styles = StyleSheet.create({
 
   },
   title: {
-    fontSize: 40,
-    fontWeight: "bold",
+    fontSize: 24,
+    color: '#3A4D39',
     marginBottom: 20,
+    fontFamily: 'LuckiestGuy-Regular',
   },
   input: {
     height: 50,
-    width: "80%",
+    width: "85%",
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,

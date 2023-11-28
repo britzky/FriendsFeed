@@ -59,6 +59,7 @@ function HomeTabs() {
           <Icon name="home" color={color} size={size}/>
         ),
         tabBarLabel: () => null,
+        // headerShown: false
        
 
       }}/>
@@ -68,6 +69,7 @@ function HomeTabs() {
           <AntDesign name="addusergroup" color={color} size={size}/>
         ),
         tabBarLabel: () => null,
+        headerShown: false
        
       }}
 
@@ -77,7 +79,8 @@ function HomeTabs() {
         tabBarIcon: ({color, size}) => (
           <Material name="restaurant-outline" color={color} size={size}/>
         ),
-        tabBarLabel: () => null
+        tabBarLabel: () => null,
+        headerShown: false
       }}
       />
     </Tab.Navigator>

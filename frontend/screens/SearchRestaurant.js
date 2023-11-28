@@ -83,6 +83,7 @@ container: {
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 50
   },
   searchContainer: {
     width: '100%',

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as Font from 'expo-font';
+import * as Font from "expo-font";
 
 export default function Register({ route }) {
   const navigate = useNavigation();
@@ -20,8 +20,6 @@ export default function Register({ route }) {
   );
 
   const handleChange = (name, value) => {
-
-
     setFormData({ ...formData, [name]: value });
   };
 
@@ -49,14 +47,13 @@ export default function Register({ route }) {
     }
   };
 
-
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        'LuckiestGuy-Regular': require('../assets/fonts/LuckiestGuy-Regular.ttf'),
-        'Roboto-Bold': require('../assets/fonts/Roboto-Bold.ttf'),
-        'Roboto-Medium': require('../assets/fonts/Roboto-Medium.ttf'),
-        'Roboto-Regular': require('../assets/fonts/Roboto-Regular.ttf'),
+        "LuckiestGuy-Regular": require("../assets/fonts/LuckiestGuy-Regular.ttf"),
+        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
+        "Roboto-Medium": require("../assets/fonts/Roboto-Medium.ttf"),
+        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
       });
       setFontsLoaded(true);
     }
@@ -67,8 +64,6 @@ export default function Register({ route }) {
   if (!fontsLoaded) {
     return null; // Or some loading component
   }
-
-
 
   return (
     <View style={styles.container}>
@@ -121,7 +116,10 @@ export default function Register({ route }) {
         Enter your city and state so we can start showing you recommendations
         nearby.
       </Text>
-      <Text style={styles.term}>By clicking Continue you are agreeing to out <Text style={styles.boldText}>Terms & Conditions.</Text></Text>
+      <Text style={styles.term}>
+        By clicking Continue you are agreeing to out{" "}
+        <Text style={styles.boldText}>Terms & Conditions.</Text>
+      </Text>
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
         style={styles.buttonText}
@@ -139,15 +137,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#FFF",
-    paddingHorizontal: 30, // Provides padding but allows for stretching
+    paddingHorizontal: 30,
+    // Provides padding but allows for stretching
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+
+    marginBottom: 48,
     color: "#3A4D39",
     textAlign: "center",
-    fontFamily: 'LuckiestGuy-Regular'
+    fontFamily: "LuckiestGuy-Regular",
   },
   input: {
     height: 55,
@@ -173,20 +172,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   errorText: {
-    position: 'relative',
+    position: "relative",
     bottom: 15,
     color: "red",
     fontSize: 12,
-
-
   },
   text: {
     color: "white",
-    fontSize: 16,
-
+    fontSize: 18,
   },
   text2: {
-    position: 'relative',
+    position: "relative",
     top: -10,
     fontSize: 16,
     color: "#000",
@@ -214,13 +210,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: "100%", // Full-width text
     marginBottom: 30,
-
   },
   term: {
     position: "relative",
     top: 60,
   },
   boldText: {
-    fontWeight: 'bold'
-  }
+    fontWeight: "bold",
+  },
 });
