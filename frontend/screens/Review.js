@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useAuth } from "../context/AuthContext";
+import { useReview } from "../context/ReviewContext";
+import { useRestaurant } from "../context/RestaurantContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { Rating } from "react-native-ratings";
 import StarRating from "react-native-star-rating-widget";
 
 
@@ -20,42 +21,24 @@ export const Review = () => {
   const route = useRoute();
   const { yelpId } = route.params;
   const navigation = useNavigation();
-
-  const handleRatingChange = (rating) => {
-    setRating(rating);
-  };
+  const { postReview, reviewPosted, resetReviewPosted } = useReview();
+  const { refreshRestaurants } = useRestaurant();
 
   const handleCommentChange = (comment) => {
     setComment(comment);
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await fetch(
-        "https://colab-test.onrender.com/review/create",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            yelp_restaurant_id: yelpId,
-            rating,
-            comment,
-          }),
-        }
-      );
+    await postReview(yelpId, rating, comment, accessToken);
+    refreshRestaurants();
+  }
 
-      const result = await response.json();
-      console.log("This is the review being sent to the backend", result);
-      if (response.ok) {
-        navigation.navigate("Home");
-      }
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    if (reviewPosted) {
+      navigation.navigate("Home");
+      resetReviewPosted();
     }
-  };
+  }, [reviewPosted])
 
 
 
@@ -79,7 +62,6 @@ export const Review = () => {
         onChangeText={handleCommentChange}
         value={comment}
       />
-
       <TouchableOpacity style={styles.review} onPress={handleSubmit}>
         <Text style={styles.text}>Post Review</Text>
       </TouchableOpacity>

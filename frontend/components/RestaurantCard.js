@@ -39,7 +39,7 @@ const RestaurantCard = ({
           <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
       )}
-      <View>
+      <View style={styles.avatarContainer}>
         {friendAvatars &&
           friendAvatars.map((avatar, index) => (
             <Image key={index} source={avatars[avatar]} style={styles.avatar} />

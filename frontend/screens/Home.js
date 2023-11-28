@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
 import { CuisineFilter } from "../components/CuisineFilter";
 import { RestaurantList } from "../components/RestaurantList";
@@ -14,10 +14,9 @@ export const Home = () => {
   const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [resetFilters, setResetFilters] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
-  const { fetchRestaurantsByFriendRating } = useRestaurant();
+  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, updateRestaurants } = useRestaurant();
 
   const navigation = useNavigation();
 
@@ -36,6 +35,10 @@ export const Home = () => {
     return unsubscribe; // Clean up the listener when the component unmounts
   }, [navigation]);
 
+  useEffect(() => {
+    fetchFriendReviewedRestaurants(searchLocation)
+    }, [updateRestaurants])
+
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedLocation) => {
@@ -46,7 +49,6 @@ export const Home = () => {
   const handleApplyCuisineFilter = (cuisine) => {
     setSelectedCuisine(cuisine);
     setModalVisible(false);
-    setResetFilters(false);
   };
 
   // function to logout

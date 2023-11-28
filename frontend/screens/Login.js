@@ -18,10 +18,8 @@ export default function Login() {
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    password: "",
-    username: "",
-  });
+  const [formData, setFormData] = useState({ password: "", username: "" });
+  const [authError, setAuthError] = useState(null);
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -29,6 +27,7 @@ export default function Login() {
 
   const handleSubmit = async () => {
     setLoading(true);
+    setAuthError(null);
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -53,6 +52,10 @@ export default function Login() {
           await AsyncStorage.setItem("user_details", JSON.stringify(data.user));
           setUserDetails(data.user);
           setAccessToken(data.access_token);
+        } else if (response.status === 400) {
+          // Set authentication error message
+          setAuthError("Username or password is incorrect");
+          setLoading(false)
         } else {
           console.log("Login Failed:", response.status);
         }
@@ -105,7 +108,9 @@ export default function Login() {
       {errors.password && (
         <Text style={styles.errorText}>{errors.password}</Text>
       )}
-
+      {authError !== "" && (
+      <Text style={styles.errorText}>{authError}</Text>
+      )}
       <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleSubmit} disabled={loading}>
         {loading ?
           <ActivityIndicator size="small" color="#fff" />:
