@@ -60,6 +60,7 @@ function HomeTabs() {
         ),
         tabBarLabel: () => null,
         // headerShown: false
+        headerTitle: ''
        
 
       }}/>
@@ -105,8 +106,8 @@ export const AppNavigator = () => {
         {isLoggedIn ? (
           <Stack.Group>
             <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown: false}} />
-            <Stack.Screen name="Restaurant" component={Restaurant} />
-            <Stack.Screen name="Review" component={Review}  />
+            <Stack.Screen name="Restaurant" component={Restaurant} options={{  headerTitle: ''}}/>
+            <Stack.Screen name="Review" component={Review} options={{  headerTitle: ''}} />
           </Stack.Group>
         ) : (
           <Stack.Group>

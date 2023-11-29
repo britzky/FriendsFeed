@@ -45,6 +45,7 @@ export const FriendCard = ({ username, profile_picture, following, onFollowChang
 
 const styles = StyleSheet.create({
   cardContainer: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
     padding: 10,

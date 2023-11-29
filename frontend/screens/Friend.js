@@ -152,16 +152,18 @@ const styles = StyleSheet.create({
   },
 
   signUpButton: {
+  
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
     marginTop: 70,
     width: "90%", // Full-width button
     alignItems: "center",
-    marginTop: 365,
-    marginLeft: 20,
+    marginTop: 290,
+    alignSelf: 'center',
   },
   textButton: {
+    
     color: "white",
     fontSize: 18,
   },
@@ -171,6 +173,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontStyle: 'italic',
+    justifyContent: "center", // Center vertically in a flex container
+    alignItems: "center",
+    marginBottom: 20,
   },
  
 });

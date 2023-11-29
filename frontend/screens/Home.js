@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Modal,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Pressable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
@@ -16,7 +24,11 @@ export const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
-  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, updateRestaurants } = useRestaurant();
+  const {
+    fetchRestaurantsByFriendRating,
+    fetchFriendReviewedRestaurants,
+    updateRestaurants,
+  } = useRestaurant();
 
   const navigation = useNavigation();
 
@@ -36,9 +48,8 @@ export const Home = () => {
   }, [navigation]);
 
   useEffect(() => {
-    fetchFriendReviewedRestaurants(searchLocation)
-    }, [updateRestaurants])
-
+    fetchFriendReviewedRestaurants(searchLocation);
+  }, [updateRestaurants]);
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedLocation) => {
@@ -97,9 +108,10 @@ export const Home = () => {
             <Icon name="keyboard-arrow-down" size={24} />
           </Pressable>
         </View>
-
         {showRatingDropdown && (
-          <RatingsDropdown onRatingSelect={handleRatingSelection} />
+          <View style={styles.dropdownContainer}>
+            <RatingsDropdown onRatingSelect={handleRatingSelection} />
+          </View>
         )}
         <Modal
           animationType="slide" // You can change this to 'fade' or 'none'
@@ -217,5 +229,13 @@ const styles = StyleSheet.create({
   logoutText: {
     fontFamily: "LuckiestGuy-Regular",
     fontSize: 20,
+  },
+  dropdownContainer: {
+    position: "absolute",
+    top: "90%", // Position right below the filter buttons
+    right: 90,
+    zIndex: 1, // Ensure it overlays other content
+    backgroundColor: "white",
+    opacity: 0.9,
   },
 });

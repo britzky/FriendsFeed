@@ -54,7 +54,7 @@ export const Review = () => {
         emptyColor='black' // or any other color for empty stars
         enableHalfStar={false}
       />
-      <Text>Share some details of your experience. Consider food, ambience and service.</Text>
+      <Text styles={styles.paragraph}>Share some details of your experience. Consider food, ambience and service.</Text>
       <TextInput
         style={styles.input}
         multiline={true}
@@ -64,7 +64,7 @@ export const Review = () => {
       />
       <TouchableOpacity style={styles.review} onPress={handleSubmit}>
         <Text style={styles.text}>Post Review</Text>
-      </Pressable>
+      </TouchableOpacity>
 
     </View>
   );
@@ -164,4 +164,7 @@ const styles = StyleSheet.create({
 
     // borderRadius: 10
   },
+  paragraph: {
+   color: 'red'
+  }
 });
