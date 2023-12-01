@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: '#3A4D39',
+    color: '#739072',
     marginBottom: 20,
     fontFamily: 'LuckiestGuy-Regular',
   },
