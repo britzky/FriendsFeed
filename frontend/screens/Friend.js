@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 290,
     alignSelf: 'center',
+    
   },
   textButton: {
     
@@ -170,6 +171,7 @@ const styles = StyleSheet.create({
   skip: {
     justifyContent: "center", // Center vertically in a flex container
     alignItems: "center",
+    
   },
   text: {
     fontSize: 16,

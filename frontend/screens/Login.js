@@ -123,10 +123,10 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-
+    
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: "white",
     width: "100%",
 
   },
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     color: "white",
-    marginTop: 30,
+    marginTop: 10,
 
   },
   subtitle: {

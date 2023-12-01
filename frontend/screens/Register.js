@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
 
     marginBottom: 48,
-    color: "#3A4D39",
+    color: "#739072",
     textAlign: "center",
     fontFamily: "LuckiestGuy-Regular",
   },

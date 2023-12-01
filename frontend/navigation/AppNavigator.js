@@ -59,7 +59,7 @@ function HomeTabs() {
           <Icon name="home" color={color} size={size}/>
         ),
         tabBarLabel: () => null,
-        // headerShown: false
+        headerShown: false,
         headerTitle: ''
        
 

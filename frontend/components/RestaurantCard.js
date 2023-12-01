@@ -213,7 +213,8 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   address: {
-    marginTop: 7
+    marginTop: 7,
+    fontSize: 16
   },
   rating2: {
     marginTop: 8

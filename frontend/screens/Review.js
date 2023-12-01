@@ -19,7 +19,7 @@ export const Review = () => {
   const [comment, setComment] = useState("");
   const { accessToken } = useAuth();
   const route = useRoute();
-  const { yelpId } = route.params;
+  const { yelpId, restaurantName } = route.params;
   const navigation = useNavigation();
   const { postReview, reviewPosted, resetReviewPosted } = useReview();
   const { refreshRestaurants } = useRestaurant();
@@ -44,8 +44,9 @@ export const Review = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Rate your experience:</Text>
+      <Text style={styles.restaurantName}>{restaurantName}</Text>
       <StarRating
+      style={styles.rating}
         rating={rating}
         onChange={setRating}
         maxStars={5}
@@ -54,7 +55,7 @@ export const Review = () => {
         emptyColor='black' // or any other color for empty stars
         enableHalfStar={false}
       />
-      <Text styles={styles.paragraph}>Share some details of your experience. Consider food, ambience and service.</Text>
+      <Text style={styles.paragraph}>Share some details of your experience. Consider food, ambience and service.</Text>
       <TextInput
         style={styles.input}
         multiline={true}
@@ -74,8 +75,10 @@ const styles = StyleSheet.create({
   container: {
    
     backgroundColor: "#FFFF",
-    flex: 1
-    
+    flex: 1,
+    justifyContent: 'flex-start', // Adjust vertical alignment
+    alignItems: 'stretch',        // Adjust horizontal alignment
+   
   
   },
   title: {
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
     width: "90%",
     borderColor: "gray",
     borderWidth: 1,
-    marginTop: 30,
+    marginTop: 15,
    
     paddingLeft: 10,
     borderRadius: 8,
@@ -144,6 +147,10 @@ const styles = StyleSheet.create({
    
   },
   rating: {
+    flexDirection: 'row',
+    alignContent: 'flex-end',
+    marginLeft: 15,
+    marginTop: 15,
    
     backgroundColor: "#fff",
   },
@@ -152,10 +159,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#739072",
     borderRadius: 5,
     marginTop: 70,
-    width: "88%", // Full-width button
+    width: "90%", // Full-width button
     alignItems: "center",
     marginTop: 20,
-    marginLeft: 30
+    marginLeft: 20
 
     // paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200,
     // paddingVertical: 15,
@@ -165,6 +172,15 @@ const styles = StyleSheet.create({
     // borderRadius: 10
   },
   paragraph: {
-   color: 'red'
+   fontSize: 15,
+   width: '80%',
+   marginLeft: 23,
+   marginTop: 20
+
+  },
+  restaurantName: {
+    fontSize: 18,
+    marginLeft: 25,
+    fontWeight: "bold",
   }
 });
