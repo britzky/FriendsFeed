@@ -22,15 +22,16 @@ def get_restaurants_by_location(location):
     headers = {
         "Authorization": f"Bearer {api_key}"
     }
+
+    # Make the GET request to the Yelp API
+    response = yelp_session.get(api_url, headers=headers)
+
     # log weather the response was from cache or yelp
     if response.from_cache:
         logging.info(f"Response for {location} from cache")
     else:
         logging.info(f"Response for {location} from Yelp")
-
-    # Make the GET request to the Yelp API
-    response = yelp_session.get(api_url, headers=headers)
-
+        
     # Check if the request was successful
     if response.status_code == 200:
         # Parse the JSON response
