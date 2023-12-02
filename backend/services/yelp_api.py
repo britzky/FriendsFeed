@@ -8,9 +8,8 @@ import logging
 def get_restaurants_by_location(location):
     yelp_session = CachedSession(
         cache_name='yelp_cache',
-        backend='sqlalchemy',
+        backend='sqlite',
         expire_after=3600,
-        connection=current_app.config['SQLALCHEMY_DATABASE_URI']
     )
 
     # Base URL for the Yelp Fusion API
@@ -96,9 +95,8 @@ def get_restaurant_by_name(name, location):
 def get_restaurant_by_id(yelp_restaurant_id):
     yelp_session = CachedSession(
     cache_name='yelp_cache',
-    backend='sqlalchemy',
+    backend='sqlite',
     expire_after=3600,
-    connection=current_app.config['SQLALCHEMY_DATABASE_URI']
     )
     # Base URL for the Yelp Fusion API
     api_url = f"https://api.yelp.com/v3/businesses/{yelp_restaurant_id}"
