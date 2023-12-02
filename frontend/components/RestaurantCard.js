@@ -39,6 +39,9 @@ const RestaurantCard = ({
       starStyle={{ margin: 1 }}
     />
   );
+
+  const MAX_AVATARS_DISPLAYED = 3;
+
   return isIndividual ? (
     <View style={styles.gridItem}>
       {imageUrl && (
@@ -50,11 +53,11 @@ const RestaurantCard = ({
 
       <View style={styles.avatarContainer}>
         {friendAvatars &&
-          friendAvatars.map((avatar, index) => (
+          friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
             <Image
             key={index}
             source={avatars[avatar]}
-            style={[styles.avatar, { marginLeft: index * -9 }]}
+            style={[styles.avatar, { marginLeft: index * -7 }]}
             />
             ))}
             <Text style={styles.overall}>Friend’s Overall Rating</Text>
@@ -87,11 +90,11 @@ const RestaurantCard = ({
         <Text style={styles.title}>{restaurantName}</Text>
         <View style={styles.avatarContainer}>
           {friendAvatars &&
-            friendAvatars.map((avatar, index) => (
+            friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
               <Image
                 key={index}
                 source={avatars[avatar]}
-                style={[styles.avatar, { marginLeft: index * -9 }]}
+                style={[styles.avatar, { marginLeft: index * -7 }]}
               />
             ))}
           <Text style={styles.overall}>Friend’s Overall Rating</Text>
