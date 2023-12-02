@@ -26,7 +26,7 @@ const Restaurant = () => {
           cuisine={restaurant.categories.map(category => category.title).join(", ")}
           rating={restaurant.rating}
           address={restaurant.location.display_address.join(", ")}
-          onReviewPress={() => navigation.navigate("Review", { yelpId: restaurant.id })}
+          onReviewPress={() => navigation.navigate("Review", { yelpId: restaurant.id, restaurantName: restaurant.name })}
           isIndividual={true}
           friendAvatars={avatars[restaurant.id]}
         />
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22,
+    backgroundColor: 'white',
   },
   header: {
     fontSize: 20,

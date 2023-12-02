@@ -85,7 +85,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Food.Finder</Text>
+      <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.subtitle}>Discover new restaurants</Text>
       <Text style={styles.text2}>one friend at a time</Text>
       <TextInput
@@ -123,21 +123,22 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   container: {
-
+    
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: "white",
     width: "100%",
 
   },
   title: {
-    fontSize: 40,
-    fontWeight: "bold",
+    fontSize: 24,
+    color: '#739072',
     marginBottom: 20,
+    fontFamily: 'LuckiestGuy-Regular',
   },
   input: {
     height: 50,
-    width: "80%",
+    width: "85%",
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 10,
     color: "white",
-    marginTop: 30,
+    marginTop: 10,
 
   },
   subtitle: {

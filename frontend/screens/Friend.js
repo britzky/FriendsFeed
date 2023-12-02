@@ -71,14 +71,14 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.paragraph}>
         Add friends so you can start seeing reviews right away. This is what
-        makes Friends Feed so greate!
+        makes Friends Feed so great!
       </Text>
       <Searchbar onSearch={handleSearch} placeholder="Search @Username" />
-      <Text style={styles.subTitle}>Your friends will appear here</Text>
+      <Text style={styles.subTitle}>Your friends will appear here.</Text>
       <FlatList
         data={friend}
         keyExtractor={(item) => item.id.toString()}
@@ -116,10 +116,8 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    paddingTop: 20,
-    justifyContent: "center",
+    backgroundColor: "white",
+    marginTop: 50,
   },
   title: {
     fontWeight: "bold",
@@ -131,8 +129,9 @@ const styles = StyleSheet.create({
   paragraph: {
     width: "85%",
     textAlign: "center",
-    marginLeft: 30,
+    alignSelf: "center", // Centers the paragraph
     marginBottom: 20,
+    fontSize: 18,
   },
   avatarGrid: {
     flexDirection: "row",
@@ -153,24 +152,33 @@ const styles = StyleSheet.create({
   },
 
   signUpButton: {
+  
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
     marginTop: 70,
     width: "90%", // Full-width button
     alignItems: "center",
-    marginTop: 365,
-    marginLeft: 20,
+    marginTop: 290,
+    alignSelf: 'center',
+    
   },
   textButton: {
+    
     color: "white",
     fontSize: 18,
   },
   skip: {
     justifyContent: "center", // Center vertically in a flex container
     alignItems: "center",
+    
   },
   text: {
     fontSize: 16,
+    fontStyle: 'italic',
+    justifyContent: "center", // Center vertically in a flex container
+    alignItems: "center",
+    marginBottom: 20,
   },
+ 
 });

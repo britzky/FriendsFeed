@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import { avatars } from "../assets";
 import StarRating from "react-native-star-rating-widget";
 
@@ -25,8 +32,8 @@ const RestaurantCard = ({
       rating={rating}
       maxStars={5}
       starSize={20}
-      color='black' // or any color you want
-      emptyColor='black' // or any other color for empty stars
+      color="black" // or any color you want
+      emptyColor="black" // or any other color for empty stars
       enableHalfStar={true}
       enableSwiping={false}
       starStyle={{ margin: 1 }}
@@ -39,14 +46,22 @@ const RestaurantCard = ({
           <Image source={{ uri: imageUrl }} style={styles.restaurantImage} />
         </View>
       )}
+      <Text style={styles.title}>{restaurantName}</Text>
+
       <View style={styles.avatarContainer}>
         {friendAvatars &&
           friendAvatars.map((avatar, index) => (
-            <Image key={index} source={avatars[avatar]} style={styles.avatar} />
-          ))}
+            <Image
+            key={index}
+            source={avatars[avatar]}
+            style={[styles.avatar, { marginLeft: index * -9 }]}
+            />
+            ))}
+            <Text style={styles.overall}>Friend’s Overall Rating</Text>
       </View>
-      <Text style={styles.title}>{restaurantName}</Text>
-      <Text>{rating && ratingComponent}</Text>
+      
+      
+      <Text style={styles.rating2}>{rating && ratingComponent}</Text>
       <Text style={styles.address}>{address}</Text>
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
@@ -76,9 +91,10 @@ const RestaurantCard = ({
               <Image
                 key={index}
                 source={avatars[avatar]}
-                style={styles.avatar}
+                style={[styles.avatar, { marginLeft: index * -9 }]}
               />
             ))}
+          <Text style={styles.overall}>Friend’s Overall Rating</Text>
         </View>
         <View style={[styles.innerContainer]}>
           <Text style={styles.rating}>{rating && ratingComponent}</Text>
@@ -95,6 +111,7 @@ const RestaurantCard = ({
     </View>
   );
 };
+
 export default RestaurantCard;
 
 const styles = StyleSheet.create({
@@ -116,10 +133,10 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-    padding: 16,
+   
     borderRadius: 8,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: 'flex-start',
   },
   title: {
     fontWeight: "bold",
@@ -155,10 +172,10 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   cuisine: {
+    marginTop: 10,
     alignItems: "flex-start",
     alignSelf: "stretch",
     fontSize: 16,
-
   },
   icon2: {
     flexDirection: "row",
@@ -176,7 +193,6 @@ const styles = StyleSheet.create({
   avatar: {
     height: 25,
     width: 25,
-    marginTop: 0,
   },
   avatarContainer: {
     flexDirection: "row",
@@ -184,6 +200,23 @@ const styles = StyleSheet.create({
     // Add additional styling as needed, e.g., padding or margin
   },
   rating: {
-    marginRight: 300
+    flex: 1,
+    marginRight: 300,
+  },
+  overall: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    position: "relative",
+    left: 40,
+    fontSize: 16,
+    fontStyle: "italic",
+  },
+  address: {
+    marginTop: 7,
+    fontSize: 16
+  },
+  rating2: {
+    marginTop: 8
   }
 });

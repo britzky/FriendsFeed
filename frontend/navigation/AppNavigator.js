@@ -59,6 +59,9 @@ function HomeTabs() {
           <Icon name="home" color={color} size={size}/>
         ),
         tabBarLabel: () => null,
+        headerShown: false,
+        headerTitle: ''
+       
 
       }}/>
       <Tab.Screen name="Friend" component={Friend}
@@ -66,7 +69,9 @@ function HomeTabs() {
         tabBarIcon: ({color, size}) => (
           <AntDesign name="addusergroup" color={color} size={size}/>
         ),
-        tabBarLabel: () => null
+        tabBarLabel: () => null,
+        headerShown: false
+       
       }}
 
       />
@@ -75,7 +80,8 @@ function HomeTabs() {
         tabBarIcon: ({color, size}) => (
           <Material name="restaurant-outline" color={color} size={size}/>
         ),
-        tabBarLabel: () => null
+        tabBarLabel: () => null,
+        headerShown: false
       }}
       />
     </Tab.Navigator>
@@ -100,8 +106,8 @@ export const AppNavigator = () => {
         {isLoggedIn ? (
           <Stack.Group>
             <Stack.Screen name="HomeTabs" component={HomeTabs} options={{headerShown: false}} />
-            <Stack.Screen name="Restaurant" component={Restaurant} />
-            <Stack.Screen name="Review" component={Review} />
+            <Stack.Screen name="Restaurant" component={Restaurant} options={{  headerTitle: ''}}/>
+            <Stack.Screen name="Review" component={Review} options={{  headerTitle: ''}} />
           </Stack.Group>
         ) : (
           <Stack.Group>

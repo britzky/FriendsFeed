@@ -48,7 +48,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
         )
     }
 
-    // ALso added this function (handleSelectedRestaurant--- EDuardo
+   
     const handleSelectRestaurant = (restaurant) => {
         setSelectedRestaurant(restaurant);
         navigation.navigate("Restaurant", { restaurant });
@@ -64,7 +64,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
                 rating={item.friend_ratings}
                 friendAvatars={avatars[item.id]}
                 onPress={ () => handleSelectRestaurant(item)}
-                onReviewPress={ () => navigation.navigate("Review", { yelpId: item.id }) }
+                onReviewPress={ () => navigation.navigate("Review", { yelpId: item.id,  restaurantName: item.name  }) }
                 cuisine={item.categories.map((category) => category.title).join(", ")}
             />
         )

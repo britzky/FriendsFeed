@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  Modal,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Pressable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
@@ -16,7 +24,11 @@ export const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
-  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, updateRestaurants } = useRestaurant();
+  const {
+    fetchRestaurantsByFriendRating,
+    fetchFriendReviewedRestaurants,
+    updateRestaurants,
+  } = useRestaurant();
 
   const navigation = useNavigation();
 
@@ -26,7 +38,7 @@ export const Home = () => {
   }, [isLoggedIn, userDetails]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
+    const unsubscribe = navigation.addListener("blur", () => {
       // Reset filters when leaving the Home screen
       setSelectedCuisine(null);
       // Add any other filter resets here
@@ -36,9 +48,8 @@ export const Home = () => {
   }, [navigation]);
 
   useEffect(() => {
-    fetchFriendReviewedRestaurants(searchLocation)
-    }, [updateRestaurants])
-
+    fetchFriendReviewedRestaurants(searchLocation);
+  }, [updateRestaurants]);
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedLocation) => {
@@ -86,7 +97,7 @@ export const Home = () => {
             onPress={() => setShowRatingDropdown(true)}
           >
             <Text style={styles.text}>Ratings</Text>
-            <Icon name="keyboard-arrow-down" size={24}/>
+            <Icon name="keyboard-arrow-down" size={24} />
           </Pressable>
           <Pressable
             style={styles.buttonText}
@@ -94,11 +105,13 @@ export const Home = () => {
             onPress={() => setModalVisible(true)}
           >
             <Text style={styles.text}>Cuisines</Text>
-            <Icon name="keyboard-arrow-down" size={24}/>
+            <Icon name="keyboard-arrow-down" size={24} />
           </Pressable>
         </View>
         {showRatingDropdown && (
-          <RatingsDropdown onRatingSelect={handleRatingSelection} />
+          <View style={styles.dropdownContainer}>
+            <RatingsDropdown onRatingSelect={handleRatingSelection} />
+          </View>
         )}
         <Modal
           animationType="slide" // You can change this to 'fade' or 'none'
@@ -127,12 +140,12 @@ export const Home = () => {
         <RestaurantList
           location={searchLocation}
           selectedCuisine={selectedCuisine}
-          />
+        />
       </View>
       <View>
         <Pressable onPress={handleLogout} style={styles.logout}>
-            <Text style={styles.logoutText}>Logout</Text>
-        </Pressable >
+          <Text style={styles.logoutText}>Logout</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -140,11 +153,13 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 50,
     flex: 1,
     width: "100%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "white",
   },
   searchContainer: {
     width: "50%",
@@ -180,38 +195,48 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
   },
   ButtonContainer: {
-      flexDirection: 'row',
-  justifyContent: 'center', // This will center the buttons in the container
-  alignItems: 'center',
-  marginRight: 100,
-  height: 50,
-  width: 120
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+
+    width: 111,
+    position: "relative",
+    top: -20,
+    padding: 0,
   },
   buttonText: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: "#f0f0f0", // Use a light grey background for the buttons
     borderRadius: 5,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#4F6F52",
-    padding: 10,
-  borderRadius: 5,
-  flexDirection: 'row', // Aligns children (Text and Icon) in a row
-  alignItems: 'center', // Centers children vertically
-  justifyContent: 'center',
-  // ... other existing styles
-  marginRight: 15,
+
+    borderRadius: 5,
+    flexDirection: "row", // Aligns children (Text and Icon) in a row
+    // Centers children vertically
+    justifyContent: "center",
+    // ... other existing styles
+    marginRight: 15,
   },
   text: {
     fontSize: 16,
     color: "#000",
   },
   logout: {
-    position: 'relative',
+    position: "relative",
     bottom: 50,
   },
   logoutText: {
-    fontFamily: 'LuckiestGuy-Regular',
+    fontFamily: "LuckiestGuy-Regular",
     fontSize: 20,
-  }
+  },
+  dropdownContainer: {
+    position: "absolute",
+    top: "90%", // Position right below the filter buttons
+    right: 90,
+    zIndex: 1, // Ensure it overlays other content
+    backgroundColor: "white",
+    opacity: 0.9,
+  },
 });
