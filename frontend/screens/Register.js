@@ -20,8 +20,6 @@ export default function Register({ route }) {
   );
 
   const handleChange = (name, value) => {
-
-
     setFormData({ ...formData, [name]: value });
   };
 
