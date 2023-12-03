@@ -113,7 +113,7 @@ def get_friend_avatars_for_restaurant(yelp_restaurant_id):
         # Use the persistent profile_picture as the avatar
         friend_avatar_map[review_author.id] = review_author.profile_picture
 
-    friend_avatars = list(set(friend_avatar_map.values()))
+    friend_avatars = list(friend_avatar_map.values())
 
     return jsonify(friend_avatars), 200
 
