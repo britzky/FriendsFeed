@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
+import Icon from "react-native-vector-icons/AntDesign";
+
 
 export default function Register({ route }) {
   const navigate = useNavigation();
@@ -100,7 +102,9 @@ export default function Register({ route }) {
         <Text style={styles.errorText}>{errors.password}</Text>
       )}
       <Text style={styles.password}>
-        Password must include: 6 to 20 characters
+      <Icon name="check" size={16} color="#000" style={styles.icon} />
+        Password must include: 
+        6 to 20 characters
       </Text>
 
       <TextInput
@@ -117,7 +121,7 @@ export default function Register({ route }) {
         nearby.
       </Text>
       <Text style={styles.term}>
-        By clicking Continue you are agreeing to out{" "}
+        By clicking Continue you are agreeing to out
         <Text style={styles.boldText}>Terms & Conditions.</Text>
       </Text>
       <Pressable
@@ -208,8 +212,9 @@ const styles = StyleSheet.create({
     position: "relative",
     top: -10,
     textAlign: "left",
-    width: "100%", // Full-width text
+    width: "50%", // Full-width text
     marginBottom: 30,
+    marginRight: 170
   },
   term: {
     position: "relative",
