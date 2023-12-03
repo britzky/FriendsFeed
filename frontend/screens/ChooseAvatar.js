@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { avatars } from "../assets";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
@@ -33,7 +41,7 @@ export const ChooseAvatar = ({ route }) => {
   const handleCompleteRegistration = async () => {
     if (!selectedAvatar) {
       alert("Please select an avatar");
-      setLoading(false)
+      setLoading(false);
       return;
     }
     setLoading(true);
@@ -60,7 +68,7 @@ export const ChooseAvatar = ({ route }) => {
         setUserDetails(data.user);
         setAccessToken(data.access_token);
         await AsyncStorage.setItem("isNewUser", "true");
-        setLoading(false)
+        setLoading(false);
       } else {
         console.error("Error completing registration:", data);
       }
@@ -117,10 +125,8 @@ export const ChooseAvatar = ({ route }) => {
       <View style={styles.container2}>
         {Object.keys(images).map((key) => (
           <View key={key} style={styles.imageContainer}>
-            <ImageBackground source={images[key]} style={styles.image}>
-            {/* <Image source={images[key]} style={styles.image} /> */}
-            <View style={styles.blurOverlay} />
-            </ImageBackground>
+            <Image source={images[key]} style={styles.image} blurRadius={15} />
+
             <Icon name="lock" size={28} color="#000" style={styles.icon} />
           </View>
         ))}
@@ -132,11 +138,11 @@ export const ChooseAvatar = ({ route }) => {
         onPress={handleCompleteRegistration}
         disabled={loading}
       >
-      {loading ? (
-        <ActivityIndicator size="small" color="#FFFFFF" />
-      ) : (
-        <Text style={styles.textButton}>Continue</Text>
-      )}
+        {loading ? (
+          <ActivityIndicator size="small" color="#FFFFFF" />
+        ) : (
+          <Text style={styles.textButton}>Continue</Text>
+        )}
       </Pressable>
     </View>
   );
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
@@ -230,9 +236,5 @@ const styles = StyleSheet.create({
     top: "50%", // Center the icon vertically
     marginLeft: -12, // Offset by half the icon's width to center
     marginTop: -12, // Offset by half the icon's height to center
-  },
-  blurOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Adjust color and opacity as needed
   },
 });
