@@ -1,15 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  View,
-  Modal,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  Pressable,
-  TouchableWithoutFeedback,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
 import { CuisineFilter } from "../components/CuisineFilter";
 import { RestaurantList } from "../components/RestaurantList";
@@ -24,11 +16,7 @@ export const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
-  const {
-    fetchRestaurantsByFriendRating,
-    fetchFriendReviewedRestaurants,
-    updateRestaurants,
-  } = useRestaurant();
+  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, updateRestaurants } = useRestaurant();
 
   const navigation = useNavigation();
 

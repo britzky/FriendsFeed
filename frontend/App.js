@@ -44,16 +44,16 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <FriendProvider>
-        <ReviewProvider>
-          <LocationProvider>
-            <RestaurantProvider>
+      <LocationProvider>
+        <RestaurantProvider>
+          <ReviewProvider>
+            <FriendProvider>
               <AppNavigator style={styles.container} />
-            </RestaurantProvider>
-          </LocationProvider>
-        </ReviewProvider>
-        <StatusBar style="auto" />
-      </FriendProvider>
+              <StatusBar style="auto" />
+            </FriendProvider>
+          </ReviewProvider>
+        </RestaurantProvider>
+      </LocationProvider>
     </AuthProvider>
   );
 }

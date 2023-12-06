@@ -10,12 +10,12 @@ const Restaurant = () => {
   const route = useRoute();
   const { restaurant } = route.params;
   const { accessToken } = useAuth();
-  const { fetchReviews, fetchAvatars, avatars } = useReview();
+  const { fetchReviews, refreshAvatars, avatars } = useReview();
   const navigation = useNavigation();
 
   useEffect(() => {
     fetchReviews(restaurant.id, accessToken);
-    fetchAvatars(restaurant.id, accessToken);
+    refreshAvatars();
   }, [restaurant.id, accessToken]);
 
   return (

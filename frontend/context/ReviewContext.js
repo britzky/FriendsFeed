@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
+import { useAuth } from './AuthContext';
+import { useRestaurant } from './RestaurantContext';
 
 const ReviewContext = createContext();
 
@@ -11,6 +13,12 @@ export const ReviewProvider = ({ children }) => {
     const [avatars, setAvatars] = useState({}); // fetch all avatars for friends who have reviewed the restaurant
     const [fetchedRestaurants, setFetchedRestaurants] = useState(new Set()); // To track fetched restaurants
     const [reviewPosted, setReviewPosted] = useState(false); // To track if a review has been posted
+    const { accessToken } = useAuth();
+    const { restaurants } = useRestaurant();
+
+    // extract the restaurantId from the restaurant object
+    const restaurantIds = useMemo(() => restaurants.map(restaurant => restaurant.id), [restaurants]);
+    console.log("These are the restaurantIds: ", restaurantIds);
 
     // fetch all friend-reviews for the restaurant selected
     const fetchReviews = useCallback(async (restaurantId, accessToken) => {
@@ -45,13 +53,16 @@ export const ReviewProvider = ({ children }) => {
         }, [fetchedRestaurants]);
 
         // fetch all friend-avatars for the restaurant selected
-        const fetchAvatars = useCallback(async (restaurantId, accessToken) => {
-            if (fetchedRestaurants.has(restaurantId)) {
+        const fetchAvatars = useCallback(async (restaurantIds) => {
+            console.log("Fetching avatars for restaurantIds: ", restaurantIds)
+            if (restaurantIds.length === 0) {
                 return;
             }
             try {
-                const response = await fetch(
-                    `https://colab-test.onrender.com/restaurants/${restaurantId}/friend-avatars`,
+                const queryString = restaurantIds.map(id => `restaurant_ids=${encodeURIComponent(id)}`).join('&');
+                const url = `https://colab-test.onrender.com/restaurants/friend-avatars?${queryString}`
+                console.log("Fetching avatars from URL: ", url)
+                const response = await fetch(url,
                     {
                         method: "GET",
                         headers: {
@@ -64,9 +75,9 @@ export const ReviewProvider = ({ children }) => {
                     const data = await response.json();
                     setAvatars(prevAvatars => ({
                         ...prevAvatars,
-                        [restaurantId]: [...(prevAvatars[restaurantId] || []), ...data]
+                        ...data //
                     }));
-                    setFetchedRestaurants(prev => new Set(prev.add(restaurantId)));
+                    setFetchedRestaurants(new Set([...Array.from(fetchedRestaurants), ...restaurantIds]));
                 } else {
                     console.log("Error fetching avatars:", response.status, await response.text());
                 }
@@ -74,7 +85,7 @@ export const ReviewProvider = ({ children }) => {
             } catch (error) {
                 console.log(error);
             }
-        }, [fetchedRestaurants]);
+        }, [fetchedRestaurants, restaurantIds]);
 
         const postReview = useCallback(async (restaurantId, rating, comment, accessToken) => {
             try {
@@ -108,11 +119,17 @@ export const ReviewProvider = ({ children }) => {
             setReviewPosted(false);
         }, []);
 
+        // function to rerun the fetchAvatars function when restaurantIds change
+        const refreshAvatars = useCallback(() => {
+            setFetchedRestaurants(new Set());
+            fetchAvatars(restaurantIds);
+        }, [fetchAvatars]);
+
         const contextValue = useMemo(() => ({
             reviews, avatars, fetchReviews, fetchAvatars, postReview,
-            reviewPosted, resetReviewPosted
+            reviewPosted, resetReviewPosted, refreshAvatars
         }), [reviews, avatars, fetchReviews, fetchAvatars, postReview,
-            reviewPosted, resetReviewPosted ]);
+            reviewPosted, resetReviewPosted, refreshAvatars]);
 
 
     return (
