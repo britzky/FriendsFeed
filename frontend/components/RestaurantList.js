@@ -11,7 +11,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Restaurant selected by the user
     const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurant();
     const navigation = useNavigation(); // Navigation hook
-    const { avatars, fetchAvatars, reviews } = useReview(); // Custom hook to fetch and use friend avatars
+    const { avatars, refreshAvatars, reviews } = useReview(); // Custom hook to fetch and use friend avatars
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
     const { friends } = useFriends(); // Custom hook to fetch the friends list
     // Side effect to fetch friend-reviewed restaurants
@@ -24,9 +24,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // Side effect to fetch avatars for each restaurant
     useEffect(() => {
         if (restaurants && Array.isArray(restaurants)) {
-            restaurants.forEach((restaurant) => {
-                fetchAvatars(restaurant.id, accessToken);
-            });
+                refreshAvatars();
         }
     }, [restaurants, accessToken, friends, reviews]);
 
@@ -48,7 +46,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
         )
     }
 
-   
+
     const handleSelectRestaurant = (restaurant) => {
         setSelectedRestaurant(restaurant);
         navigation.navigate("Restaurant", { restaurant });

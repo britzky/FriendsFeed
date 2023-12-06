@@ -83,9 +83,11 @@ def restaurants_friend_reviewed():
 
     return jsonify(list(friend_reviewed_restaurants.values()))
 
-@main.route('/restaurants/<string:yelp_restaurant_id>/friend-avatars', methods=['GET'])
+@main.route('/restaurants/friend-avatars', methods=['GET'])
 @jwt_required()
-def get_friend_avatars_for_restaurant(yelp_restaurant_id):
+def get_friend_avatars_for_restaurant():
+    # Get the restaurant ID from the query parameter
+    restaurant_ids = request.args.getlist('restaurant_ids')
     # Get the current users id
     current_user_id = get_jwt_identity()
     # Find the current user by id
@@ -93,29 +95,37 @@ def get_friend_avatars_for_restaurant(yelp_restaurant_id):
     if not user:
         return jsonify({"message": "User not found"}), 404
 
-    # List of possible friend avatars
-    avatars = ["Avocado", "Bread", "Broccoli", "Coffee", "Cupcake",
-                "Hamburger", "Ramen", "Taco"]
-
     # Get the IDs of the user's friends
     friend_ids = []
     for friend in user.get_all_friends():
         friend_ids.append(friend.id)
 
-    # Query the database for reviews with the given restaurant ID
-    reviews = Review.query.filter(Review.yelp_restaurant_id == yelp_restaurant_id, Review.user_id.in_(friend_ids)).all()
+    # Query the database for reviews with the given restaurant IDs
+    reviews = Review.query.filter(
+        Review.yelp_restaurant_id.in_(restaurant_ids),
+        Review.user_id.in_(friend_ids)
+    ).all()
 
-    # Extract only the avatars from the reviews
-    friend_avatar_map = {}
+    # Initialize a dictionary to store the friend avatars by restaurant
+    avatars_by_restaurant = {}
+    for restaurant_id in restaurant_ids:
+        avatars_by_restaurant[restaurant_id] = {}
+
+    # Populate the dictionary with the friend avatars
     for review in reviews:
         # Fetch the user who wrote the review
         review_author = User.find_by_id(review.user_id)
-        # Use the persistent profile_picture as the avatar
-        friend_avatar_map[review_author.id] = review_author.profile_picture
+        #get the restaurant id
+        restaurant_id = review.yelp_restaurant_id
+        #make sure each friend is only added once per restaurant
+        if review_author.id not in avatars_by_restaurant[restaurant_id]:
+            avatars_by_restaurant[restaurant_id][review_author.id] = review_author.profile_picture
 
-    friend_avatars = list(set(friend_avatar_map.values()))
+    #convert the dictionary to a list
+    for restaurant_id in avatars_by_restaurant:
+        avatars_by_restaurant[restaurant_id] = list(avatars_by_restaurant[restaurant_id].values())
 
-    return jsonify(friend_avatars), 200
+    return jsonify(avatars_by_restaurant), 200
 
 @main.route('/restaurants-cuisine', methods=['GET'])
 @jwt_required()

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "frontend",
+    "name": "Friends Feed",
     "slug": "frontend",
-    "version": "1.0.2",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,11 +22,11 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 3,
+      "versionCode": 5,
       "package": "com.britzky.frontend"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "extra": {
       "eas": {
