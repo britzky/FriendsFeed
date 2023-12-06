@@ -35,6 +35,6 @@ def create_app(testing=False):
     app.register_blueprint(auth)
     app.register_blueprint(main)
 
-    CORS(app, supports_credentials=True)
+    CORS(app, origins=["http://localhost:5173", "https://friendsfeed.netlify.app"], supports_credentials=True)
 
     return app

@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Friends Feed",
-    "slug": "friends-feed",
-    "version": "1.0.3",
+    "slug": "frontend",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,7 @@
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 4,
+      "versionCode": 5,
       "package": "com.britzky.frontend"
     },
     "web": {
@@ -34,7 +34,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "nativeVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/5e1db9a5-5111-44a5-8a1f-196429d312f0"
