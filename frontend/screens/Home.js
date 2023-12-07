@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Modal,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+  Pressable,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
 import { CuisineFilter } from "../components/CuisineFilter";
 import { RestaurantList } from "../components/RestaurantList";
@@ -16,7 +24,12 @@ export const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
-  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, updateRestaurants } = useRestaurant();
+  const [selectedRating, setSelectedRating] = useState(null);
+  const {
+    fetchRestaurantsByFriendRating,
+    fetchFriendReviewedRestaurants,
+    updateRestaurants,
+  } = useRestaurant();
 
   const navigation = useNavigation();
 
@@ -35,9 +48,11 @@ export const Home = () => {
     return unsubscribe; // Clean up the listener when the component unmounts
   }, [navigation]);
 
-  useEffect(() => {
-    fetchFriendReviewedRestaurants(searchLocation);
-  }, [updateRestaurants]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchFriendReviewedRestaurants(searchLocation);
+    }, [searchLocation])
+  );
 
   //function to pass searched zipcode to the searchbar
   const handleSearch = (searchedLocation) => {
@@ -61,6 +76,12 @@ export const Home = () => {
     setShowRatingDropdown(false);
   };
 
+  const resetFilter = () => {
+    setSelectedRating(null); // Reset the selected rating
+    fetchFriendReviewedRestaurants(); // Fetch all restaurants without filtering by rating
+    setShowRatingDropdown(false);
+  };
+
   if (loading || !accessToken || !userDetails || !searchLocation) {
     return (
       <View>
@@ -71,6 +92,7 @@ export const Home = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Friends Reviews</Text>
       <View style={styles.searchContainer}>
         <Searchbar
           onSearch={handleSearch}
@@ -98,7 +120,10 @@ export const Home = () => {
         </View>
         {showRatingDropdown && (
           <View style={styles.dropdownContainer}>
-            <RatingsDropdown onRatingSelect={handleRatingSelection} />
+            <RatingsDropdown
+              onRatingSelect={handleRatingSelection}
+              resetFilter={resetFilter}
+            />
           </View>
         )}
         <Modal
@@ -141,7 +166,7 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 38,
     flex: 1,
     width: "100%",
     height: "100%",
@@ -158,9 +183,11 @@ const styles = StyleSheet.create({
   },
   RestaurantListContainer: {
     width: "100%",
-    height: "80%",
+    height: "70%",
     justifyContent: "center",
     alignItems: "center",
+    position: 'relative',
+    bottom:35,
   },
   modalView: {
     margin: 20,
@@ -189,8 +216,8 @@ const styles = StyleSheet.create({
 
     width: 111,
     position: "relative",
-    top: -20,
-    padding: 0,
+    top: -30,
+   
   },
   buttonText: {
     paddingVertical: 10,
@@ -226,5 +253,13 @@ const styles = StyleSheet.create({
     zIndex: 1, // Ensure it overlays other content
     backgroundColor: "white",
     opacity: 0.9,
+  },
+  header: {
+    position: "relative",
+    fontFamily: "LuckiestGuy-Regular",
+    color: "#739072",
+    fontSize: 25,
+    top: 50,
+    marginTop: 40,
   },
 });

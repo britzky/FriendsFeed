@@ -14,6 +14,7 @@ export default function Register({ route }) {
     email: "",
     password: "",
     location: "",
+    // phoneNumber: ""
   });
   const { registrationFlow } = route.params;
   console.log(
@@ -40,6 +41,9 @@ export default function Register({ route }) {
     if (!formData.location) {
       validationErrors.location = "location is required";
     }
+    // if (!formData.phoneNumber) {
+    //   validationErrors.phoneNumber = "phone number is required";
+    // }
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the Context
       navigate.navigate("ChooseAvatar", { registrationFlow, formData });
@@ -106,6 +110,15 @@ export default function Register({ route }) {
         Password must include: 
         6 to 20 characters
       </Text>
+      {/* <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        value={formData.phoneNumber}
+        onChangeText={(text) => handleChange("phoneNumber", text)}
+      />
+      {errors.username && (
+        <Text style={styles.errorText}>{errors.phoneNumber}</Text>
+      )} */}
 
       <TextInput
         style={styles.input}
@@ -153,7 +166,7 @@ const styles = StyleSheet.create({
     fontFamily: "LuckiestGuy-Regular",
   },
   input: {
-    height: 55,
+    height: 40,
     width: "100%", // Allows the input to fill the available space
     borderColor: "gray",
     borderWidth: 1,
@@ -172,7 +185,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     color: "#000",
-    marginBottom: 10,
+    marginBottom: 5,
     textAlign: "center",
   },
   errorText: {

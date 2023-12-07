@@ -72,12 +72,18 @@ export const Friend = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Find Friends</Text>
+
       <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.paragraph}>
         Add friends so you can start seeing reviews right away. This is what
         makes Friends Feed so great!
       </Text>
-      <Searchbar onSearch={handleSearch} placeholder="Search @Username" />
+
+      <Searchbar
+        onSearch={handleSearch}
+        placeholder="Search @Username or phone number"
+      />
       <Text style={styles.subTitle}>Your friends will appear here.</Text>
       <FlatList
         data={friend}
@@ -120,11 +126,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   title: {
-    fontWeight: "bold",
     fontSize: 24,
     marginBottom: 50,
     textAlign: "center",
     color: "#739072",
+    fontFamily: "LuckiestGuy-Regular",
   },
   paragraph: {
     width: "85%",
@@ -152,7 +158,6 @@ const styles = StyleSheet.create({
   },
 
   signUpButton: {
-  
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
@@ -160,25 +165,32 @@ const styles = StyleSheet.create({
     width: "90%", // Full-width button
     alignItems: "center",
     marginTop: 290,
-    alignSelf: 'center',
-    
+    alignSelf: "center",
   },
   textButton: {
-    
     color: "white",
     fontSize: 18,
   },
   skip: {
     justifyContent: "center", // Center vertically in a flex container
     alignItems: "center",
-    
   },
   text: {
     fontSize: 16,
-    fontStyle: 'italic',
+    fontStyle: "italic",
     justifyContent: "center", // Center vertically in a flex container
     alignItems: "center",
     marginBottom: 20,
   },
- 
+  header: {
+    position: "relative",
+    marginTop: 70,
+    fontFamily: "LuckiestGuy-Regular",
+    color: "#739072",
+    fontSize: 25,
+
+    marginTop: 10,
+    alignSelf: "center",
+    marginBottom: 20,
+  },
 });

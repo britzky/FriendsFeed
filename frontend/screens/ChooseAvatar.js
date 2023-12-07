@@ -30,14 +30,16 @@ export const ChooseAvatar = ({ route }) => {
     accessToken,
   } = useAuth();
   const navigation = useNavigation();
-  const { registrationFlow, formData } = route.params;
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const { registrationFlow, formData } = route.params;
+  
   const handleSelectAvatar = (avatar) => {
     setSelectedAvatar(avatar);
   };
-
+  
+  
+  
   const handleCompleteRegistration = async () => {
     if (!selectedAvatar) {
       alert("Please select an avatar");
@@ -49,7 +51,7 @@ export const ChooseAvatar = ({ route }) => {
       ...formData,
       profile_picture: selectedAvatar,
     };
-
+    
     try {
       const response = await fetch("https://colab-test.onrender.com/register", {
         method: "POST",
@@ -59,7 +61,7 @@ export const ChooseAvatar = ({ route }) => {
         body: JSON.stringify(completedUserDetails),
       });
       const data = await response.json();
-
+      
       if (response.ok) {
         console.log("Registration completed successfully:", data);
         await AsyncStorage.setItem("user_details", JSON.stringify(data));
@@ -76,14 +78,14 @@ export const ChooseAvatar = ({ route }) => {
       console.error("Error completing registration:", error);
     }
   };
-
+  
   // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
   useEffect(() => {
     if (accessToken && userDetails) {
       setIsLoggedIn(true);
     }
   }, [accessToken, userDetails]);
-
+  
   useEffect(() => {
     const navigateIfReady = async () => {
       const isNewUser = await AsyncStorage.getItem("isNewUser");
@@ -95,7 +97,7 @@ export const ChooseAvatar = ({ route }) => {
     };
     navigateIfReady();
   }, [isLoggedIn, navigation, route.params]);
-
+  
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Friends Feed</Text>

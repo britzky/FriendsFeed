@@ -57,7 +57,10 @@ const RestaurantCard = ({
             <Image
             key={index}
             source={avatars[avatar]}
-            style={[styles.avatar, { marginLeft: index * -7 }]}
+            style={[
+              styles.avatar,
+              { marginLeft: index === 0 ? 0 : -10 } // Adjust -10 to control overlap
+            ]}
             />
             ))}
             <Text style={styles.overall}>Friend’s Overall Rating</Text>
@@ -94,7 +97,10 @@ const RestaurantCard = ({
               <Image
                 key={index}
                 source={avatars[avatar]}
-                style={[styles.avatar, { marginLeft: index * -7 }]}
+                style={[
+                  styles.avatar,
+                  { marginLeft: index === 0 ? 0 : -10 } // Adjust -10 to control overlap
+                ]}
               />
             ))}
           <Text style={styles.overall}>Friend’s Overall Rating</Text>

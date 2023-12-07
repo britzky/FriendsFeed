@@ -72,7 +72,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
       <View style={styles.container}>
             <FlatList
               data={restaurants}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => item.id}
               renderItem={renderRestaurantCard}
               ListEmptyComponent={<Text>No restaurants</Text>}
             />

@@ -67,6 +67,7 @@ export const SearchRestaurant = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Restaurants to review</Text>
       <View style={styles.searchContainer}>
         <Searchbar onSearch={handleSearch} placeholder="Search Restaurant" />
       </View>
@@ -111,4 +112,15 @@ const styles = StyleSheet.create({
     textAlign: "left",
     marginRight: 70
   },
+  header: {
+    position: 'relative',
+    marginTop: 70,
+    fontFamily: "LuckiestGuy-Regular",
+    color: "#739072",
+    fontSize: 25,
+  
+    marginTop: 10,
+    alignSelf: 'center',
+    marginBottom: 20
+  }
 });
