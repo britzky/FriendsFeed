@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import Icon from "react-native-vector-icons/AntDesign";
+import Eye from "react-native-vector-icons/Ionicons";
 
 export default function Register({ route }) {
   const navigate = useNavigation();
@@ -14,11 +22,14 @@ export default function Register({ route }) {
     password: "",
     location: "",
   });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [phone, setPhone] = useState({ phone: "" });
   // const { registrationFlow } = route.params;
-  console.log(
-    "This is the Register registration flow status: ",
-  );
+  console.log("This is the Register registration flow status: ");
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -89,13 +100,27 @@ export default function Register({ route }) {
       <Text style={styles.username}>
         This is how you’ll appear to your friends on Friends Feed.
       </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={formData.password}
-        onChangeText={(text) => handleChange("password", text)}
-        secureTextEntry
-      />
+
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.inputPassword}
+          placeholder="Password"
+          value={formData.password}
+          onChangeText={(text) => handleChange("password", text)}
+          secureTextEntry={!isPasswordVisible}
+        />
+        <TouchableOpacity
+          onPress={togglePasswordVisibility}
+          style={styles.icon}
+        >
+          <Eye
+            style={styles.eyeIcon}
+            name={isPasswordVisible ? "eye-outline" : "eye-off-outline"}
+            size={24}
+            color="gray"
+          />
+        </TouchableOpacity>
+      </View>
       {errors.password ? (
         <Text style={styles.errorText}>{errors.password}</Text>
       ) : (
@@ -104,7 +129,6 @@ export default function Register({ route }) {
           Password must include: 6 to 20 characters
         </Text>
       )}
-
       <TextInput
         style={styles.input}
         placeholder="Email Address"
@@ -236,5 +260,33 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: "bold",
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexDirection: "row",
+
+    borderRadius: 5,
+    width: 360,
+    marginLeft: 10,
+    // Add other styling as needed
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 10, // Adjust based on container padding
+    height: "100%",
+    justifyContent: "center",
+    padding: 10, // Center icon vertically
+  },
+  inputPassword: {
+    flex: 1,
+    height: 40,
+    width: "100%", // Allows the input to fill the available space
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingLeft: 10,
+    borderRadius: 5,
+    paddingRight: 35,
   },
 });

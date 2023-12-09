@@ -115,7 +115,7 @@ export const ChooseAvatar = ({ route }) => {
           </TouchableOpacity>
         ))}
       </View>
-      <Text style={styles.subTitle2}>
+      <Text style={styles.secondSubTitle}>
         Invite 10 friends to Friends Feed to unlock these special Avatars!
       </Text>
       <Pressable
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     height: 80,
     margin: 10, // Adjust the margin as needed
   },
-  subTitle2: {
+  secondSubTitle: {
     fontSize: 18,
     color: "black",
     marginTop: 50,

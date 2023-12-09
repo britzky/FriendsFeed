@@ -6,12 +6,16 @@ import { useReview } from "../context/ReviewContext";
 import RestaurantCard from "../components/RestaurantCard";
 import ReviewsCard from "../components/ReviewsCard";
 
+
 const Restaurant = () => {
+
   const route = useRoute();
   const { restaurant } = route.params;
   const { accessToken } = useAuth();
   const { fetchReviews, refreshAvatars, avatars } = useReview();
   const navigation = useNavigation();
+
+  
 
   useEffect(() => {
     fetchReviews(restaurant.id, accessToken);
