@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as Font from "expo-font";
 import Icon from "react-native-vector-icons/AntDesign";
 
-
 export default function Register({ route }) {
   const navigate = useNavigation();
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -14,16 +13,19 @@ export default function Register({ route }) {
     email: "",
     password: "",
     location: "",
-    // phoneNumber: ""
   });
-  const { registrationFlow } = route.params;
+  const [phone, setPhone] = useState({ phone: "" });
+  // const { registrationFlow } = route.params;
   console.log(
     "This is the Register registration flow status: ",
-    registrationFlow
   );
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePhoneChange = (name, value) => {
+    setPhone((phone) => ({ ...phone, [name]: value }));
   };
 
   const handleRegistration = () => {
@@ -41,12 +43,10 @@ export default function Register({ route }) {
     if (!formData.location) {
       validationErrors.location = "location is required";
     }
-    // if (!formData.phoneNumber) {
-    //   validationErrors.phoneNumber = "phone number is required";
-    // }
+
     if (Object.keys(validationErrors).length === 0) {
       // Form is valid, you can submit the data to the Context
-      navigate.navigate("ChooseAvatar", { registrationFlow, formData });
+      navigate.navigate("ChooseAvatar", { formData });
     } else {
       // Form is not valid, update the errors state
       setErrors(validationErrors);
@@ -76,13 +76,7 @@ export default function Register({ route }) {
       <Text style={styles.title}>Friends Feed</Text>
       <Text style={styles.subtitle}>Discover new restaurants</Text>
       <Text style={styles.text2}>one friend at a time</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email Address"
-        value={formData.email}
-        onChangeText={(text) => handleChange("email", text)}
-      />
-      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
       <TextInput
         style={styles.input}
         placeholder="@Username"
@@ -102,23 +96,29 @@ export default function Register({ route }) {
         onChangeText={(text) => handleChange("password", text)}
         secureTextEntry
       />
-      {errors.password && (
+      {errors.password ? (
         <Text style={styles.errorText}>{errors.password}</Text>
+      ) : (
+        <Text style={styles.password}>
+          <Icon name="check" size={16} color="#000" style={styles.icon} />
+          Password must include: 6 to 20 characters
+        </Text>
       )}
-      <Text style={styles.password}>
-      <Icon name="check" size={16} color="#000" style={styles.icon} />
-        Password must include: 
-        6 to 20 characters
-      </Text>
-      {/* <TextInput
+
+      <TextInput
+        style={styles.input}
+        placeholder="Email Address"
+        value={formData.email}
+        onChangeText={(text) => handleChange("email", text)}
+      />
+      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+      <TextInput
         style={styles.input}
         placeholder="Phone Number"
-        value={formData.phoneNumber}
-        onChangeText={(text) => handleChange("phoneNumber", text)}
+        value={formData.phone}
+        onChangeText={(text) => handlePhoneChange("phone", text)}
       />
-      {errors.username && (
-        <Text style={styles.errorText}>{errors.phoneNumber}</Text>
-      )} */}
+      {errors.username && <Text style={styles.errorText}>{errors.phone}</Text>}
 
       <TextInput
         style={styles.input}
@@ -126,13 +126,14 @@ export default function Register({ route }) {
         value={formData.location}
         onChangeText={(text) => handleChange("location", text)}
       />
-      {errors.location && (
+      {errors.location ? (
         <Text style={styles.errorText}>{errors.location}</Text>
+      ) : (
+        <Text style={styles.zipcode}>
+          Enter your city and state so we can start showing you recommendations
+          nearby.
+        </Text>
       )}
-      <Text style={styles.zipcode}>
-        Enter your city and state so we can start showing you recommendations
-        nearby.
-      </Text>
       <Text style={styles.term}>
         By clicking Continue you are agreeing to out
         <Text style={styles.boldText}>Terms & Conditions.</Text>
@@ -227,7 +228,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     width: "50%", // Full-width text
     marginBottom: 30,
-    marginRight: 170
+    marginRight: 170,
   },
   term: {
     position: "relative",

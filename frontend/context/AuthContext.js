@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 const AuthContext = createContext()
 
 export const useAuth = () => {
+  
     return useContext(AuthContext);
 };
 
@@ -13,6 +14,7 @@ export const AuthProvider = ({ children }) => {
     const [userDetails, setUserDetails] = useState(null);
     const [accessToken, setAccessToken] = useState(null)
     const [loading, setLoading] = useState(true);
+    const [inRegistrationFlow, setInRegistrationFlow] = useState(false);
 
     useEffect(() => {
         checkLoginStatus()
@@ -120,7 +122,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading, inRegistrationFlow, setInRegistrationFlow }}>
         {children}
     </AuthContext.Provider>
   )

@@ -11,7 +11,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState("");
-  const { accessToken, isLoggedIn } = useAuth();
+  
+  const { accessToken, isLoggedIn, setInRegistrationFlow, inRegistrationFlow } =
+    useAuth();
   const { fetchFriends } = useFriends();
   const { registrationFlow = false } = route.params || {};
   const navigation = useNavigation();
@@ -67,18 +69,23 @@ export const Friend = ({ route }) => {
     }
     if (isLoggedIn) {
       navigation.navigate("HomeTabs", { screen: "Home" });
+      setInRegistrationFlow(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Find Friends</Text>
+      {/* <Text style={styles.header}>Add Friends</Text> */}
 
-      <Text style={styles.title}>Friends Feed</Text>
-      <Text style={styles.paragraph}>
-        Add friends so you can start seeing reviews right away. This is what
-        makes Friends Feed so great!
-      </Text>
+      {inRegistrationFlow && (
+        <>
+          <Text style={styles.title}>Friends Feed</Text>
+          <Text style={styles.paragraph}>
+            Add friends so you can start seeing reviews right away. This is what
+            makes Friends Feed so great!
+          </Text>
+        </>
+      )}
 
       <Searchbar
         onSearch={handleSearch}
@@ -99,11 +106,11 @@ export const Friend = ({ route }) => {
           )
         }
       />
-      <View>
+      <View style={styles.friendList}>
         <FriendList />
       </View>
-      {registrationFlow ? (
-        <View>
+      {inRegistrationFlow && (
+        <>
           <Pressable
             android_ripple={{ color: "#3A4D39" }}
             style={styles.signUpButton}
@@ -114,14 +121,15 @@ export const Friend = ({ route }) => {
           <Pressable style={styles.skip} onPress={navigateToHome}>
             <Text style={styles.text}>Skip for now</Text>
           </Pressable>
-        </View>
-      ) : null}
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "white",
     marginTop: 50,
   },
@@ -190,7 +198,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
 
     marginTop: 10,
-    alignSelf: "center",
+
     marginBottom: 20,
+    alignContent: "flex-start",
+    marginLeft: 12,
   },
+  friendList: {
+    marginVertical: 5,    // Adds vertical margin for spacing between cards
+    padding: 10,          // Internal padding within each card
+    backgroundColor: '#fff', // Card background color
+    borderRadius: 5,      // Rounded corners for the card
+    shadowColor: '#000',  // Shadow color
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2, 
+    height: 570,
+    padding: 0,
+  }
 });

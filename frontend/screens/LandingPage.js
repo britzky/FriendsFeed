@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, ImageBackground, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import image from "../assets/Landing_Page.jpeg";
-
+import { useAuth } from "../context/AuthContext";
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -10,6 +10,8 @@ const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
 const isSmallScreen = windowWidth <= 400;
 
 const LandingPage = () => {
+  const {setInRegistrationFlow} =useAuth()
+  
   const navigate = useNavigation();
 
   return (
@@ -22,15 +24,19 @@ const LandingPage = () => {
         <Pressable
           android_ripple={{ color: "#3A4D39" }}
           style={styles.buttonText}
-          onPress={() =>
-            navigate.navigate("Register", { registrationFlow: true })
-          }
+           onPress={() => {
+            setInRegistrationFlow(true);
+            navigate.navigate("Register");
+          }}
         >
           <Text style={styles.text}>Sign-up</Text>
         </Pressable>
         <Pressable
           style={styles.buttonTwo}
-          onPress={() => navigate.navigate("Login")}
+          onPress={() => {
+            setInRegistrationFlow(true); // Use the function from the hook
+            navigate.navigate("Login");
+        }}
         >
           <Text style={styles.underTitle}>
             Already have an account? <Text style={styles.bold}>Login</Text>

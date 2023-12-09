@@ -113,14 +113,17 @@ const styles = StyleSheet.create({
     marginRight: 70
   },
   header: {
-    position: 'relative',
-    marginTop: 70,
+  position: 'relative',
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
-  
+    right: 45,
+
     marginTop: 10,
-    alignSelf: 'center',
-    marginBottom: 20
-  }
+    
+    marginBottom: 20,
+    alignContent: 'flex-start',
+    marginLeft: 12,
+   
+    }
 });

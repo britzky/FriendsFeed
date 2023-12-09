@@ -261,5 +261,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     top: 50,
     marginTop: 40,
+    right: 85
   },
 });
