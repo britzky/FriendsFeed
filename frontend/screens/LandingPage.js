@@ -3,45 +3,41 @@ import { useNavigation } from "@react-navigation/native";
 import image from "../assets/Landing_Page.jpeg";
 import { useAuth } from "../context/AuthContext";
 
-const windowWidth = Dimensions.get('window').width;
-
-const isLargeScreen = windowWidth > 600;
-const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
-const isSmallScreen = windowWidth <= 400;
-
 const LandingPage = () => {
-  const {setInRegistrationFlow} =useAuth()
-  
+  const { setInRegistrationFlow } = useAuth();
   const navigate = useNavigation();
 
   return (
-    <View style={styles.container}>
-      <ImageBackground source={image} style={styles.image}>
-        <Text style={styles.title}>Friends Feed</Text>
-        <Text style={styles.subtitle}>Discover new restaurants</Text>
-        <Text style={styles.text2}>one friend at a time</Text>
-
-        <Pressable
-          android_ripple={{ color: "#3A4D39" }}
-          style={styles.buttonText}
-           onPress={() => {
-            setInRegistrationFlow(true);
-            navigate.navigate("Register");
-          }}
-        >
-          <Text style={styles.text}>Sign-up</Text>
-        </Pressable>
-        <Pressable
-          style={styles.buttonTwo}
-          onPress={() => {
-            setInRegistrationFlow(true); // Use the function from the hook
-            navigate.navigate("Login");
-        }}
-        >
-          <Text style={styles.underTitle}>
-            Already have an account? <Text style={styles.bold}>Login</Text>
-          </Text>
-        </Pressable>
+    <View style={{flex: 1}}>
+      <ImageBackground source={image} style={{flex: 1}}>
+        <View style={styles.mainContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>Friends Feed</Text>
+              <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
+            </View>
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: "#3A4D39" }}
+              style={styles.button}
+              onPress={() => {
+                setInRegistrationFlow(true);
+                navigate.navigate("Register");
+              }}
+            >
+              <Text style={styles.signUpText}>Sign-up</Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                setInRegistrationFlow(true); // Use the function from the hook
+                navigate.navigate("Login");
+              }}
+            >
+              <Text>
+                Already have an account? <Text style={{fontFamily: 'Roboto-Bold'}}>Log In</Text>
+              </Text>
+            </Pressable>
+          </View>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -49,95 +45,43 @@ const LandingPage = () => {
 export default LandingPage;
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
-    justifyContent: "center",
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    justifyContent: 'center'
+  },
+  textContainer: {
+    alignSelf: 'center',
+    maxWidth: 250
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
   },
   title: {
-    fontSize: isSmallScreen ? 20 : isMediumScreen ? 40 : 100, 
-    marginBottom: 20,
-    color: "#3A4D39",
-    marginLeft: 65,
-    fontFamily: 'LuckiestGuy-Regular'
+    fontSize: 40,
+    fontFamily: 'LuckiestGuy-Regular',
+    color: '#064e3b',
+    marginBottom: 15,
   },
   subtitle: {
-    fontSize: isSmallScreen ? 10 : isMediumScreen ? 16 : 30, 
-    color: "#000",
-    marginBottom: 0,
-    margin: 0,
-    width: 180,
-    padding: 0,
-    marginLeft: isSmallScreen ? 10 : isMediumScreen ? 110 : 300, 
-    fontFamily: 'Roboto-Regular'
+    fontFamily: 'Roboto-Medium',
+    fontSize: 18,
+    textAlign: 'center',
   },
   button: {
-    backgroundColor: "brown",
-    paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 5,
-    height: 10,
-  },
-  buttonTwo: {
-    backgroundColor: "brown",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 5,
-    backgroundColor: "transparent",
-
-    margin: 20,
-  },
-  buttonText: {
-    paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
-
-    width: "85%", // Full-width button
+    maxWidth: 300,
+    width: "85%",
     alignItems: "center",
-    marginTop: 50,
-    marginLeft: 35,
-  },
-  loginText: {
-    color: "blue",
-    marginTop: 15,
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 80,
-    borderRadius: 10,
-    margin: 30,
-  },
-  text: {
-    color: "white",
-    fontSize: isSmallScreen ? 10 : isMediumScreen ? 20 : 40, 
-  },
-  subTitle2: {
-    margin: 10,
-  },
-  text2: {
-    fontSize: isSmallScreen ? 10 : isMediumScreen ? 16 : 30, 
-    color: "#000",
     marginBottom: 20,
-    margin: 0,
-    width: 150,
-    padding: 0,
-    marginTop: 2,
-    marginLeft: isSmallScreen ? 10 : isMediumScreen ? 125 : 300, 
   },
-  image: {
-    justifyContent: "center",
-    flex: 1,
-    width: null, // Set width to null
-    height: null, // Set height to null
-    resizeMode: "cover",
+  signUpText: {
+    color: "white",
+    fontSize: 18,
+    fontFamily: "Roboto-Regular",
   },
-  bold: {
-    fontWeight: "bold",
-  },
-  underTitle: {
-    fontSize: isSmallScreen ? 8 : isMediumScreen ? 15 : 30, 
-    marginLeft: 60, 
-    fontFamily: 'Roboto-Regular' 
-
-  }
 });
