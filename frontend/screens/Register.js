@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
+import { View, TextInput, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import Eye from "react-native-vector-icons/Ionicons";
@@ -56,7 +56,7 @@ export default function Register() {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <ScrollView style={{flex: 1}}>
       <View style={styles.header}>
         <Text style={styles.title}>Friends Feed</Text>
         <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
@@ -74,13 +74,22 @@ export default function Register() {
           <Text style={{textAlign: 'left'}}>
             This is how you’ll appear to your friends on Friends Feed.
           </Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={formData.password}
-          onChangeText={(text) => handleChange("password", text)}
-          secureTextEntry={!isPasswordVisible}
-        />
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={formData.password}
+              onChangeText={(text) => handleChange("password", text)}
+              secureTextEntry={!isPasswordVisible}
+            />
+            <Pressable onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+              <Eye
+                name={isPasswordVisible ? "eye" : "eye-off"}
+                size={24}
+                color="gray"
+              />
+            </Pressable>
+          </View>
         {errors.password && (
           <Text style={styles.errorText}>{errors.password}</Text>
         )}
@@ -131,7 +140,7 @@ export default function Register() {
           <Text style={styles.text}>Continue</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -155,6 +164,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '90%',
+    maxWidth: 300,
     alignSelf: 'center',
     gap: 15
   },
@@ -166,6 +176,14 @@ const styles = StyleSheet.create({
     paddingTop: 9,
     paddingBottom: 9,
     borderRadius: 5,
+    paddingRight: 50,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  eyeIcon: {
+    marginLeft: -30,
   },
   errorText: {
     color: "red",
@@ -181,6 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     width: "100%", // Full-width button
     alignItems: "center",
+    marginBottom: 1
   },
   text: {
     color: "white",
