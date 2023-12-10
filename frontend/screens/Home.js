@@ -102,7 +102,7 @@ export const Home = () => {
       <View>
         <View style={styles.ButtonContainer}>
           <Pressable
-            style={styles.buttonText}
+            style={styles.filterButton}
             android_ripple={{ color: "#3A4D39" }}
             onPress={() => setShowRatingDropdown(true)}
           >
@@ -110,7 +110,7 @@ export const Home = () => {
             <Icon name="keyboard-arrow-down" size={24} />
           </Pressable>
           <Pressable
-            style={styles.buttonText}
+            style={styles.filterButton}
             android_ripple={{ color: "#3A4D39" }}
             onPress={() => setModalVisible(true)}
           >
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     top: -30,
    
   },
-  buttonText: {
+  filterButton: {
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: "#f0f0f0", // Use a light grey background for the buttons

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/AntDesign";
+import Eye from "react-native-vector-icons/Ionicons";
 
 export default function Register() {
   const navigate = useNavigation();
@@ -12,7 +13,14 @@ export default function Register() {
     password: "",
     location: "",
   });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [phone, setPhone] = useState({ phone: "" });
+  // const { registrationFlow } = route.params;
+  console.log("This is the Register registration flow status: ");
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -71,7 +79,7 @@ export default function Register() {
           placeholder="Password"
           value={formData.password}
           onChangeText={(text) => handleChange("password", text)}
-          secureTextEntry
+          secureTextEntry={!isPasswordVisible}
         />
         {errors.password && (
           <Text style={styles.errorText}>{errors.password}</Text>

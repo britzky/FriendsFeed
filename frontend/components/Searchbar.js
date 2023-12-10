@@ -6,7 +6,7 @@ export const Searchbar = ({ onSearch, placeholder }) => {
   const [input, setInput] = useState("");
 
   const handleSearch = () => {
-    //Make sure the input has no empty spaces before submitting
+   
     if (input.trim()) {
       onSearch(input.trim());
       setInput('')

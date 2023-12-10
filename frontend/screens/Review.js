@@ -164,12 +164,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20
 
-    // paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 20 : 200,
-    // paddingVertical: 15,
-    // backgroundColor: "#739072",
-    // marginVertical: 30,
-
-    // borderRadius: 10
   },
   paragraph: {
    fontSize: 15,

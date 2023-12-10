@@ -11,11 +11,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState("");
-  
   const { accessToken, isLoggedIn, setInRegistrationFlow, inRegistrationFlow } =
     useAuth();
   const { fetchFriends } = useFriends();
-  const { registrationFlow = false } = route.params || {};
   const navigation = useNavigation();
 
   //fetch the friend list
@@ -75,7 +73,7 @@ export const Friend = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.header}>Add Friends</Text> */}
+      {!inRegistrationFlow && <Text style={styles.header}>Add Friends</Text>}
 
       {inRegistrationFlow && (
         <>
@@ -106,7 +104,7 @@ export const Friend = ({ route }) => {
           )
         }
       />
-      <View style={styles.friendList}>
+      <View>
         <FriendList />
       </View>
       {inRegistrationFlow && (
@@ -129,7 +127,6 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "white",
     marginTop: 50,
   },
@@ -143,7 +140,7 @@ const styles = StyleSheet.create({
   paragraph: {
     width: "85%",
     textAlign: "center",
-    alignSelf: "center", // Centers the paragraph
+    alignSelf: "center", 
     marginBottom: 20,
     fontSize: 18,
   },
@@ -203,17 +200,4 @@ const styles = StyleSheet.create({
     alignContent: "flex-start",
     marginLeft: 12,
   },
-  friendList: {
-    marginVertical: 5,    // Adds vertical margin for spacing between cards
-    padding: 10,          // Internal padding within each card
-    backgroundColor: '#fff', // Card background color
-    borderRadius: 5,      // Rounded corners for the card
-    shadowColor: '#000',  // Shadow color
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2, 
-    height: 570,
-    padding: 0,
-  }
 });
