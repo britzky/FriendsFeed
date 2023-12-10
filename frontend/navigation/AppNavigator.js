@@ -49,40 +49,44 @@ function HomeTabs() {
 
   return (
     <Tab.Navigator
-    screenOptions={{
-      tabBarActiveTintColor: '#739072',
-      tabBarStyle: { display: keyboardVisible ? 'none' : 'flex' },
-    }}
+      screenOptions={{
+        tabBarActiveTintColor: '#739072',
+        tabBarStyle: { display: keyboardVisible ? 'none' : 'flex' },
+      }}
     >
-      <Tab.Screen name="Home" component={Home} options={{
-        tabBarIcon: ({color, size}) => (
-          <Icon name="home" color={color} size={size}/>
-        ),
-        tabBarLabel: () => null,
-        headerShown: false,
-        headerTitle: ''
-       
-
-      }}/>
-      <Tab.Screen name="Friend" component={Friend}
-      options={{
-        tabBarIcon: ({color, size}) => (
-          <AntDesign name="addusergroup" color={color} size={size}/>
-        ),
-        tabBarLabel: () => null,
-        headerShown: false
-       
-      }}
-
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="home" color={color} size={size}/>
+          ),
+          tabBarLabel: () => null,
+          headerShown: false,
+          headerTitle: ''
+        }}
       />
-      <Tab.Screen name="SearchRestaurant" component={SearchRestaurant}
-      options={{
-        tabBarIcon: ({color, size}) => (
-          <Material name="restaurant-outline" color={color} size={size}/>
-        ),
-        tabBarLabel: () => null,
-        headerShown: false
-      }}
+      <Tab.Screen
+        name="Friend"
+        component={Friend}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <AntDesign name="addusergroup" color={color} size={size}/>
+          ),
+          tabBarLabel: () => null,
+          headerShown: false
+        }}
+      />
+      <Tab.Screen
+        name="SearchRestaurant"
+        component={SearchRestaurant}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Material name="restaurant-outline" color={color} size={size}/>
+          ),
+          tabBarLabel: () => null,
+          headerShown: false
+        }}
       />
     </Tab.Navigator>
   );

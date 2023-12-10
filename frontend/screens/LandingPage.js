@@ -11,7 +11,7 @@ const LandingPage = () => {
     <View style={{flex: 1}}>
       <ImageBackground source={image} style={{flex: 1}}>
         <View style={styles.mainContainer}>
-            <View style={styles.textContainer}>
+            <View style={styles.header}>
               <Text style={styles.title}>Friends Feed</Text>
               <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
             </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
     justifyContent: 'center'
   },
-  textContainer: {
+  header: {
     alignSelf: 'center',
     maxWidth: 250
   },

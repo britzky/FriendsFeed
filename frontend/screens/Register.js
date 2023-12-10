@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as Font from "expo-font";
 import Icon from "react-native-vector-icons/AntDesign";
 
-export default function Register({ route }) {
+export default function Register() {
   const navigate = useNavigation();
-  const [fontsLoaded, setFontsLoaded] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     username: "",
@@ -15,10 +13,6 @@ export default function Register({ route }) {
     location: "",
   });
   const [phone, setPhone] = useState({ phone: "" });
-  // const { registrationFlow } = route.params;
-  console.log(
-    "This is the Register registration flow status: ",
-  );
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -53,188 +47,135 @@ export default function Register({ route }) {
     }
   };
 
-  useEffect(() => {
-    async function loadFonts() {
-      await Font.loadAsync({
-        "LuckiestGuy-Regular": require("../assets/fonts/LuckiestGuy-Regular.ttf"),
-        "Roboto-Bold": require("../assets/fonts/Roboto-Bold.ttf"),
-        "Roboto-Medium": require("../assets/fonts/Roboto-Medium.ttf"),
-        "Roboto-Regular": require("../assets/fonts/Roboto-Regular.ttf"),
-      });
-      setFontsLoaded(true);
-    }
-
-    loadFonts();
-  }, []);
-
-  if (!fontsLoaded) {
-    return null; // Or some loading component
-  }
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Friends Feed</Text>
-      <Text style={styles.subtitle}>Discover new restaurants</Text>
-      <Text style={styles.text2}>one friend at a time</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="@Username"
-        value={formData.username}
-        onChangeText={(text) => handleChange("username", text)}
-      />
-      {errors.username && (
-        <Text style={styles.errorText}>{errors.username}</Text>
-      )}
-      <Text style={styles.username}>
-        This is how you’ll appear to your friends on Friends Feed.
-      </Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={formData.password}
-        onChangeText={(text) => handleChange("password", text)}
-        secureTextEntry
-      />
-      {errors.password ? (
-        <Text style={styles.errorText}>{errors.password}</Text>
-      ) : (
-        <Text style={styles.password}>
-          <Icon name="check" size={16} color="#000" style={styles.icon} />
-          Password must include: 6 to 20 characters
-        </Text>
-      )}
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email Address"
-        value={formData.email}
-        onChangeText={(text) => handleChange("email", text)}
-      />
-      {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-      <TextInput
-        style={styles.input}
-        placeholder="Phone Number"
-        value={formData.phone}
-        onChangeText={(text) => handlePhoneChange("phone", text)}
-      />
-      {errors.username && <Text style={styles.errorText}>{errors.phone}</Text>}
-
-      <TextInput
-        style={styles.input}
-        placeholder="location Ex: San Francisco, CA"
-        value={formData.location}
-        onChangeText={(text) => handleChange("location", text)}
-      />
-      {errors.location ? (
-        <Text style={styles.errorText}>{errors.location}</Text>
-      ) : (
-        <Text style={styles.zipcode}>
+    <View style={{flex: 1}}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Friends Feed</Text>
+        <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
+      </View>
+      <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="@ Username"
+            value={formData.username}
+            onChangeText={(text) => handleChange("username", text)}
+          />
+          {errors.username && (
+            <Text style={styles.errorText}>{errors.username}</Text>
+          )}
+          <Text style={{textAlign: 'left'}}>
+            This is how you’ll appear to your friends on Friends Feed.
+          </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={formData.password}
+          onChangeText={(text) => handleChange("password", text)}
+          secureTextEntry
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
+        <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+          <Icon name="check" size={16} color="#000" />
+          <View>
+            <Text style={{textAlign: 'left'}}>Password must include:</Text>
+            <Text style={{textAlign: 'left'}}>
+              6 to 20 characters
+            </Text>
+          </View>
+        </View>
+        <TextInput
+          style={styles.input}
+          placeholder="Email Address"
+          value={formData.email}
+          onChangeText={(text) => handleChange("email", text)}
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          value={formData.phone}
+          onChangeText={(text) => handlePhoneChange("phone", text)}
+        />
+        {errors.username && <Text style={styles.errorText}>{errors.phone}</Text>}
+        <TextInput
+          style={styles.input}
+          placeholder="location Ex: San Francisco, CA"
+          value={formData.location}
+          onChangeText={(text) => handleChange("location", text)}
+        />
+        {errors.location && (
+          <Text style={styles.errorText}>{errors.location}</Text>
+        )}
+        <Text>
           Enter your city and state so we can start showing you recommendations
           nearby.
         </Text>
-      )}
-      <Text style={styles.term}>
-        By clicking Continue you are agreeing to out
-        <Text style={styles.boldText}>Terms & Conditions.</Text>
-      </Text>
-      <Pressable
-        android_ripple={{ color: "#3A4D39" }}
-        style={styles.buttonText}
-        onPress={handleRegistration}
-      >
-        <Text style={styles.text}>Continue</Text>
-      </Pressable>
+        <Text style={{marginTop: 26, marginBottom: 27}}>
+          By clicking Continue you are agreeing to our <Text style={{fontFamily: 'Roboto-Bold'}}>Terms & Conditions.</Text>
+        </Text>
+        <Pressable
+          android_ripple={{ color: "#3A4D39" }}
+          style={styles.button}
+          onPress={handleRegistration}
+        >
+          <Text style={styles.text}>Continue</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFF",
-    paddingHorizontal: 30,
-    // Provides padding but allows for stretching
+  header: {
+    maxWidth: 250,
+    alignSelf: 'center'
   },
   title: {
     fontSize: 24,
-
-    marginBottom: 48,
+    marginBottom: 30,
     color: "#739072",
     textAlign: "center",
     fontFamily: "LuckiestGuy-Regular",
   },
-  input: {
-    height: 40,
-    width: "100%", // Allows the input to fill the available space
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 10,
-    borderRadius: 5,
-  },
-  buttonText: {
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    borderRadius: 5,
-    marginTop: 70,
-    width: "100%", // Full-width button
-    alignItems: "center",
-  },
   subtitle: {
     fontSize: 16,
-    color: "#000",
-    marginBottom: 5,
     textAlign: "center",
+    fontFamily: "Roboto-Medium",
+    marginBottom: 13
+  },
+  formContainer: {
+    width: '90%',
+    alignSelf: 'center',
+    gap: 15
+  },
+  input: {
+    width: '100%',
+    borderColor: '#739072',
+    borderWidth: 1,
+    paddingLeft: 15,
+    paddingTop: 9,
+    paddingBottom: 9,
+    borderRadius: 5,
   },
   errorText: {
-    position: "relative",
-    bottom: 15,
     color: "red",
-    fontSize: 12,
+    fontSize: 14,
+  },
+
+  boldText: {
+    fontWeight: "bold",
+  },
+  button: {
+    paddingVertical: 10,
+    backgroundColor: "#739072",
+    borderRadius: 5,
+    width: "100%", // Full-width button
+    alignItems: "center",
   },
   text: {
     color: "white",
     fontSize: 18,
-  },
-  text2: {
-    position: "relative",
-    top: -10,
-    fontSize: 16,
-    color: "#000",
-    marginBottom: 5,
-    textAlign: "center",
-  },
-  username: {
-    position: "relative",
-    top: -10,
-    textAlign: "left",
-    width: "100%", // Full-width text
-    marginBottom: 10,
-    fontSize: 14,
-  },
-  zipcode: {
-    position: "relative",
-    top: -10,
-    textAlign: "left",
-    width: "100%", // Full-width text
-    marginBottom: 10,
-  },
-  password: {
-    position: "relative",
-    top: -10,
-    textAlign: "left",
-    width: "50%", // Full-width text
-    marginBottom: 30,
-    marginRight: 170,
-  },
-  term: {
-    position: "relative",
-    top: 60,
-  },
-  boldText: {
-    fontWeight: "bold",
   },
 });
