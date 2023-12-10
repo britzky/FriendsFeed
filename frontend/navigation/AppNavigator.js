@@ -116,7 +116,7 @@ export const AppNavigator = () => {
         ) : (
           <Stack.Group>
             <Stack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }}/>
-            <Stack.Screen name="Register" component={Register} options={{ headerTitle: '' }}/>
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
             <Stack.Screen name="ChooseAvatar" component={ChooseAvatar} options={{ headerTitle: '' }}/>
             <Stack.Screen name="Login" component={Login} options={{ headerTitle: '' }}/>
           </Stack.Group>

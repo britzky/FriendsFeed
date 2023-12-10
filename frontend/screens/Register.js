@@ -15,8 +15,6 @@ export default function Register() {
   });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [phone, setPhone] = useState({ phone: "" });
-  // const { registrationFlow } = route.params;
-  console.log("This is the Register registration flow status: ");
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -57,11 +55,12 @@ export default function Register() {
 
   return (
     <ScrollView style={{flex: 1}}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Friends Feed</Text>
-        <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
-      </View>
       <View style={styles.formContainer}>
+        <View style={styles.titleContainer}>
+          <Icon name="left" size={24} onPress={() => navigate.goBack()} />
+          <Text style={styles.title}>Friends Feed</Text>
+        </View>
+        <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
           <TextInput
             style={styles.input}
             placeholder="@ Username"
@@ -71,7 +70,7 @@ export default function Register() {
           {errors.username && (
             <Text style={styles.errorText}>{errors.username}</Text>
           )}
-          <Text style={{textAlign: 'left'}}>
+          <Text style={styles.text}>
             This is how you’ll appear to your friends on Friends Feed.
           </Text>
           <View style={styles.passwordContainer}>
@@ -96,8 +95,8 @@ export default function Register() {
         <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
           <Icon name="check" size={16} color="#000" />
           <View>
-            <Text style={{textAlign: 'left'}}>Password must include:</Text>
-            <Text style={{textAlign: 'left'}}>
+            <Text style={styles.text}>Password must include:</Text>
+            <Text style={styles.text}>
               6 to 20 characters
             </Text>
           </View>
@@ -125,7 +124,7 @@ export default function Register() {
         {errors.location && (
           <Text style={styles.errorText}>{errors.location}</Text>
         )}
-        <Text>
+        <Text style={styles.text}>
           Enter your city and state so we can start showing you recommendations
           nearby.
         </Text>
@@ -133,11 +132,11 @@ export default function Register() {
           By clicking Continue you are agreeing to our <Text style={{fontFamily: 'Roboto-Bold'}}>Terms & Conditions.</Text>
         </Text>
         <Pressable
-          android_ripple={{ color: "#3A4D39" }}
+          android_ripple={{color: "#3A4D39"}}
           style={styles.button}
           onPress={handleRegistration}
         >
-          <Text style={styles.text}>Continue</Text>
+          <Text style={styles.buttonText}>Continue</Text>
         </Pressable>
       </View>
     </ScrollView>
@@ -145,28 +144,32 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    maxWidth: 250,
-    alignSelf: 'center'
+  formContainer: {
+    width: '90%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    gap: 15,
+    marginTop: 106,
+  },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 30
   },
   title: {
     fontSize: 24,
-    marginBottom: 30,
     color: "#739072",
-    textAlign: "center",
     fontFamily: "LuckiestGuy-Regular",
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
   subtitle: {
     fontSize: 16,
     textAlign: "center",
     fontFamily: "Roboto-Medium",
-    marginBottom: 13
-  },
-  formContainer: {
-    width: '90%',
-    maxWidth: 300,
-    alignSelf: 'center',
-    gap: 15
+    marginBottom: 13,
+    maxWidth: 250,
+    alignSelf: 'center'
   },
   input: {
     width: '100%',
@@ -178,20 +181,21 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingRight: 50,
   },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    fontFamily: "Roboto-Regular",
+  },
+  text: {
+    textAlign: "left",
+    fontFamily: "Roboto-Regular",
+  },
   passwordContainer: {
     flexDirection: "row",
     alignItems: "center",
   },
   eyeIcon: {
-    marginLeft: -30,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 14,
-  },
-
-  boldText: {
-    fontWeight: "bold",
+    marginLeft: -40,
   },
   button: {
     paddingVertical: 10,
@@ -201,8 +205,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 1
   },
-  text: {
+  buttonText: {
     color: "white",
     fontSize: 18,
+    fontFamily: "Roboto-Regular",
   },
 });
