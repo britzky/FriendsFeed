@@ -56,10 +56,6 @@ export default function Register() {
   return (
     <ScrollView style={{flex: 1}}>
       <View style={styles.formContainer}>
-        <View style={styles.titleContainer}>
-          <Icon name="left" size={24} onPress={() => navigate.goBack()} />
-          <Text style={styles.title}>Friends Feed</Text>
-        </View>
         <Text style={styles.subtitle}>Discover new restaurants one friend at a time</Text>
           <TextInput
             style={styles.input}
@@ -149,19 +145,6 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     alignSelf: 'center',
     gap: 15,
-    marginTop: 106,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 30
-  },
-  title: {
-    fontSize: 24,
-    color: "#739072",
-    fontFamily: "LuckiestGuy-Regular",
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   subtitle: {
     fontSize: 16,

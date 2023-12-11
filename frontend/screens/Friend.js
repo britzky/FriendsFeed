@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   paragraph: {
     width: "85%",
     textAlign: "center",
-    alignSelf: "center", // Centers the paragraph
+    alignSelf: "center",
     marginBottom: 20,
     fontSize: 18,
   },
