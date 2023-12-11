@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/Feather';
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Material from "react-native-vector-icons/Ionicons";
 import { Keyboard } from 'react-native';
+import { Header } from "../components/Header";
+
 
 enableScreens();
 
@@ -116,7 +118,10 @@ export const AppNavigator = () => {
         ) : (
           <Stack.Group>
             <Stack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }}/>
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
+            <Stack.Screen name="Register" component={Register} options={{
+              headerShown: true,
+              header: () => <Header />
+              }}/>
             <Stack.Screen name="ChooseAvatar" component={ChooseAvatar} options={{ headerTitle: '' }}/>
             <Stack.Screen name="Login" component={Login} options={{ headerTitle: '' }}/>
           </Stack.Group>
