@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     width: 111,
     position: "relative",
     top: -30,
-   
+
   },
   filterButton: {
     paddingVertical: 10,

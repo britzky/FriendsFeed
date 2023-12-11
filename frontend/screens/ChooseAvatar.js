@@ -1,45 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { avatars } from "../assets";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import Icon from "react-native-vector-icons/SimpleLineIcons";
 
 const images = {
-  image1: require("../assets/Avocado.png"),
-  image2: require("../assets/Hamburger.png"),
-  image3: require("../assets/Cupcake.png"),
+  image1: require("../assets/Cupcake.png"),
+  image2: require("../assets/Coffee.png"),
+  image3: require("../assets/Hamburger.png"),
 };
 
 export const ChooseAvatar = ({ route }) => {
-  const {
-    userDetails,
-    setIsLoggedIn,
-    isLoggedIn,
-    setUserDetails,
-    setAccessToken,
-    accessToken,
-  } = useAuth();
+  const { userDetails, setIsLoggedIn, isLoggedIn, setUserDetails, setAccessToken, accessToken } = useAuth();
   const navigation = useNavigation();
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { registrationFlow, formData } = route.params;
-  
+  const { formData } = route.params;
+
   const handleSelectAvatar = (avatar) => {
     setSelectedAvatar(avatar);
   };
-  
-  
-  
+
   const handleCompleteRegistration = async () => {
     if (!selectedAvatar) {
       alert("Please select an avatar");
@@ -51,7 +34,6 @@ export const ChooseAvatar = ({ route }) => {
       ...formData,
       profile_picture: selectedAvatar,
     };
-    
     try {
       const response = await fetch("https://colab-test.onrender.com/register", {
         method: "POST",
@@ -61,7 +43,7 @@ export const ChooseAvatar = ({ route }) => {
         body: JSON.stringify(completedUserDetails),
       });
       const data = await response.json();
-      
+
       if (response.ok) {
         console.log("Registration completed successfully:", data);
         await AsyncStorage.setItem("user_details", JSON.stringify(data));
@@ -78,14 +60,14 @@ export const ChooseAvatar = ({ route }) => {
       console.error("Error completing registration:", error);
     }
   };
-  
+
   // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
   useEffect(() => {
     if (accessToken && userDetails) {
       setIsLoggedIn(true);
     }
   }, [accessToken, userDetails]);
-  
+
   useEffect(() => {
     const navigateIfReady = async () => {
       const isNewUser = await AsyncStorage.getItem("isNewUser");
@@ -97,7 +79,7 @@ export const ChooseAvatar = ({ route }) => {
     };
     navigateIfReady();
   }, [isLoggedIn, navigation, route.params]);
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Friends Feed</Text>
@@ -127,8 +109,7 @@ export const ChooseAvatar = ({ route }) => {
       <View style={styles.container2}>
         {Object.keys(images).map((key) => (
           <View key={key} style={styles.imageContainer}>
-            <Image source={images[key]} style={styles.image} blurRadius={15} />
-
+            <Image source={images[key]} style={styles.image} blurRadius={25} />
             <Icon name="lock" size={28} color="#000" style={styles.icon} />
           </View>
         ))}
@@ -178,7 +159,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 80,
     height: 80,
-    margin: 10, // Adjust the margin as needed
+    margin: 10,
   },
   secondSubTitle: {
     fontSize: 18,
@@ -217,26 +198,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   imageContainer: {
-    position: "relative", // Position the icon absolutely within the container
     margin: 5,
+    borderRadius: 40,
+    width: 80,
+    height: 80,
   },
   container2: {
-    flexDirection: "row", // Align items in a row
-    justifyContent: "space-around", // Space items evenly
+    flexDirection: "row",
+    justifyContent: "space-around",
     alignItems: "center",
     position: "relative",
     top: 40,
   },
   image: {
-    width: 80, // Smaller width
-    height: 80, // Smaller height
-    borderRadius: 25, // Half the width/height to make it circular
+    width: '100%',
+    height: '100%',
+    borderRadius: 40,
   },
   icon: {
     position: "absolute",
-    left: "50%", // Center the icon horizontally
-    top: "50%", // Center the icon vertically
-    marginLeft: -12, // Offset by half the icon's width to center
-    marginTop: -12, // Offset by half the icon's height to center
+    left: "50%",
+    top: "50%",
+    marginLeft: -12,
+    marginTop: -12,
   },
 });

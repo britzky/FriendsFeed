@@ -65,8 +65,8 @@ const RestaurantCard = ({
             ))}
             <Text style={styles.overall}>Friend’s Overall Rating</Text>
       </View>
-      
-      
+
+
       <Text style={styles.rating2}>{rating && ratingComponent}</Text>
       <Text style={styles.address}>{address}</Text>
       <Pressable
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     flex: 1,
-   
+
     borderRadius: 8,
     justifyContent: "center",
     alignItems: 'flex-start',
@@ -216,8 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    position: "relative",
-    left: 40,
+    marginLeft: 5,
     fontSize: 16,
     fontStyle: "italic",
   },

@@ -107,7 +107,7 @@ export const Friend = ({ route }) => {
       <View>
         <FriendList />
       </View>
-      {inRegistrationFlow && (
+      {/* {inRegistrationFlow && (
         <>
           <Pressable
             android_ripple={{ color: "#3A4D39" }}
@@ -120,7 +120,7 @@ export const Friend = ({ route }) => {
             <Text style={styles.text}>Skip for now</Text>
           </Pressable>
         </>
-      )}
+      )} */}
     </View>
   );
 };
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   paragraph: {
     width: "85%",
     textAlign: "center",
-    alignSelf: "center", 
+    alignSelf: "center",
     marginBottom: 20,
     fontSize: 18,
   },
