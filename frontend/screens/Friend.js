@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { View, FlatList, Pressable, Text, StyleSheet } from "react-native";
+import {
+  View,
+  FlatList,
+  Pressable,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { Searchbar } from "../components/Searchbar";
 import { FriendCard } from "../components/FriendCard";
@@ -15,6 +22,7 @@ export const Friend = ({ route }) => {
     useAuth();
   const { fetchFriends } = useFriends();
   const navigation = useNavigation();
+  console.log('this is registration flow', inRegistrationFlow)
 
   //fetch the friend list
   useEffect(() => {
@@ -72,75 +80,89 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {!inRegistrationFlow && <Text style={styles.header}>Add Friends</Text>}
+   
+    <View style={{ flex: 1 }}>
+      <View style={styles.mainContainer}>
+        <View>
+        {!inRegistrationFlow && <Text style={styles.header}>Add Friends</Text>}
 
-      {inRegistrationFlow && (
-        <>
-          <Text style={styles.title}>Friends Feed</Text>
-          <Text style={styles.paragraph}>
-            Add friends so you can start seeing reviews right away. This is what
-            makes Friends Feed so great!
-          </Text>
-        </>
-      )}
+        {inRegistrationFlow && (
+          <View style={styles.headerContainer}>
+            <Text style={styles.title}>Friends Feed</Text>
+            <Text style={styles.paragraph}>
+              Add friends so you can start seeing reviews right away. This is
+              what makes Friends Feed so great!
+            </Text>
+          </View>
+        )}
 
-      <Searchbar
-        onSearch={handleSearch}
-        placeholder="Search @Username or phone number"
-      />
-      <Text style={styles.subTitle}>Your friends will appear here.</Text>
-      <FlatList
-        data={friend}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) =>
-          !item.following && (
-            <FriendCard
-              username={item.username}
-              profile_picture={item.profile_picture}
-              following={item.following}
-              onFollowChange={() => setFriend(null)}
-            />
-          )
-        }
-      />
-      <View>
-        <FriendList />
+          <View >
+        <Searchbar
+          onSearch={handleSearch}
+          placeholder="Search @Username or phone number"
+        />
+        </View>
+        <Text style={styles.subTitle}>Your friends will appear here.</Text>
+        <FlatList
+         
+          data={friend}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) =>
+            !item.following && (
+              <FriendCard
+                username={item.username}
+                profile_picture={item.profile_picture}
+                following={item.following}
+                onFollowChange={() => setFriend(null)}
+              />
+            )
+          }
+        />
+
+        <View>
+          <FriendList />
+        </View>
+        </View>
+        {inRegistrationFlow && (
+          <View style={styles.buttonContainer}>
+            <Pressable
+              android_ripple={{ color: "#3A4D39" }}
+              style={styles.signUpButton}
+              onPress={navigateToHome}
+            >
+              <Text style={styles.textButton}>Sign Up</Text>
+            </Pressable>
+            <Pressable style={styles.skip} onPress={navigateToHome}>
+              <Text style={styles.text}>Skip for now</Text>
+            </Pressable>
+          </View>
+        )}
       </View>
-      {inRegistrationFlow && (
-        <>
-          <Pressable
-            android_ripple={{ color: "#3A4D39" }}
-            style={styles.signUpButton}
-            onPress={navigateToHome}
-          >
-            <Text style={styles.textButton}>Sign Up</Text>
-          </Pressable>
-          <Pressable style={styles.skip} onPress={navigateToHome}>
-            <Text style={styles.text}>Skip for now</Text>
-          </Pressable>
-        </>
-      )}
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    marginTop: 50,
+  mainContainer: {
+     width: '95%',
+    maxWidth: 400,
+    alignSelf: 'center',
+    gap: 10,
+    marginTop: 40,
   },
   title: {
     fontSize: 24,
-    marginBottom: 50,
+   // Static value that works well on most devices
     textAlign: "center",
     color: "#739072",
     fontFamily: "LuckiestGuy-Regular",
+    marginBottom: 50,
   },
   paragraph: {
     width: "85%",
     textAlign: "center",
-    alignSelf: "center", 
+    alignSelf: "center", // Centers the paragraph
     marginBottom: 20,
     fontSize: 18,
   },
@@ -166,10 +188,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
-    marginTop: 70,
-    width: "90%", // Full-width button
+    marginTop: '5%', // Adjusted for responsiveness
+    width: "90%",
     alignItems: "center",
-    marginTop: 290,
     alignSelf: "center",
   },
   textButton: {
@@ -177,8 +198,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   skip: {
-    justifyContent: "center", // Center vertically in a flex container
+    justifyContent: "center",
     alignItems: "center",
+    marginTop: '5%',
   },
   text: {
     fontSize: 16,
@@ -187,17 +209,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
+  headerContainer: {
+  fontSize: 22,
+  color: "#739072",
+  marginBottom: 10,
+  },
+  buttonContainer: {
+    justifyContent: 'flex-end',
+    padding: 10,
+  },
   header: {
-    position: "relative",
-    marginTop: 70,
+    flex: 1,
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
-
-    marginTop: 10,
-
-    marginBottom: 20,
-    alignContent: "flex-start",
-    marginLeft: 12,
-  },
+  }
 });

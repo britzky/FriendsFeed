@@ -14,7 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { isLoggedIn, userDetails, accessToken, setIsLoggedIn, setUserDetails, setAccessToken } = useAuth();
+  const { isLoggedIn, userDetails, accessToken, setIsLoggedIn, setUserDetails, setAccessToken, setInRegistrationFlow } = useAuth();
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -79,6 +79,7 @@ export default function Login() {
   // Side effect to navigate to Home screen if user is logged in
   useEffect(() => {
     if (isLoggedIn) {
+      setInRegistrationFlow(false)
       navigate.navigate("HomeTabs", { screen: "Home" });
     }
   }, [isLoggedIn, navigate])

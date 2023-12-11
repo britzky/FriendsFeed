@@ -28,15 +28,15 @@ export const FriendCard = ({ username, profile_picture, following, onFollowChang
 
   return (
     <View style={styles.cardContainer}>
-      <Image style={styles.image} source={avatarImage} />
-      <Text style={styles.name}>{username}</Text>
+      <Image style={styles.avatar} source={avatarImage} />
+      <Text style={styles.username}>{username}</Text>
       {!isCurrentUser && (
         <TouchableOpacity
           android_ripple={{ color: "#3A4D39" }}
-          style={styles.button}
+          style={styles.followButton}
           onPress={handleButtonPress}
         >
-        <Text style={styles.text}>{following ? "Unfollow" : "Follow"}</Text>
+        <Text style={styles.buttonText}>{following ? "Unfollow" : "Follow"}</Text>
       </TouchableOpacity>
       )}
     </View>
@@ -45,35 +45,35 @@ export const FriendCard = ({ username, profile_picture, following, onFollowChang
 
 const styles = StyleSheet.create({
   cardContainer: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#f9f9f9',
+    borderBottomWidth: 1,
+    borderColor: '#e0e0e0',
+    marginTop: 10,
   },
-  image: {
+  avatar: {
     width: 50,
     height: 50,
-    borderRadius: 25, // Makes it a circle
-    marginRight: 10, // Makes it a circle
-    paddingRight: 10,
+    borderRadius: 25, // Half of width and height to create a circle
+    marginRight: 10,
+  },
+  username: {
+    flex: 1,
+    fontSize: 16,
+    color: 'black',
+  },
+  followButton: {
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    backgroundColor: '#739072',
+    borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  name: {
-    flex: 1,
-    color: "black",
-    fontSize: 16
-  },
-  button: {
-    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 15 : 200,
-    paddingVertical: 8,
-    backgroundColor: "#739072",
-
-    padding: 0,
-    borderRadius: 10,
-  },
-  text: {
-    color: "white",
+  buttonText: {
+    color: 'white',
+    fontSize: 14,
   },
 });
