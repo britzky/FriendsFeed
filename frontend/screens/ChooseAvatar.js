@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { avatars } from "../assets";
-import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet, Pressable, ActivityIndicator, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
@@ -71,63 +71,61 @@ export const ChooseAvatar = ({ route }) => {
   useEffect(() => {
     const navigateIfReady = async () => {
       const isNewUser = await AsyncStorage.getItem("isNewUser");
-      // Check if all necessary conditions are met
       if (isNewUser === "true" && isLoggedIn) {
         navigation.navigate("Friend", { registrationFlow: true });
-        await AsyncStorage.removeItem("isNewUser"); // Optional: Clear isNewUser flag
+        await AsyncStorage.removeItem("isNewUser");
       }
     };
     navigateIfReady();
   }, [isLoggedIn, navigation, route.params]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Friends Feed</Text>
-      <Text style={styles.subTitle}>
-        Pick an avatar for your Friends Feed profile.
-      </Text>
-      <View style={styles.avatarGrid}>
-        {Object.keys(avatars).map((key) => (
-          <TouchableOpacity
-            key={key}
-            onPress={() => handleSelectAvatar(key)}
-            style={selectedAvatar === key ? styles.selectedAvatar : null}
-          >
-            <Image source={avatars[key]} style={styles.avatar} />
-          </TouchableOpacity>
-        ))}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.subTitle}>
+          Pick an avatar for your Friends Feed profile.
+        </Text>
+        <View style={styles.avatarGrid}>
+          {Object.keys(avatars).map((key) => (
+            <TouchableOpacity
+              key={key}
+              onPress={() => handleSelectAvatar(key)}
+            >
+              <Image source={avatars[key]} style={[styles.avatar, selectedAvatar === key && styles.selectedAvatar]} />
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Text style={styles.secondSubTitle}>
+          Invite 10 friends to Friends Feed to unlock these special Avatars!
+        </Text>
+        <Pressable
+          android_ripple={{ color: "#3A4D39" }}
+          style={styles.buttonText}
+        >
+          <Text style={styles.text}>Copy Invite Link</Text>
+        </Pressable>
+        <View style={styles.container2}>
+          {Object.keys(images).map((key) => (
+            <View key={key} style={styles.imageContainer}>
+              <Image source={images[key]} style={styles.image} blurRadius={25} />
+              <Icon name="lock" size={28} color="#000" style={styles.icon} />
+            </View>
+          ))}
+        </View>
+        <Pressable
+          android_ripple={{ color: "#3A4D39" }}
+          style={styles.continueButton}
+          onPress={handleCompleteRegistration}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text style={styles.textButton}>Continue</Text>
+          )}
+        </Pressable>
       </View>
-      <Text style={styles.secondSubTitle}>
-        Invite 10 friends to Friends Feed to unlock these special Avatars!
-      </Text>
-      <Pressable
-        android_ripple={{ color: "#3A4D39" }}
-        style={styles.buttonText}
-      >
-        <Text style={styles.text}>Copy Invite Link</Text>
-      </Pressable>
-      <View style={styles.container2}>
-        {Object.keys(images).map((key) => (
-          <View key={key} style={styles.imageContainer}>
-            <Image source={images[key]} style={styles.image} blurRadius={25} />
-            <Icon name="lock" size={28} color="#000" style={styles.icon} />
-          </View>
-        ))}
-      </View>
-
-      <Pressable
-        android_ripple={{ color: "#3A4D39" }}
-        style={styles.continueButton}
-        onPress={handleCompleteRegistration}
-        disabled={loading}
-      >
-        {loading ? (
-          <ActivityIndicator size="small" color="#FFFFFF" />
-        ) : (
-          <Text style={styles.textButton}>Continue</Text>
-        )}
-      </Pressable>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -136,7 +134,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
@@ -160,6 +157,11 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     margin: 10,
+  },
+  selectedAvatar: {
+    borderWidth: 4,
+    borderColor: "#739072",
+    borderRadius: 40,
   },
   secondSubTitle: {
     fontSize: 18,
@@ -192,6 +194,7 @@ const styles = StyleSheet.create({
     width: "80%", // Full-width button
     alignItems: "center",
     marginTop: 80,
+    marginBottom: 1,
   },
   textButton: {
     color: "white",
