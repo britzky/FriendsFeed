@@ -69,13 +69,13 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     }
 
   return (
-      <View style={styles.container}>
-            <FlatList
-              data={restaurants}
-              keyExtractor={(item) => item.id}
-              renderItem={renderRestaurantCard}
-              ListEmptyComponent={<Text>No restaurants</Text>}
-            />
+    <View>
+        <FlatList
+            data={restaurants}
+            keyExtractor={(item) => item.id}
+            renderItem={renderRestaurantCard}
+            ListEmptyComponent={<Text>No restaurants</Text>}
+        />
     </View>
   );
 }
@@ -83,11 +83,5 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 20,
-    },
-    centered: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 });
