@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  View,
-  Modal,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  Pressable,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
@@ -25,12 +17,7 @@ export const Home = () => {
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
   const [selectedRating, setSelectedRating] = useState(null);
-  const {
-    fetchRestaurantsByFriendRating,
-    fetchFriendReviewedRestaurants,
-    updateRestaurants,
-  } = useRestaurant();
-
+  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, } = useRestaurant();
   const navigation = useNavigation();
 
   // Side effect to make sure all of the details are loaded
@@ -91,62 +78,63 @@ export const Home = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Friends Reviews</Text>
-      <View style={styles.searchContainer}>
-        <Searchbar
-          onSearch={handleSearch}
-          placeholder="Search Location (ex: Brooklyn, NY)"
-        />
-      </View>
-      <View style={styles.ButtonContainer}>
-        <Pressable
-          style={styles.filterButton}
-          android_ripple={{ color: "#3A4D39" }}
-          onPress={() => setShowRatingDropdown(true)}
-        >
-          <Text style={styles.text}>Ratings</Text>
-          <Icon name="keyboard-arrow-down" size={24} />
-        </Pressable>
-        <Pressable
-          style={styles.filterButton}
-          android_ripple={{ color: "#3A4D39" }}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.text}>Cuisines</Text>
-          <Icon name="keyboard-arrow-down" size={24} />
-        </Pressable>
-      </View>
-      {showRatingDropdown && (
-        <View style={styles.dropdownContainer}>
-          <RatingsDropdown
-            onRatingSelect={handleRatingSelection}
-            resetFilter={resetFilter}
+    <View style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Friends Reviews</Text>
+          <Searchbar
+            onSearch={handleSearch}
+            placeholder="Search Location (ex: Brooklyn, NY)"
           />
-        </View>
-      )}
-      <Modal
-        animationType="slide" // You can change this to 'fade' or 'none'
-        transparent={true} // Set to true if you want to show the underlying content
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={styles.modalContainer}>
-            <View style={styles.modalView}>
-              <CuisineFilter
-                onApplyFilter={handleApplyCuisineFilter}
-                onClose={() => setModalVisible(false)}
-                fetchCuisinesUrl={
-                  "https://colab-test.onrender.com/get-cuisines"
-                }
-              />
-            </View>
+          <View style={styles.ButtonContainer}>
+            <Pressable
+              style={styles.filterButton}
+              android_ripple={{ color: "#3A4D39" }}
+              onPress={() => setShowRatingDropdown(true)}
+            >
+              <Text style={styles.text}>Ratings</Text>
+              <Icon name="keyboard-arrow-down" size={24} />
+            </Pressable>
+            <Pressable
+              style={styles.filterButton}
+              android_ripple={{ color: "#3A4D39" }}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.text}>Cuisines</Text>
+              <Icon name="keyboard-arrow-down" size={24} />
+            </Pressable>
           </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+          {showRatingDropdown && (
+          <View style={styles.dropdownContainer}>
+            <RatingsDropdown
+              onRatingSelect={handleRatingSelection}
+              resetFilter={resetFilter}
+            />
+          </View>
+          )}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.modalContainer}>
+              <View style={styles.modalView}>
+                <CuisineFilter
+                  onApplyFilter={handleApplyCuisineFilter}
+                  onClose={() => setModalVisible(false)}
+                  fetchCuisinesUrl={
+                    "https://colab-test.onrender.com/get-cuisines"
+                  }
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </View>
       <View style={styles.RestaurantListContainer}>
         <RestaurantList
           location={searchLocation}
@@ -159,29 +147,20 @@ export const Home = () => {
         </Pressable>
       </View>
     </View>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 38,
-    flex: 1,
     width: "90%",
-    justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
   },
   header: {
-    position: "relative",
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
-    marginTop: 40,
-  },
-  searchContainer: {
-    width: "100%",
-    height: "25%",
-    justifyContent: "center",
-    alignItems: "center",
   },
   ButtonContainer: {
     flexDirection: "row",

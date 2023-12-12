@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignSelf: "stretch",
   },
-
   icon: {
     color: "#f1c232",
     fontSize: 18,
