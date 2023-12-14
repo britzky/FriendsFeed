@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable,
-  Dimensions,
-} from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-native";
 import { avatars } from "../assets";
 import StarRating from "react-native-star-rating-widget";
 
@@ -32,11 +25,11 @@ const RestaurantCard = ({
       rating={rating}
       maxStars={5}
       starSize={20}
-      color="black" // or any color you want
-      emptyColor="black" // or any other color for empty stars
+      color="black"
+      emptyColor="black"
       enableHalfStar={true}
       enableSwiping={false}
-      starStyle={{ margin: 1 }}
+      starStyle={{ marginRight: -5 }}
     />
   );
 
@@ -50,7 +43,6 @@ const RestaurantCard = ({
         </View>
       )}
       <Text style={styles.title}>{restaurantName}</Text>
-
       <View style={styles.avatarContainer}>
         {friendAvatars &&
           friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
@@ -62,16 +54,16 @@ const RestaurantCard = ({
               { marginLeft: index === 0 ? 0 : -10 } // Adjust -10 to control overlap
             ]}
             />
-            ))}
-            <Text style={styles.overall}>Friend’s Overall Rating</Text>
+        ))}
+        <Text style={styles.overall}>Friend’s Overall Rating</Text>
       </View>
-
-
-      <Text style={styles.rating2}>{rating && ratingComponent}</Text>
+      <View>
+        <Text>{rating && ratingComponent}</Text>
+      </View>
       <Text style={styles.address}>{address}</Text>
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
-        style={styles.review}
+        style={styles.reviewButton}
         onPress={onReviewPress}
       >
         <Text style={styles.text}>Write a Review</Text>
@@ -99,7 +91,7 @@ const RestaurantCard = ({
                 source={avatars[avatar]}
                 style={[
                   styles.avatar,
-                  { marginLeft: index === 0 ? 0 : -10 } // Adjust -10 to control overlap
+                  { marginLeft: index === 0 ? 0 : -10 }
                 ]}
               />
             ))}
@@ -112,7 +104,7 @@ const RestaurantCard = ({
       </Pressable>
       <Pressable
         android_ripple={{ color: "#3A4D39" }}
-        style={styles.review}
+        style={styles.reviewButton}
         onPress={onReviewPress}
       >
         <Text style={styles.text}>Write a Review</Text>
@@ -126,93 +118,30 @@ export default RestaurantCard;
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    marginBottom: 20,
+    marginBottom: 15,
     borderBottomColor: "#999999",
     borderBottomWidth: 1,
     marginVertical: 8,
-    alignSelf: "stretch",
-  },
-  button: {
-    flex: 1,
-  },
-  buttonPressed: {
-    opacity: 0.5,
-  },
-  innerContainer: {
-    flex: 1,
-
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: 'flex-start',
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 20,
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-    marginBottom: 4,
+    width: '100%'
   },
   restaurantImage: {
     width: "100%",
     height: 140,
     borderRadius: 10,
   },
-  review: {
-    paddingHorizontal: isSmallScreen ? 100 : isMediumScreen ? 135 : 200,
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    marginVertical: 30,
-    padding: 0,
-    borderRadius: 10,
+  title: {
+    fontWeight: "bold",
+    fontSize: 20,
+    marginBottom: 4,
   },
-  text: {
-    color: "white",
-    fontSize: 16,
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-  },
-  icon: {
-    color: "#f1c232",
-    fontSize: 18,
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-  },
-  cuisine: {
-    marginTop: 10,
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-    fontSize: 16,
-  },
-  icon2: {
+  avatarContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 5,
-    marginRight: 10,
-  },
-  friends: {
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-    fontSize: 16,
-    fontFamily: "Roboto",
   },
   avatar: {
     height: 25,
     width: 25,
   },
-  avatarContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    // Add additional styling as needed, e.g., padding or margin
-  },
-  rating: {
-    flex: 1,
-    marginRight: 300,
-  },
   overall: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
     marginLeft: 5,
     fontSize: 16,
     fontStyle: "italic",
@@ -221,7 +150,31 @@ const styles = StyleSheet.create({
     marginTop: 7,
     fontSize: 16
   },
-  rating2: {
-    marginTop: 8
-  }
+  reviewButton: {
+    paddingHorizontal: 100,
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    marginVertical: 30,
+    borderRadius: 10,
+    width: '100%'
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+  },
+  cuisine: {
+    marginTop: 5,
+    fontSize: 16,
+  },
+  rating: {
+    marginRight: 300,
+  },
+  innerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: 'flex-start',
+  },
+  buttonPressed: {
+    opacity: 0.5,
+  },
 });

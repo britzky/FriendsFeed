@@ -31,7 +31,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // If the loading state is active (true), display the ActivityIndicator
     if (loading) {
         return (
-            <View style={ styles.centered }>
+            <View>
                 <ActivityIndicator size="large" />
             </View>
         )
@@ -40,7 +40,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // If there is an error, display the error message
     if (error) {
         return (
-            <View style={ styles.centered }>
+            <View>
                 <Text>Error: {error.message}</Text>
             </View>
         )
@@ -80,8 +80,3 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
   );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-});
