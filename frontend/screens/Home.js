@@ -66,7 +66,7 @@ export const Home = () => {
   const resetFilter = () => {
     setSelectedRating(null); // Reset the selected rating
     fetchFriendReviewedRestaurants(); // Fetch all restaurants without filtering by rating
-    setShowRatingDropdown(false);
+    setShowRatingDropdown(!showRatingDropdown);
   };
 
   if (loading || !accessToken || !userDetails || !searchLocation) {
@@ -90,7 +90,7 @@ export const Home = () => {
             <Pressable
               style={styles.filterButton}
               android_ripple={{ color: "#3A4D39" }}
-              onPress={() => setShowRatingDropdown(true)}
+              onPress={() => setShowRatingDropdown(!showRatingDropdown)}
             >
               <Text style={styles.text}>Ratings</Text>
               <Icon name="keyboard-arrow-down" size={24} />
@@ -120,34 +120,29 @@ export const Home = () => {
               setModalVisible(!modalVisible);
             }}
           >
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalView}>
-                <CuisineFilter
-                  onApplyFilter={handleApplyCuisineFilter}
-                  onClose={() => setModalVisible(false)}
-                  fetchCuisinesUrl={
-                    "https://colab-test.onrender.com/get-cuisines"
-                  }
-                />
+            <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                  <CuisineFilter
+                    onApplyFilter={handleApplyCuisineFilter}
+                    onClose={() => setModalVisible(false)}
+                    fetchCuisinesUrl={
+                      "https://colab-test.onrender.com/get-cuisines"
+                    }
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      </View>
-      <View style={styles.RestaurantListContainer}>
-        <RestaurantList
-          location={searchLocation}
-          selectedCuisine={selectedCuisine}
-        />
-      </View>
-      <View>
-        <Pressable onPress={handleLogout} style={styles.logout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </Pressable>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+        <View style={styles.RestaurantListContainer}>
+          <RestaurantList
+            location={searchLocation}
+            selectedCuisine={selectedCuisine}
+          />
+        </View>
       </View>
     </View>
-  </View>
   );
 };
 
@@ -157,23 +152,28 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
   },
+  headerContainer: {
+    marginBottom: 10,
+  },
   header: {
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
+    marginBottom: 10,
   },
   ButtonContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: 30,
+    marginBottom: 15
   },
   filterButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 5,
-    borderWidth: 2,
+    paddingVertical: 8,
+    paddingLeft: 8,
+    paddingRight: 2,
+    borderRadius: 10,
+    borderWidth: 2.5,
     borderColor: "#4F6F52",
-    borderRadius: 5,
     flexDirection: "row",
     justifyContent: "center",
     marginRight: 15,
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: "absolute",
-    top: "90%",
-    right: 90,
+    top: "95%",
     zIndex: 1,
-    backgroundColor: "white",
-    opacity: 0.9,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    borderWidth: 1,
   },
   modalContainer: {
     flex: 1,

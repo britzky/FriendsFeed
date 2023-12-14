@@ -126,8 +126,6 @@ export default RestaurantCard;
 const styles = StyleSheet.create({
   gridItem: {
     flex: 1,
-    margin: 16,
-    marginTop: 25,
     marginBottom: 20,
     borderBottomColor: "#999999",
     borderBottomWidth: 1,
