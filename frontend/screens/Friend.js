@@ -22,7 +22,7 @@ export const Friend = ({ route }) => {
     useAuth();
   const { fetchFriends } = useFriends();
   const navigation = useNavigation();
-  console.log('this is registration flow', inRegistrationFlow)
+  console.log("this is registration flow", inRegistrationFlow);
 
   //fetch the friend list
   useEffect(() => {
@@ -80,84 +80,80 @@ export const Friend = ({ route }) => {
   };
 
   return (
-   
     <View style={{ flex: 1 }}>
-      <View style={styles.mainContainer}>
-        <View>
-        {!inRegistrationFlow && <Text style={styles.header}>Add Friends</Text>}
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <View style={styles.mainContainer}>
+          {!inRegistrationFlow && (
+            <Text style={styles.header}>Add Friends</Text>
+          )}
 
-        {inRegistrationFlow && (
-          <View style={styles.headerContainer}>
-            <Text style={styles.title}>Friends Feed</Text>
-            <Text style={styles.paragraph}>
-              Add friends so you can start seeing reviews right away. This is
-              what makes Friends Feed so great!
-            </Text>
+          {inRegistrationFlow && (
+            <View style={styles.headerContainer}>
+              <Text style={styles.title}>Friends Feed</Text>
+              <Text style={styles.paragraph}>
+                Add friends so you can start seeing reviews right away. This is
+                what makes Friends Feed so great!
+              </Text>
+            </View>
+          )}
+
+          <View style={[styles.searchbarContainer]}>
+            <Searchbar
+            style={styles.searchbar}
+              onSearch={handleSearch}
+              placeholder="Search @Username or phone number"
+            />
           </View>
-        )}
+          <Text style={styles.subTitle}>Your friends will appear here.</Text>
 
-          <View >
-        <Searchbar
-          onSearch={handleSearch}
-          placeholder="Search @Username or phone number"
-        />
-        </View>
-        <Text style={styles.subTitle}>Your friends will appear here.</Text>
-        <FlatList
-         
-          data={friend}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) =>
-            !item.following && (
-              <FriendCard
-                username={item.username}
-                profile_picture={item.profile_picture}
-                following={item.following}
-                onFollowChange={() => setFriend(null)}
-              />
-            )
-          }
-        />
+          {friend &&
+            friend.map(
+              (item) =>
+                item.following === false && (
+                  <FriendCard
+                    key={item.id.toString()}
+                    username={item.username}
+                    profile_picture={item.profile_picture}
+                    following={item.following}
+                    onFollowChange={() => setFriend(null)}
+                  />
+                )
+            )}
 
-        <View>
-          <FriendList />
-        </View>
-        </View>
-        {inRegistrationFlow && (
-          <View style={styles.buttonContainer}>
-            <Pressable
-              android_ripple={{ color: "#3A4D39" }}
-              style={styles.signUpButton}
-              onPress={navigateToHome}
-            >
-              <Text style={styles.textButton}>Sign Up</Text>
-            </Pressable>
-            <Pressable style={styles.skip} onPress={navigateToHome}>
-              <Text style={styles.text}>Skip for now</Text>
-            </Pressable>
+          <View>
+            <FriendList />
           </View>
-        )}
-      </View>
+        </View>
+      </ScrollView>
+      {inRegistrationFlow && (
+        <View style={styles.buttonContainer}>
+          <Pressable
+            android_ripple={{ color: "#3A4D39" }}
+            style={styles.signUpButton}
+            onPress={navigateToHome}
+          >
+            <Text style={styles.textButton}>Sign Up</Text>
+          </Pressable>
+          <Pressable style={styles.skip} onPress={navigateToHome}>
+            <Text style={styles.text}>Skip for now</Text>
+          </Pressable>
+        </View>
+      )}
     </View>
-
   );
 };
 
 const styles = StyleSheet.create({
   mainContainer: {
-     width: '95%',
-    maxWidth: 400,
-    alignSelf: 'center',
-    gap: 10,
+    backgroundColor: "white",
     marginTop: 40,
   },
   title: {
     fontSize: 24,
-   // Static value that works well on most devices
     textAlign: "center",
     color: "#739072",
     fontFamily: "LuckiestGuy-Regular",
-    marginBottom: 50,
+    marginBottom: 25,
   },
   paragraph: {
     width: "85%",
@@ -166,32 +162,22 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 18,
   },
-  avatarGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-    margin: 10, // Adjust the margin as needed
-  },
   subTitle: {
     fontSize: 16,
     color: "black",
     marginTop: 13,
-    width: "60%",
+    width: "65%",
     textAlign: "center",
+    alignSelf: "flex-start",
   },
 
   signUpButton: {
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
-    marginTop: '5%', // Adjusted for responsiveness
-    width: "90%",
     alignItems: "center",
-    alignSelf: "center",
+    justifyContent: "center",
+    minHeight: 50,
   },
   textButton: {
     color: "white",
@@ -200,7 +186,7 @@ const styles = StyleSheet.create({
   skip: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: '5%',
+    marginTop: "5%",
   },
   text: {
     fontSize: 16,
@@ -210,18 +196,32 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerContainer: {
-  fontSize: 22,
-  color: "#739072",
-  marginBottom: 10,
+    fontSize: 22,
+    color: "#739072",
+    marginBottom: 10,
+    
   },
   buttonContainer: {
-    justifyContent: 'flex-end',
     padding: 10,
+    backgroundColor: "white",
   },
   header: {
-    flex: 1,
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
+    marginBottom: 20
+  },
+  searchbarContainer: {
+    flex: 1,
+   alignSelf: 'center'
+  },
+  scrollViewContent: {
+    justifyContent: "flex-start",
+    backgroundColor: "white", // Align content to the top
+  },
+  searchbar: {
+    width: '80%', // Use a percentage for responsiveness
+    maxWidth: 300, // Maximum width it can grow to
+    minWidth: 100, 
   }
 });
