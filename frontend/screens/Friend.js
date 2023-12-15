@@ -80,7 +80,7 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.mainContainer}>
           {!inRegistrationFlow && (
@@ -209,19 +209,19 @@ const styles = StyleSheet.create({
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
-    marginBottom: 20
+    marginBottom: 10,
+    marginLeft: 12
   },
   searchbarContainer: {
     flex: 1,
-   alignSelf: 'center'
+   alignSelf: 'center',
+   width: '95%'
   },
   scrollViewContent: {
     justifyContent: "flex-start",
     backgroundColor: "white", // Align content to the top
   },
   searchbar: {
-    width: '80%', // Use a percentage for responsiveness
-    maxWidth: 300, // Maximum width it can grow to
-    minWidth: 100, 
+   
   }
 });
