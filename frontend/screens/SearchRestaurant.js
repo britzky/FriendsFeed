@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { Searchbar } from "../components/Searchbar";
 import RestaurantCard from "../components/RestaurantCard";
@@ -10,7 +10,7 @@ import StarRating from "react-native-star-rating-widget";
 export const SearchRestaurant = () => {
   const [restaurants, setRestaurants] = useState(null);
   const [searchedRestaurant, setSearchedRestaurant] = useState("");
-  const { accessToken, userDetails } = useAuth();
+  const { accessToken, userDetails, logout } = useAuth();
   const { searchLocation } = useLocation();
   const navigation = useNavigation();
 
@@ -85,15 +85,9 @@ export const SearchRestaurant = () => {
           />
         )}
         <View>
-          <StarRating
-            maxStars={5}
-            starSize={20}
-            color="black"
-            emptyColor="black"
-            enableHalfStar={true}
-            enableSwiping={false}
-            starStyle={{ marginLeft: -5 }}
-          />
+          <Pressable onPress={() => logout()}>
+            <Text>Logout</Text>
+          </Pressable>
         </View>
       </View>
     </View>

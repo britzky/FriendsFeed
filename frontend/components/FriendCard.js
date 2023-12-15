@@ -1,13 +1,7 @@
-import { Image, View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
+import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useFriends } from "../context/FriendContext";
 import { useAuth } from "../context/AuthContext";
 import { avatars } from "../assets";
-
-const windowWidth = Dimensions.get("window").width;
-
-const isLargeScreen = windowWidth > 600;
-const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
-const isSmallScreen = windowWidth <= 400;
 
 export const FriendCard = ({ username, profile_picture, following, onFollowChange }) => {
   const { unfollowFriend, followFriend } = useFriends();
@@ -48,9 +42,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
     marginTop: 10,
   },
   avatar: {
