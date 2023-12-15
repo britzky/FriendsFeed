@@ -5,6 +5,7 @@ import { Searchbar } from "../components/Searchbar";
 import RestaurantCard from "../components/RestaurantCard";
 import { useLocation } from "../context/LocationContext";
 import { useNavigation } from "@react-navigation/native";
+import StarRating from "react-native-star-rating-widget";
 
 export const SearchRestaurant = () => {
   const [restaurants, setRestaurants] = useState(null);
@@ -83,8 +84,18 @@ export const SearchRestaurant = () => {
             ListEmptyComponent={<Text>No restaurants</Text>}
           />
         )}
+        <View>
+          <StarRating
+            maxStars={5}
+            starSize={20}
+            color="black"
+            emptyColor="black"
+            enableHalfStar={true}
+            enableSwiping={false}
+            starStyle={{ marginLeft: -5 }}
+          />
+        </View>
       </View>
-      <Text>SearchRestaurant</Text>
     </View>
   );
 };
@@ -120,10 +131,10 @@ const styles = StyleSheet.create({
     right: 45,
 
     marginTop: 10,
-    
+
     marginBottom: 20,
     alignContent: 'flex-start',
     marginLeft: 12,
-   
+
     }
 });

@@ -1,13 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  View,
-  Modal,
-  Text,
-  ActivityIndicator,
-  StyleSheet,
-  Pressable,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { View, Modal, Text, ActivityIndicator, StyleSheet, Pressable, TouchableWithoutFeedback } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Searchbar } from "../components/Searchbar";
@@ -25,12 +17,7 @@ export const Home = () => {
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
   const { setSearchLocation, searchLocation } = useLocation();
   const [selectedRating, setSelectedRating] = useState(null);
-  const {
-    fetchRestaurantsByFriendRating,
-    fetchFriendReviewedRestaurants,
-    updateRestaurants,
-  } = useRestaurant();
-
+  const { fetchRestaurantsByFriendRating, fetchFriendReviewedRestaurants, } = useRestaurant();
   const navigation = useNavigation();
 
   // Side effect to make sure all of the details are loaded
@@ -79,7 +66,7 @@ export const Home = () => {
   const resetFilter = () => {
     setSelectedRating(null); // Reset the selected rating
     fetchFriendReviewedRestaurants(); // Fetch all restaurants without filtering by rating
-    setShowRatingDropdown(false);
+    setShowRatingDropdown(!showRatingDropdown);
   };
 
   if (loading || !accessToken || !userDetails || !searchLocation) {
@@ -91,74 +78,69 @@ export const Home = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Friends Reviews</Text>
-      <View style={styles.searchContainer}>
-        <Searchbar
-          onSearch={handleSearch}
-          placeholder="Search Location (ex: Brooklyn, NY)"
-        />
-      </View>
-      <View>
-        <View style={styles.ButtonContainer}>
-          <Pressable
-            style={styles.filterButton}
-            android_ripple={{ color: "#3A4D39" }}
-            onPress={() => setShowRatingDropdown(true)}
-          >
-            <Text style={styles.text}>Ratings</Text>
-            <Icon name="keyboard-arrow-down" size={24} />
-          </Pressable>
-          <Pressable
-            style={styles.filterButton}
-            android_ripple={{ color: "#3A4D39" }}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={styles.text}>Cuisines</Text>
-            <Icon name="keyboard-arrow-down" size={24} />
-          </Pressable>
-        </View>
-        {showRatingDropdown && (
+    <View style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.header}>Friends Reviews</Text>
+          <Searchbar
+            onSearch={handleSearch}
+            placeholder="Search Location (ex: Brooklyn, NY)"
+          />
+          <View style={styles.ButtonContainer}>
+            <Pressable
+              style={styles.filterButton}
+              android_ripple={{ color: "#3A4D39" }}
+              onPress={() => setShowRatingDropdown(!showRatingDropdown)}
+            >
+              <Text style={styles.text}>Ratings</Text>
+              <Icon name="keyboard-arrow-down" size={24} />
+            </Pressable>
+            <Pressable
+              style={styles.filterButton}
+              android_ripple={{ color: "#3A4D39" }}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.text}>Cuisines</Text>
+              <Icon name="keyboard-arrow-down" size={24} />
+            </Pressable>
+          </View>
+          {showRatingDropdown && (
           <View style={styles.dropdownContainer}>
             <RatingsDropdown
               onRatingSelect={handleRatingSelection}
               resetFilter={resetFilter}
             />
           </View>
-        )}
-        <Modal
-          animationType="slide" // You can change this to 'fade' or 'none'
-          transparent={true} // Set to true if you want to show the underlying content
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-            <View style={styles.modalContainer}>
-              <View style={styles.modalView}>
-                <CuisineFilter
-                  onApplyFilter={handleApplyCuisineFilter}
-                  onClose={() => setModalVisible(false)}
-                  fetchCuisinesUrl={
-                    "https://colab-test.onrender.com/get-cuisines"
-                  }
-                />
+          )}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+              <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                  <CuisineFilter
+                    onApplyFilter={handleApplyCuisineFilter}
+                    onClose={() => setModalVisible(false)}
+                    fetchCuisinesUrl={
+                      "https://colab-test.onrender.com/get-cuisines"
+                    }
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      </View>
-      <View style={styles.RestaurantListContainer}>
-        <RestaurantList
-          location={searchLocation}
-          selectedCuisine={selectedCuisine}
-        />
-      </View>
-      <View>
-        <Pressable onPress={handleLogout} style={styles.logout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </Pressable>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+        <View style={styles.RestaurantListContainer}>
+          <RestaurantList
+            location={searchLocation}
+            selectedCuisine={selectedCuisine}
+          />
+        </View>
       </View>
     </View>
   );
@@ -167,27 +149,51 @@ export const Home = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 38,
+    width: "90%",
+    alignSelf: "center",
+  },
+  headerContainer: {
+    marginBottom: 10,
+  },
+  header: {
+    fontFamily: "LuckiestGuy-Regular",
+    color: "#739072",
+    fontSize: 25,
+    marginBottom: 10,
+  },
+  ButtonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 15
+  },
+  filterButton: {
+    paddingVertical: 8,
+    paddingLeft: 8,
+    paddingRight: 2,
+    borderRadius: 10,
+    borderWidth: 2.5,
+    borderColor: "#4F6F52",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginRight: 15,
+  },
+  text: {
+    fontSize: 16,
+    color: "#000",
+  },
+  dropdownContainer: {
+    position: "absolute",
+    top: "95%",
+    zIndex: 1,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 10,
+    borderWidth: 1,
+  },
+  modalContainer: {
     flex: 1,
-    width: "100%",
-    height: "100%",
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  searchContainer: {
-    width: "50%",
-    height: "25%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 20,
-  },
-  RestaurantListContainer: {
-    width: "100%",
-    height: "70%",
-    justifyContent: "center",
-    alignItems: "center",
-    position: 'relative',
-    bottom:35,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     margin: 20,
@@ -204,39 +210,11 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center", // Centers the modal vertically in the container
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
-  },
-  ButtonContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-end",
-
-    width: 111,
-    position: "relative",
-    top: -30,
-
-  },
-  filterButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "#f0f0f0", // Use a light grey background for the buttons
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: "#4F6F52",
-
-    borderRadius: 5,
-    flexDirection: "row", // Aligns children (Text and Icon) in a row
-    // Centers children vertically
+  RestaurantListContainer: {
+    width: "100%",
+    height: "70%",
     justifyContent: "center",
-    // ... other existing styles
-    marginRight: 15,
-  },
-  text: {
-    fontSize: 16,
-    color: "#000",
+    alignItems: "center",
   },
   logout: {
     position: "relative",
@@ -245,22 +223,5 @@ const styles = StyleSheet.create({
   logoutText: {
     fontFamily: "LuckiestGuy-Regular",
     fontSize: 20,
-  },
-  dropdownContainer: {
-    position: "absolute",
-    top: "90%", // Position right below the filter buttons
-    right: 90,
-    zIndex: 1, // Ensure it overlays other content
-    backgroundColor: "white",
-    opacity: 0.9,
-  },
-  header: {
-    position: "relative",
-    fontFamily: "LuckiestGuy-Regular",
-    color: "#739072",
-    fontSize: 25,
-    top: 50,
-    marginTop: 40,
-    right: 85
   },
 });

@@ -31,7 +31,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // If the loading state is active (true), display the ActivityIndicator
     if (loading) {
         return (
-            <View style={ styles.centered }>
+            <View>
                 <ActivityIndicator size="large" />
             </View>
         )
@@ -40,7 +40,7 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // If there is an error, display the error message
     if (error) {
         return (
-            <View style={ styles.centered }>
+            <View>
                 <Text>Error: {error.message}</Text>
             </View>
         )
@@ -69,25 +69,14 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     }
 
   return (
-      <View style={styles.container}>
-            <FlatList
-              data={restaurants}
-              keyExtractor={(item) => item.id}
-              renderItem={renderRestaurantCard}
-              ListEmptyComponent={<Text>No restaurants</Text>}
-            />
+    <View>
+        <FlatList
+            data={restaurants}
+            keyExtractor={(item) => item.id}
+            renderItem={renderRestaurantCard}
+            ListEmptyComponent={<Text>No restaurants</Text>}
+        />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: 20,
-    },
-    centered: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-});
