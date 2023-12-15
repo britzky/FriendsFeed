@@ -78,7 +78,7 @@ function HomeTabs() {
           ),
           tabBarLabel: () => null,
           headerShown: inRegistrationFlow,
-          header: inRegistrationFlow ? () => <Header /> : null
+          header: inRegistrationFlow ? () => <Header /> : undefined
         }}
       />
       <Tab.Screen

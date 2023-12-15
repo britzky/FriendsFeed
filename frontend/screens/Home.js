@@ -11,7 +11,7 @@ import { useRestaurant } from "../context/RestaurantContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export const Home = () => {
-  const { logout, isLoggedIn, userDetails, loading, accessToken } = useAuth();
+  const { logout, isLoggedIn, userDetails, loading, accessToken, setInRegistrationFlow } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);
@@ -22,7 +22,9 @@ export const Home = () => {
 
   // Side effect to make sure all of the details are loaded
   useEffect(() => {
-    if (isLoggedIn && userDetails) setSearchLocation(userDetails.location);
+    if (isLoggedIn && userDetails){
+      setSearchLocation(userDetails.location);
+    } ;
   }, [isLoggedIn, userDetails]);
 
   useEffect(() => {
@@ -50,11 +52,6 @@ export const Home = () => {
   const handleApplyCuisineFilter = (cuisine) => {
     setSelectedCuisine(cuisine);
     setModalVisible(false);
-  };
-
-  // function to logout
-  const handleLogout = async () => {
-    await logout();
   };
 
   //function to filter restaurants by rating
