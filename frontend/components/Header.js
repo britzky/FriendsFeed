@@ -9,8 +9,8 @@ export const Header = () => {
     <View style={styles.titleContainer}>
         <Icon name="left" size={24} onPress={() => navigation.goBack()} />
         <Text style={styles.title}>Friends Feed</Text>
-      </View>
-      )
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

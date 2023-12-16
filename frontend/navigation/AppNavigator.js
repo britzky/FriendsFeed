@@ -28,6 +28,7 @@ const Stack = createStackNavigator();
 
 function HomeTabs() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const { inRegistrationFlow } = useAuth();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -76,7 +77,8 @@ function HomeTabs() {
             <AntDesign name="addusergroup" color={color} size={size}/>
           ),
           tabBarLabel: () => null,
-          headerShown: false
+          headerShown: inRegistrationFlow,
+          header: inRegistrationFlow ? () => <Header /> : undefined
         }}
       />
       <Tab.Screen

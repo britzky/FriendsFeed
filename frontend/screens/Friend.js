@@ -82,6 +82,7 @@ export const Friend = ({ route }) => {
 
   return (
     <View style={{ flex: 1 }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.mainContainer}>
           {!inRegistrationFlow && (
@@ -90,7 +91,6 @@ export const Friend = ({ route }) => {
 
           {inRegistrationFlow && (
             <View style={styles.headerContainer}>
-              <Text style={styles.title}>Friends Feed</Text>
               <Text style={styles.paragraph}>
                 Add friends so you can start seeing reviews right away. This is
                 what makes Friends Feed so great!
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#739072",
     marginBottom: 10,
-    
+
   },
   buttonContainer: {
     padding: 10,
