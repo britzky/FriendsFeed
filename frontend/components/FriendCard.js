@@ -48,9 +48,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#f9f9f9',
-    borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
+  
+  
+   
     marginTop: 10,
   },
   avatar: {

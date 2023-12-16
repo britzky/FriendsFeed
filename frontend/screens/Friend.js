@@ -15,6 +15,7 @@ import { FriendList } from "../components/FriendList";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState("");
@@ -80,7 +81,7 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.mainContainer}>
           {!inRegistrationFlow && (
@@ -97,7 +98,7 @@ export const Friend = ({ route }) => {
             </View>
           )}
 
-          <View style={[styles.searchbarContainer]}>
+          <View style={styles.searchbarContainer}>
             <Searchbar
             style={styles.searchbar}
               onSearch={handleSearch}
@@ -145,7 +146,7 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "white",
+    
     marginTop: 40,
   },
   title: {
@@ -203,25 +204,23 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 10,
-    backgroundColor: "white",
+    
   },
   header: {
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
     marginBottom: 10,
-    marginLeft: 12
+    marginLeft: 20
   },
   searchbarContainer: {
     flex: 1,
    alignSelf: 'center',
-   width: '95%'
+   width: '90%'
   },
   scrollViewContent: {
     justifyContent: "flex-start",
-    backgroundColor: "white", // Align content to the top
-  },
-  searchbar: {
    
-  }
+  },
+
 });

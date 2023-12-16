@@ -19,6 +19,7 @@ export const Searchbar = ({ onSearch, placeholder }) => {
       <TextInput
         style={styles.input}
         placeholder={placeholder}
+        
         value={input}
         onChangeText={setInput}
         autoCapitalize="none"
@@ -38,16 +39,20 @@ const styles = StyleSheet.create({
     borderColor: "#739072",
     borderRadius: 5,
     width: '100%',
+    
   },
   input: {
     marginLeft: 10,
     padding: 8,
     paddingHorizontal: 5,
     width: '100%',
+   
+   
   },
   icon: {
     fontSize: 27,
     color: "#739072",
     marginLeft: 10,
+   
   },
 });
