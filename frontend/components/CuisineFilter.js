@@ -64,12 +64,12 @@ export const CuisineFilter = ({ onApplyFilter, onClose, fetchCuisinesUrl }) => {
   return (
     <View style={styles.searchContainer}>
         <View style={styles.searchSection}>
-            <Entypo name="magnifying-glass" size={20} color="#000" style={styles.searchIcon} />
+            <Entypo name="magnifying-glass" size={20} color="#739072" style={styles.searchIcon} />
         <TextInput
             style={styles.input}
             value={input}
             onChangeText={handleInputChange}
-            placeholder="Start typing a cuisine..."
+            placeholder="Search Cuisines"
         />
         </View>
         {filteredCuisines.length > 0 && (
@@ -89,47 +89,33 @@ const styles = StyleSheet.create({
     searchContainer: {
         zIndex: 1,
         width: '100%',
-        height: 250, // Take up the full width of the parent
-        paddingHorizontal: 10, // Add some padding on the sides
+        height: 250,
       },
       searchSection: {
-        flexDirection: 'row', // Aligns the icon and text input in a row
-        justifyContent: 'center',
+        flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: '#e8e8e8e8',
         borderWidth: 1,
         borderColor: '#739072',
-        borderRadius: 20,
-        marginTop: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 2,
-        elevation: 2,
+        borderRadius: 10,
       },
       searchIcon: {
         padding: 10,
       },
       input: {
-        flex: 1, // Takes up all available space
-        paddingTop: 10,
-        paddingRight: 10,
-        paddingBottom: 10,
-        paddingLeft: 0, // No padding on the left, the icon serves this purpose
-        backgroundColor: 'white',
-        color: '#424242',
-        borderRadius: 20, // Rounds the corners
+        flex: 1,
       },
       dropdown: {
         position: 'absolute',
-        top: 50, // Position below the search bar, adjust to match the height of the search bar
+        top: 45, // Position below the search bar, adjust to match the height of the search bar
         left: 10,
         right: 10,
-        maxHeight: 200,
+        maxHeight: 225,
         backgroundColor: 'white',
         borderWidth: 1,
-        borderColor: '#DDDDDD',
+        borderColor: '#739072',
         borderRadius: 8,
         zIndex: 2,
+        padding: 10,
       },
   });
