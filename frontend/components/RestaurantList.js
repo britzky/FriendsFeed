@@ -9,7 +9,7 @@ import { useFriends } from '../context/FriendContext';
 
 export const RestaurantList = ({ location, selectedCuisine }) => {
     const [selectedRestaurant, setSelectedRestaurant] = useState(null); // Restaurant selected by the user
-    const { restaurants, loading, error, fetchFriendReviewedRestaurants, fetchRestaurantsByCuisine } = useRestaurant();
+    const { restaurants, loading, error, fetchRestaurantsByCuisine } = useRestaurant();
     const navigation = useNavigation(); // Navigation hook
     const { avatars, refreshAvatars, reviews } = useReview(); // Custom hook to fetch and use friend avatars
     const { accessToken } = useAuth(); // Custom hook to fetch the access token for avatar fetch
@@ -56,15 +56,20 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     // Function to render the restaurant card
     const renderRestaurantCard = ({ item }) => {
         return (
-            <RestaurantCard
-                restaurantName={ item.name }
-                imageUrl={item.image_url}
-                rating={item.friend_ratings}
-                friendAvatars={avatars[item.id]}
-                onPress={ () => handleSelectRestaurant(item)}
-                onReviewPress={ () => navigation.navigate("Review", { yelpId: item.id,  restaurantName: item.name  }) }
-                cuisine={item.categories.map((category) => category.title).join(", ")}
-            />
+            <>
+            <View style={styles.cardContainer}>
+                <RestaurantCard
+                    restaurantName={ item.name }
+                    imageUrl={item.image_url}
+                    rating={item.friend_ratings}
+                    friendAvatars={avatars[item.id]}
+                    onPress={ () => handleSelectRestaurant(item)}
+                    onReviewPress={ () => navigation.navigate("Review", { yelpId: item.id,  restaurantName: item.name  }) }
+                    cuisine={item.categories.map((category) => category.title).join(", ")}
+                />
+            </View>
+                 <View style={styles.separator} />
+            </>
         )
     }
 
@@ -79,4 +84,19 @@ export const RestaurantList = ({ location, selectedCuisine }) => {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+    cardContainer : {
+        maxWidth: 400,
+        alignSelf: 'center',
+        width: '90%',
+    },
+    separator: {
+        height: 1.5,
+        width: "100%",
+        maxWidth: 400,
+        backgroundColor: "#739072",
+        marginBottom: 30,
+    },
+});
 

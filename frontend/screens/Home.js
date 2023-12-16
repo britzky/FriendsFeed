@@ -132,12 +132,12 @@ export const Home = () => {
             </TouchableWithoutFeedback>
           </Modal>
         </View>
-        <View style={styles.RestaurantListContainer}>
-          <RestaurantList
-            location={searchLocation}
-            selectedCuisine={selectedCuisine}
+      </View>
+      <View style={styles.RestaurantListContainer}>
+        <RestaurantList
+          location={searchLocation}
+          selectedCuisine={selectedCuisine}
           />
-        </View>
       </View>
     </View>
   );
@@ -211,14 +211,5 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "70%",
     justifyContent: "center",
-    alignItems: "center",
-  },
-  logout: {
-    position: "relative",
-    bottom: 50,
-  },
-  logoutText: {
-    fontFamily: "LuckiestGuy-Regular",
-    fontSize: 20,
   },
 });
