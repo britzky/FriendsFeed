@@ -81,7 +81,7 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.mainContainer}>
@@ -220,7 +220,8 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     justifyContent: "flex-start",
-   
   },
-
+  searchbar: {
+   
+  }
 });
