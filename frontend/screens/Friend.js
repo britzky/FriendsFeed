@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
     fontSize: 18,
+    fontFamily: "Roboto-Medium",
   },
   subTitle: {
     fontSize: 16,
