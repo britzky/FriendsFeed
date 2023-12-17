@@ -46,20 +46,16 @@ export default ReviewsCard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
-    // Assuming a light grey background similar to the image
   },
   card: {
-    backgroundColor: "white",
     padding: 20,
-    borderBottomColor: '#739072', // Replace 'blue' with your desired color
-    borderBottomWidth: 1, 
-    
+    borderBottomColor: '#739072',
+    borderBottomWidth: 1,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4, // Add space between the header and the review text
+    marginBottom: 4,
   },
   headerRight: {
     flex: 1,
