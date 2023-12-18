@@ -24,14 +24,15 @@ const ReviewsCard = ({ restaurantId }) => {
             />
             <View style={styles.headerRight}>
               <Text style={styles.username}>{review.username}</Text>
-              <StarRating
-                rating={review.rating}
-                maxStars={5}
-                starSize={20}
-                color='black'
-                emptyColor='black'
-                readOnly={true}
-              />
+                <StarRating
+                  rating={review.rating}
+                  maxStars={5}
+                  starSize={20}
+                  color='black'
+                  emptyColor='black'
+                  readOnly={true}
+                  starStyle={{ marginRight: -5 }}
+                />
             </View>
           </View>
           <Text style={styles.reviewText}>{review.comment}</Text>
@@ -55,10 +56,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
+    marginBottom: 2,
   },
   headerRight: {
-    flex: 1,
     marginLeft: 10,
   },
   username: {
