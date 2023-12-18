@@ -1,12 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  View,
-  FlatList,
-  Pressable,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Pressable, Text, StyleSheet, ScrollView } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { Searchbar } from "../components/Searchbar";
 import { FriendCard } from "../components/FriendCard";
@@ -19,11 +12,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState("");
-  const { accessToken, isLoggedIn, setInRegistrationFlow, inRegistrationFlow } =
-    useAuth();
+  const { accessToken, isLoggedIn, setInRegistrationFlow, inRegistrationFlow } = useAuth();
   const { fetchFriends } = useFriends();
   const navigation = useNavigation();
-  console.log("this is registration flow", inRegistrationFlow);
 
   //fetch the friend list
   useEffect(() => {
@@ -81,14 +72,12 @@ export const Friend = ({ route }) => {
   };
 
   return (
-    
     <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.mainContainer}>
           {!inRegistrationFlow && (
             <Text style={styles.header}>Add Friends</Text>
           )}
-
           {inRegistrationFlow && (
             <View style={styles.headerContainer}>
               <Text style={styles.paragraph}>
@@ -97,7 +86,6 @@ export const Friend = ({ route }) => {
               </Text>
             </View>
           )}
-
           <View style={styles.searchbarContainer}>
             <Searchbar
             style={styles.searchbar}
@@ -106,7 +94,6 @@ export const Friend = ({ route }) => {
             />
           </View>
           <Text style={styles.subTitle}>Your friends will appear here.</Text>
-
           {friend &&
             friend.map(
               (item) =>
@@ -120,7 +107,6 @@ export const Friend = ({ route }) => {
                   />
                 )
             )}
-
           <View>
             <FriendList />
           </View>
@@ -146,7 +132,6 @@ export const Friend = ({ route }) => {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    
     marginTop: 40,
   },
   title: {
@@ -172,7 +157,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignSelf: "flex-start",
   },
-
   signUpButton: {
     paddingVertical: 15,
     backgroundColor: "#739072",
@@ -193,7 +177,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     fontStyle: "italic",
-    justifyContent: "center", // Center vertically in a flex container
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
   },
@@ -201,11 +185,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#739072",
     marginBottom: 10,
-
   },
   buttonContainer: {
     padding: 10,
-    
   },
   header: {
     fontFamily: "LuckiestGuy-Regular",
@@ -216,13 +198,10 @@ const styles = StyleSheet.create({
   },
   searchbarContainer: {
     flex: 1,
-   alignSelf: 'center',
-   width: '90%'
+    alignSelf: 'center',
+    width: '90%'
   },
   scrollViewContent: {
     justifyContent: "flex-start",
   },
-  searchbar: {
-   
-  }
 });
