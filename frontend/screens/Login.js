@@ -10,16 +10,30 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Eye from "react-native-vector-icons/Ionicons";
 
 const SIGNIN_URL = "https://colab-test.onrender.com/signin";
 
 export default function Login() {
-  const { isLoggedIn, userDetails, accessToken, setIsLoggedIn, setUserDetails, setAccessToken, setInRegistrationFlow } = useAuth();
+  const {
+    isLoggedIn,
+    userDetails,
+    accessToken,
+    setIsLoggedIn,
+    setUserDetails,
+    setAccessToken,
+    setInRegistrationFlow,
+  } = useAuth();
   const navigate = useNavigation();
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ password: "", username: "" });
   const [authError, setAuthError] = useState(null);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
@@ -55,7 +69,7 @@ export default function Login() {
         } else if (response.status === 400) {
           // Set authentication error message
           setAuthError("Username or password is incorrect");
-          setLoading(false)
+          setLoading(false);
         } else {
           console.log("Login Failed:", response.status);
         }
@@ -79,91 +93,101 @@ export default function Login() {
   // Side effect to navigate to Home screen if user is logged in
   useEffect(() => {
     if (isLoggedIn) {
-      setInRegistrationFlow(false)
+      setInRegistrationFlow(false);
       navigate.navigate("HomeTabs", { screen: "Home" });
     }
-  }, [isLoggedIn, navigate])
+  }, [isLoggedIn, navigate]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Friends Feed</Text>
-      <Text style={styles.subtitle}>Discover new restaurants</Text>
-      <Text style={styles.text2}>one friend at a time</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="username"
-        value={formData.username}
-        onChangeText={(text) => handleChange("username", text)}
-      />
-      {errors.email && (
-        <Text style={styles.errorText}>{errors.username}</Text>
-      )}
+    <View style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.subtitle}>
+          Discover new restaurants one friend at a time
+        </Text>
+        <TextInput
+          style={styles.input}
+          placeholder="@Username"
+          value={formData.username}
+          onChangeText={(text) => handleChange("username", text)}
+        />
+        {errors.email && (
+          <Text style={styles.errorText}>{errors.username}</Text>
+        )}
 
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={formData.password}
-        onChangeText={(text) => handleChange("password", text)}
-        secureTextEntry
-      />
-      {errors.password && (
-        <Text style={styles.errorText}>{errors.password}</Text>
-      )}
-      {authError !== "" && (
-      <Text style={styles.errorText}>{authError}</Text>
-      )}
-      <Pressable android_ripple={{ color: "#3A4D39" }} style={styles.buttonText} onPress={handleSubmit} disabled={loading}>
-        {loading ?
-          <ActivityIndicator size="small" color="#fff" />:
-          <Text style={styles.text}>Login</Text>
-        }
-      </Pressable>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={formData.password}
+            onChangeText={(text) => handleChange("password", text)}
+            secureTextEntry={!isPasswordVisible}
+          />
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password}</Text>
+          )}
+          {authError !== "" && (
+            <Text style={styles.errorText}>{authError}</Text>
+          )}
+          <Pressable onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+            <Eye
+              name={isPasswordVisible ? "eye" : "eye-off"}
+              size={24}
+              color="gray"
+            />
+          </Pressable>
+        </View>
+
+        <Pressable
+          android_ripple={{ color: "#3A4D39" }}
+          style={styles.button}
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.text}>Login</Text>
+          )}
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-    width: "100%",
-
-  },
-  title: {
-    fontSize: 24,
-    color: '#739072',
-    marginBottom: 20,
-    fontFamily: 'LuckiestGuy-Regular',
+    alignSelf: "center",
+    width: "90%",
+    maxWidth: 400,
+    gap: 15,
   },
   input: {
-    height: 50,
-    width: "85%",
-    borderColor: "gray",
+    width: "100%",
+    borderColor: "#739072",
     borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 10,
+    paddingLeft: 15,
+    paddingTop: 9,
+    paddingBottom: 9,
+    borderRadius: 5,
+    paddingRight: 50,
   },
+
   button: {
-    padding: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  buttonText: {
-    paddingHorizontal: 155,
-    paddingVertical: 15,
+    marginTop: 30,
+    paddingVertical: 10,
     backgroundColor: "#739072",
     borderRadius: 5,
-    marginVertical: 10,
-    color: "white",
-    marginTop: 10,
-
+    width: "100%", // Full-width button
+    alignItems: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: "#000",
-    marginBottom: 0,
+    textAlign: "center",
+    fontFamily: "Roboto-Medium",
+    marginBottom: 30,
+    marginTop: 5,
+    maxWidth: 250,
+    alignSelf: "center",
   },
   errorText: {
     color: "red",
@@ -172,18 +196,16 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 0,
   },
-  text2: {
-    fontSize: 16,
-    color: "#000",
-    marginBottom: 30,
-    margin: 0,
-    width: 150,
-    padding: 0,
-    marginTop: 2,
-  },
   text: {
     color: "white",
     fontSize: 18,
+    fontFamily: "Roboto-Regular",
+  },
+  eyeIcon: {
+    marginLeft: -40,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
-

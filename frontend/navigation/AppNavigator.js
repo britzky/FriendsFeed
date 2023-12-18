@@ -37,7 +37,7 @@ export const AppNavigator = () => {
             <Stack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }}/>
             <Stack.Screen name="Register" component={Register} options={{ header: () => <Header /> }}/>
             <Stack.Screen name="ChooseAvatar" component={ChooseAvatar} options={{ header: () => <Header /> }}/>
-            <Stack.Screen name="Login" component={Login} options={{ headerTitle: '' }}/>
+            <Stack.Screen name="Login" component={Login} options={{ header: () => <Header />  }}/>
           </Stack.Group>
         )}
       </Stack.Navigator>
