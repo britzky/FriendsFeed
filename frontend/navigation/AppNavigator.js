@@ -6,12 +6,9 @@ import Login from "../screens/Login";
 import { enableScreens } from "react-native-screens";
 import { useAuth } from "../context/AuthContext";
 import LandingPage from "../screens/LandingPage";
-import Restaurant from "../screens/Restaurant";
-import { Review } from "../screens/Review";
 import { ChooseAvatar } from "../screens/ChooseAvatar";
 import { Header } from "../components/Header";
 import { Navbar } from "./Navbar";
-
 
 enableScreens();
 
@@ -27,6 +24,7 @@ export const AppNavigator = () => {
       </View>
     )
   }
+  
   const initialRouteName = inRegistrationFlow ? "Navbar" : "LandingPage";
 
   return (
