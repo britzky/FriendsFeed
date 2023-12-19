@@ -13,6 +13,14 @@ const ReviewsCard = ({ restaurantId }) => {
     return<Text> No reviews available</Text>
   }
 
+  const formatDate = (dateStr) => {
+    const dateObj = new Date(dateStr);
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    return `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+  }
+
   return (
     <View style={styles.container}>
       {restaurantReviews.map((review) => (
@@ -31,8 +39,9 @@ const ReviewsCard = ({ restaurantId }) => {
                   color='black'
                   emptyColor='black'
                   readOnly={true}
-                  starStyle={{ marginRight: -5 }}
+                  starStyle={{ marginLeft: -5 }}
                 />
+              <Text style={{color: '#787778'}}>{formatDate(review.date)}</Text>
             </View>
           </View>
           <Text style={styles.reviewText}>{review.comment}</Text>
