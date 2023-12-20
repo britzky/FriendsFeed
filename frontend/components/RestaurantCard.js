@@ -2,12 +2,6 @@ import { View, Text, StyleSheet, Image, Pressable, Dimensions } from "react-nati
 import { avatars } from "../assets";
 import StarRating from "react-native-star-rating-widget";
 
-const windowWidth = Dimensions.get("window").width;
-
-const isLargeScreen = windowWidth > 600;
-const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
-const isSmallScreen = windowWidth <= 400;
-
 const RestaurantCard = ({
   onPress,
   onReviewPress,
@@ -43,9 +37,9 @@ const RestaurantCard = ({
         </View>
       )}
       <Text style={styles.title}>{restaurantName}</Text>
-      <View style={styles.avatarContainer}>
         {friendAvatars &&
           friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
+            <View style={styles.avatarContainer}>
             <Image
             key={index}
             source={avatars[avatar]}
@@ -54,9 +48,9 @@ const RestaurantCard = ({
               { marginLeft: index === 0 ? 0 : -10 } // Adjust -10 to control overlap
             ]}
             />
-        ))}
         <Text style={styles.overall}>Friend’s Overall Rating</Text>
       </View>
+        ))}
       <View>
         <Text>{rating && ratingComponent}</Text>
       </View>
@@ -128,7 +122,6 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
     fontSize: 20,
-    marginBottom: 4,
   },
   avatarContainer: {
     flexDirection: "row",
@@ -143,7 +136,6 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
   address: {
-    marginTop: 7,
     fontSize: 16
   },
   reviewButton: {

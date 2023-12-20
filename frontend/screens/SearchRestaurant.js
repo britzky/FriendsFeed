@@ -5,7 +5,6 @@ import { Searchbar } from "../components/Searchbar";
 import RestaurantCard from "../components/RestaurantCard";
 import { useLocation } from "../context/LocationContext";
 import { useNavigation } from "@react-navigation/native";
-import StarRating from "react-native-star-rating-widget";
 
 export const SearchRestaurant = () => {
   const [restaurants, setRestaurants] = useState(null);
