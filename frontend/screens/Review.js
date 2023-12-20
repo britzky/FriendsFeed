@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useReview } from "../context/ReviewContext";
 import { useRestaurant } from "../context/RestaurantContext";
 import { useRoute } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import StarRating from "react-native-star-rating-widget";
-
-const windowWidth = Dimensions.get("window").width;
-
-const isLargeScreen = windowWidth > 600;
-const isMediumScreen = windowWidth > 400 && windowWidth <= 600;
-const isSmallScreen = windowWidth <= 400;
 
 export const Review = () => {
   const [rating, setRating] = useState(0);
@@ -73,7 +60,7 @@ export const Review = () => {
           onChangeText={handleCommentChange}
           value={comment}
         />
-        <TouchableOpacity style={styles.review} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.text}>Post Review</Text>
         </TouchableOpacity>
       </View>
@@ -89,99 +76,44 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     gap: 15,
   },
-  title: {
-    fontSize: 40,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  input: {
-    height: 190,
-    width: "90%",
-    borderColor: "gray",
-    borderWidth: 1,
-    
-
-    paddingLeft: 10,
-    borderRadius: 8,
-    marginLeft: 20,
-  },
-  button: {
-    padding: 10,
-    width: "80%",
-    alignItems: "center",
-  },
-  buttonText: {
-    paddingHorizontal: 155,
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    borderRadius: 5,
-    marginVertical: 10,
-    color: "white",
-    marginTop: 30,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#000",
-    marginBottom: 0,
-  },
-  errorText: {
-    color: "red",
-    fontSize: 13,
-    marginTop: 0,
-    marginBottom: 15,
-    padding: 0,
-  },
-  text2: {
-    fontSize: 16,
-    color: "#000",
-    marginBottom: 30,
-    margin: 0,
-    width: 150,
-    padding: 0,
-    marginTop: 2,
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
-    marginLeft: 8,
-  },
-  buttonText: {
-    paddingHorizontal: 155,
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    borderRadius: 5,
-    marginVertical: 5,
-    color: "white",
-  },
-  rating: {
-   
-    marginLeft: 15,
-    
-  },
-  review: {
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    borderRadius: 5,
-    marginTop: 70,
-    width: "90%", // Full-width button
-    alignItems: "center",
-    marginTop: 20,
-    marginLeft: 20,
-  },
-  paragraph: {
-    fontSize: 15,
-    width: "80%",
-    marginLeft: 23,
-   
+  headerContainer: {
+    gap: 15,
   },
   restaurantName: {
     fontSize: 20,
     marginLeft: 25,
     fontWeight: "bold",
   },
-  headerContainer: {
-    gap: 15,
-  
-
-  }
+  rating: {
+    marginLeft: 15,
+  },
+  paragraph: {
+    fontSize: 15,
+    width: "80%",
+    marginLeft: 23,
+  },
+  input: {
+    height: 190,
+    width: "90%",
+    borderColor: "#739072",
+    borderWidth: 1,
+    paddingLeft: 10,
+    borderRadius: 8,
+    marginLeft: 20,
+  },
+  button: {
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
+    marginTop: 70,
+    width: "90%",
+    alignItems: "center",
+    marginTop: 20,
+    marginLeft: 20,
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+    marginLeft: 8,
+  },
 });
