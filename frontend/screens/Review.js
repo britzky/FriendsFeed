@@ -47,6 +47,7 @@ export const Review = () => {
           color="black" // or any color you want
           emptyColor="black" // or any other color for empty stars
           enableHalfStar={false}
+          starStyle={{ marginLeft: -5 }}
         />
         <Text style={styles.paragraph}>
           Share some details of your experience. Consider food, ambience and
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   rating: {
-    marginLeft: 15,
+    marginLeft: 25,
   },
   paragraph: {
     fontSize: 15,
