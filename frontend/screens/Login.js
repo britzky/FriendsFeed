@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { View, TextInput, Text, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -42,6 +35,7 @@ export default function Login() {
   const handleSubmit = async () => {
     setLoading(true);
     setAuthError(null);
+
     // Perform validation here and set errors if necessary
     const validationErrors = {};
     if (!formData.username) {
@@ -113,7 +107,6 @@ export default function Login() {
         {errors.email && (
           <Text style={styles.errorText}>{errors.username}</Text>
         )}
-
         <View style={styles.passwordContainer}>
           <TextInput
             style={styles.input}
@@ -136,7 +129,6 @@ export default function Login() {
             />
           </Pressable>
         </View>
-
         <Pressable
           android_ripple={{ color: "#3A4D39" }}
           style={styles.button}
@@ -171,7 +163,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingRight: 50,
   },
-
   button: {
     marginTop: 30,
     paddingVertical: 10,

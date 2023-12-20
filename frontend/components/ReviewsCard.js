@@ -13,6 +13,14 @@ const ReviewsCard = ({ restaurantId }) => {
     return<Text> No reviews available</Text>
   }
 
+  const formatDate = (dateStr) => {
+    const dateObj = new Date(dateStr);
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    return `${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+  }
+
   return (
     <View style={styles.container}>
       {restaurantReviews.map((review) => (
@@ -24,14 +32,16 @@ const ReviewsCard = ({ restaurantId }) => {
             />
             <View style={styles.headerRight}>
               <Text style={styles.username}>{review.username}</Text>
-              <StarRating
-                rating={review.rating}
-                maxStars={5}
-                starSize={20}
-                color='black'
-                emptyColor='black'
-                readOnly={true}
-              />
+                <StarRating
+                  rating={review.rating}
+                  maxStars={5}
+                  starSize={20}
+                  color='black'
+                  emptyColor='black'
+                  readOnly={true}
+                  starStyle={{ marginLeft: -5 }}
+                />
+              <Text style={{color: '#787778'}}>{formatDate(review.date)}</Text>
             </View>
           </View>
           <Text style={styles.reviewText}>{review.comment}</Text>
@@ -55,10 +65,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
+    marginBottom: 2,
   },
   headerRight: {
-    flex: 1,
     marginLeft: 10,
   },
   username: {
