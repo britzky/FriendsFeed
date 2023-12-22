@@ -50,84 +50,89 @@ export const SearchRestaurant = () => {
 
   const renderRestaurantCard = ({ item }) => {
     return (
-      <RestaurantCard
-        restaurantName={item.name}
-        imageUrl={item.image_url}
-        address={item.location.display_address.join(", ")}
-        isIndividual={true}
-        onReviewPress={() =>
-          navigation.navigate("Review", {
-            yelpId: item.id,
-            restaurantName: item.name,
-          })
-        }
-      />
+      <>
+      <View style={styles.cardContainer}>
+        <RestaurantCard
+          restaurantName={item.name}
+          imageUrl={item.image_url}
+          address={item.location.display_address.join(", ")}
+          isIndividual={true}
+          onReviewPress={() =>
+            navigation.navigate("Review", {
+              yelpId: item.id,
+              restaurantName: item.name,
+            })
+          }
+        />
+      </View>
+      <View style={styles.separator} />
+      </>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Restaurants to review</Text>
-      <View style={styles.searchContainer}>
-        <Searchbar onSearch={handleSearch} placeholder="Search Restaurant" />
-      </View>
-      <Text style={styles.paragraph}>
-        Restaurants you want to review will appear here.
-      </Text>
-      <View style={styles.listContainer}>
-        {restaurants && (
-          <FlatList
-            data={restaurants}
-            renderItem={renderRestaurantCard}
-            keyExtractor={(item) => item.id.toString()}
-            ListEmptyComponent={<Text>No restaurants</Text>}
-          />
-        )}
+    <View style={{flex: 1, paddingTop: 38}}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Restaurants to review</Text>
         <View>
-          <Pressable onPress={() => logout()}>
-            <Text>Logout</Text>
-          </Pressable>
+          <Searchbar onSearch={handleSearch} placeholder="Search Restaurant" />
         </View>
-      </View>
+        <Text style={styles.paragraph}>
+          Restaurants you want to review will appear here.
+        </Text>
+          </View>
+        <View style={styles.listContainer}>
+          {restaurants && (
+            <>
+            <FlatList
+              data={restaurants}
+              renderItem={renderRestaurantCard}
+              keyExtractor={(item) => item.id.toString()}
+              ListEmptyComponent={<Text>No restaurants</Text>}
+            />
+            </>
+          )}
+          <View>
+            <Pressable onPress={() => logout()}>
+              <Text>Logout</Text>
+            </Pressable>
+          </View>
+        </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 50,
-    backgroundColor: "white",
-  },
-  searchContainer: {
-    width: "100%",
-    padding: 10, // Adjust padding as needed
-  },
+    width: "90%",
+    alignSelf: "center",
+    },
   listContainer: {
-    flex: 1, // Takes the remaining space
+    flex: 1,
+    marginTop: 20,
     width: "100%",
+  },
+  cardContainer: {
+    maxWidth: 400,
+    alignSelf: "center",
+    width: "90%",
   },
   paragraph: {
+    fontFamily: "Roboto-Regular",
     fontSize: 18,
-    width: 300,
-    textAlign: "left",
-    marginRight: 70
-  },
+    },
   header: {
-  position: 'relative',
     fontFamily: "LuckiestGuy-Regular",
     color: "#739072",
     fontSize: 25,
-    right: 45,
-
-    marginTop: 10,
-
     marginBottom: 20,
     alignContent: 'flex-start',
-    marginLeft: 12,
-
-    }
+    },
+    separator: {
+      height: 1.5,
+      width: "100%",
+      maxWidth: 400,
+      backgroundColor: "#739072",
+      marginBottom: 30,
+  },
 });
