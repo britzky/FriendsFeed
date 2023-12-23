@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -15,7 +16,13 @@ enableScreens();
 const Stack = createStackNavigator();
 
 export const AppNavigator = () => {
-  const { loading, inRegistrationFlow } = useAuth();
+  const { loading, inRegistrationFlow, isLoggedIn, setInRegistrationFlow } = useAuth();
+
+  useEffect(() => {
+    if(!isLoggedIn) {
+      setInRegistrationFlow(true);
+    }
+  }, [isLoggedIn])
 
   if (loading) {
     return (
@@ -24,8 +31,8 @@ export const AppNavigator = () => {
       </View>
     )
   }
-  
-  const initialRouteName = inRegistrationFlow ? "Navbar" : "LandingPage";
+
+  const initialRouteName = isLoggedIn ? (inRegistrationFlow ? "Navbar" : "LandingPage") : "LandingPage";
 
   return (
     <NavigationContainer>

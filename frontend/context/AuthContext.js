@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 const AuthContext = createContext()
 
 export const useAuth = () => {
-  
+
     return useContext(AuthContext);
 };
 
@@ -112,6 +112,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () => {
         await AsyncStorage.clear(); // Clear all AsyncStorage data
         console.log("AsyncStorage after clear: ", await AsyncStorage.getAllKeys()); // This should return an empty array
+        setInRegistrationFlow(true);
         setIsLoggedIn(false);
         setUserDetails(null);
         setAccessToken(null);
