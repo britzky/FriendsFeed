@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useReview } from "../context/ReviewContext";
 import { useRestaurant } from "../context/RestaurantContext";
@@ -44,22 +37,6 @@ export const Review = () => {
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-        <Text style={styles.restaurantName}>{restaurantName}</Text>
-        <StarRating
-          style={styles.rating}
-          rating={rating}
-          onChange={setRating}
-          maxStars={5}
-          starSize={32}
-          color="black" // or any color you want
-          emptyColor="black" // or any other color for empty stars
-          enableHalfStar={false}
-          starStyle={{ marginLeft: -5 }}
-        />
-        <Text style={styles.paragraph}>
-          Share some details of your experience. Consider food, ambience and
-          service.
-        </Text>
           <Text style={styles.restaurantName}>{restaurantName}</Text>
           <StarRating
             style={styles.rating}
@@ -85,7 +62,7 @@ export const Review = () => {
           value={comment}
           selectionColor="black"
         />
-    
+
         <Pressable
           android_ripple={{ color: "#3A4D39" }}
           style={styles.reviewButton}
@@ -93,7 +70,6 @@ export const Review = () => {
         >
           <Text style={styles.text}>Post Review</Text>
         </Pressable>
-        
       </View>
     </View>
   );
@@ -106,8 +82,12 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 500,
     alignSelf: "center",
-    justifyContent: 'flex-start', // Align content to the top
-    alignItems: 'center',
+    gap: 15,
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
   input: {
     height: 190,
@@ -120,7 +100,7 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingTop: 10,
     fontSize: 16,
-    marginTop: 15
+    marginTop: 15,
   },
 
   errorText: {
@@ -133,16 +113,32 @@ const styles = StyleSheet.create({
   text: {
     color: "white",
     fontSize: 16,
-    alignItems: "center",
+    marginLeft: 8,
   },
-
+  buttonText: {
+    paddingHorizontal: 155,
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
+    marginVertical: 5,
+    color: "white",
+  },
   rating: {
     marginLeft: 15,
   },
-
+  review: {
+    paddingVertical: 15,
+    backgroundColor: "#739072",
+    borderRadius: 5,
+    marginTop: 70,
+    width: "90%", // Full-width button
+    alignItems: "center",
+    marginTop: 20,
+    marginLeft: 20,
+  },
   paragraph: {
     fontSize: 15,
-    width: "70%",
+    width: "80%",
     marginLeft: 23,
   },
   restaurantName: {
@@ -151,17 +147,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   headerContainer: {
-    width: '100%', // Set the width to match the text input and button
-    alignItems: 'flex-start', // Center align the items
-    marginTop: 10,
-    gap: 15
+    gap: 15,
   },
-  reviewButton: {
-    paddingVertical: 15,
-    backgroundColor: "#739072",
-    borderRadius: 5,
-    width: "90%", // Full-width button
-    alignItems: "center",
-    marginTop: 25,
-  }
 });
