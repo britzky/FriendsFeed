@@ -70,6 +70,7 @@ export const Review = () => {
             color="black" // or any color you want
             emptyColor="black" // or any other color for empty stars
             enableHalfStar={false}
+            starStyle={{ marginLeft: -5 }}
           />
           <Text style={styles.paragraph}>
             Share some details of your experience. Consider food, ambience and
