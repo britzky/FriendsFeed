@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useReview } from "../context/ReviewContext";
 import { useRestaurant } from "../context/RestaurantContext";
@@ -53,6 +60,22 @@ export const Review = () => {
           Share some details of your experience. Consider food, ambience and
           service.
         </Text>
+          <Text style={styles.restaurantName}>{restaurantName}</Text>
+          <StarRating
+            style={styles.rating}
+            rating={rating}
+            onChange={setRating}
+            maxStars={5}
+            starSize={32}
+            color="black" // or any color you want
+            emptyColor="black" // or any other color for empty stars
+            enableHalfStar={false}
+            starStyle={{ marginLeft: -5 }}
+          />
+          <Text style={styles.paragraph}>
+            Share some details of your experience. Consider food, ambience and
+            service.
+          </Text>
         </View>
         <TextInput
           style={styles.input}
@@ -60,10 +83,17 @@ export const Review = () => {
           numberOfLines={4}
           onChangeText={handleCommentChange}
           value={comment}
+          selectionColor="black"
         />
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+    
+        <Pressable
+          android_ripple={{ color: "#3A4D39" }}
+          style={styles.reviewButton}
+          onPress={handleSubmit}
+        >
           <Text style={styles.text}>Post Review</Text>
-        </TouchableOpacity>
+        </Pressable>
+        
       </View>
     </View>
   );
@@ -71,50 +101,67 @@ export const Review = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: 50,
     width: "100%",
-    maxWidth: 400,
+    maxWidth: 500,
     alignSelf: "center",
-    gap: 15,
+    justifyContent: 'flex-start', // Align content to the top
+    alignItems: 'center',
   },
-  headerContainer: {
-    gap: 15,
+  input: {
+    height: 190,
+    width: "90%",
+    borderColor: "#739072",
+    borderWidth: 1.5,
+    alignSelf: "center",
+    borderRadius: 8,
+    textAlignVertical: "top",
+    paddingLeft: 5,
+    paddingTop: 10,
+    fontSize: 16,
+    marginTop: 15
+  },
+
+  errorText: {
+    color: "red",
+    fontSize: 13,
+    marginTop: 0,
+    marginBottom: 15,
+    padding: 0,
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+    alignItems: "center",
+  },
+
+  rating: {
+    marginLeft: 15,
+  },
+
+  paragraph: {
+    fontSize: 15,
+    width: "70%",
+    marginLeft: 23,
   },
   restaurantName: {
     fontSize: 20,
     marginLeft: 25,
     fontWeight: "bold",
   },
-  rating: {
-    marginLeft: 25,
+  headerContainer: {
+    width: '100%', // Set the width to match the text input and button
+    alignItems: 'flex-start', // Center align the items
+    marginTop: 10,
+    gap: 15
   },
-  paragraph: {
-    fontSize: 15,
-    width: "80%",
-    marginLeft: 23,
-  },
-  input: {
-    height: 190,
-    width: "90%",
-    borderColor: "#739072",
-    borderWidth: 1,
-    paddingLeft: 10,
-    borderRadius: 8,
-    marginLeft: 20,
-  },
-  button: {
+  reviewButton: {
     paddingVertical: 15,
     backgroundColor: "#739072",
     borderRadius: 5,
-    marginTop: 70,
-    width: "90%",
+    width: "90%", // Full-width button
     alignItems: "center",
-    marginTop: 20,
-    marginLeft: 20,
-  },
-  text: {
-    color: "white",
-    fontSize: 16,
-    marginLeft: 8,
-  },
+    marginTop: 25,
+  }
 });
