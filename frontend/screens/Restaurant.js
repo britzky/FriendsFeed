@@ -58,12 +58,11 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     width: "100%",
-    maxWidth: 400,
+    maxWidth: 450,
     backgroundColor: "#739072",
-    marginTop: 50,
     marginBottom: 20,
 },
   reviewsContainer: {
-    flex: .5,
+    flex: 1,
   },
 });
