@@ -60,22 +60,6 @@ export const Review = () => {
           Share some details of your experience. Consider food, ambience and
           service.
         </Text>
-          <Text style={styles.restaurantName}>{restaurantName}</Text>
-          <StarRating
-            style={styles.rating}
-            rating={rating}
-            onChange={setRating}
-            maxStars={5}
-            starSize={32}
-            color="black" // or any color you want
-            emptyColor="black" // or any other color for empty stars
-            enableHalfStar={false}
-            starStyle={{ marginLeft: -5 }}
-          />
-          <Text style={styles.paragraph}>
-            Share some details of your experience. Consider food, ambience and
-            service.
-          </Text>
         </View>
         <TextInput
           style={styles.input}
@@ -85,7 +69,7 @@ export const Review = () => {
           value={comment}
           selectionColor="black"
         />
-    
+
         <Pressable
           android_ripple={{ color: "#3A4D39" }}
           style={styles.reviewButton}
@@ -93,7 +77,7 @@ export const Review = () => {
         >
           <Text style={styles.text}>Post Review</Text>
         </Pressable>
-        
+
       </View>
     </View>
   );
