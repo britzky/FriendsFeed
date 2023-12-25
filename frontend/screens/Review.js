@@ -37,22 +37,22 @@ export const Review = () => {
     <View style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={styles.restaurantName}>{restaurantName}</Text>
-          <StarRating
-            style={styles.rating}
-            rating={rating}
-            onChange={setRating}
-            maxStars={5}
-            starSize={32}
-            color="black" // or any color you want
-            emptyColor="black" // or any other color for empty stars
-            enableHalfStar={false}
-            starStyle={{ marginLeft: -5 }}
-          />
-          <Text style={styles.paragraph}>
-            Share some details of your experience. Consider food, ambience and
-            service.
-          </Text>
+        <Text style={styles.restaurantName}>{restaurantName}</Text>
+        <StarRating
+          style={styles.rating}
+          rating={rating}
+          onChange={setRating}
+          maxStars={5}
+          starSize={32}
+          color="black" // or any color you want
+          emptyColor="black" // or any other color for empty stars
+          enableHalfStar={false}
+          starStyle={{ marginLeft: -5 }}
+        />
+        <Text style={styles.paragraph}>
+          Share some details of your experience. Consider food, ambience and
+          service.
+        </Text>
         </View>
         <TextInput
           style={styles.input}
@@ -70,6 +70,7 @@ export const Review = () => {
         >
           <Text style={styles.text}>Post Review</Text>
         </Pressable>
+
       </View>
     </View>
   );

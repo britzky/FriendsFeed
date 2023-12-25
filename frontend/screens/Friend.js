@@ -66,7 +66,6 @@ export const Friend = ({ route }) => {
       await AsyncStorage.removeItem("isNewUser");
     }
     if (isLoggedIn) {
-      navigation.navigate("HomeTabs", { screen: "Home" });
       setInRegistrationFlow(false);
     }
   };

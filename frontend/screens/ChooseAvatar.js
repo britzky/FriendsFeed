@@ -43,6 +43,7 @@ export const ChooseAvatar = ({ route }) => {
         body: JSON.stringify(completedUserDetails),
       });
       const data = await response.json();
+      console.log("This is the data: ", data)
 
       if (response.ok) {
         console.log("Registration completed successfully:", data);
@@ -72,7 +73,8 @@ export const ChooseAvatar = ({ route }) => {
     const navigateIfReady = async () => {
       const isNewUser = await AsyncStorage.getItem("isNewUser");
       if (isNewUser === "true" && isLoggedIn) {
-        navigation.navigate("Friend", { registrationFlow: true });
+        navigation.navigate("Friend");
+        console.log("Navigating to Friend screen")
         await AsyncStorage.removeItem("isNewUser");
       }
     };
