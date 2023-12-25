@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { useReview } from "../context/ReviewContext";
 import { useRestaurant } from "../context/RestaurantContext";
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   rating: {
-    marginLeft: 15,
+    marginLeft: 25,
   },
   review: {
     paddingVertical: 15,
@@ -148,5 +148,14 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     gap: 15,
+  },
+  reviewButton: {
+    marginTop: 30,
+    paddingVertical: 16,
+    backgroundColor: "#739072",
+    borderRadius: 5,
+    width: "90%", // Full-width button
+    alignItems: "center",
+    alignSelf: "center",
   },
 });
