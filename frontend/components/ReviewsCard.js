@@ -32,7 +32,7 @@ const ReviewsCard = ({ restaurantId }) => {
               source={avatars[review.profile_picture]}
             />
             <View style={styles.headerRight}>
-              <Text style={styles.username}>{review.username}</Text>
+              <Text style={styles.username}>@{review.username}</Text>
               <StarRating
                 rating={review.rating}
                 maxStars={5}
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: 16,
+    fontWeight: "bold",
   },
   icons: {
     width: '75%',
