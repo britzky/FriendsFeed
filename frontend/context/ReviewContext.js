@@ -114,6 +114,32 @@ export const ReviewProvider = ({ children }) => {
             }
         }, []);
 
+
+        const deleteReview = useCallback(async (reviewsId, accessToken) => {
+            try {
+              const response = await fetch(`https://colab-test.onrender.com/reviews/${reviewsId}/delete`, {
+                method: 'DELETE',
+                headers: {
+                  'Authorization': `Bearer ${accessToken}`
+                }
+              });
+          
+              if (!response.ok) {
+                const errorBody = await response.json();
+                throw new Error(`Error ${response.status}: ${errorBody.message}`);
+              }
+          
+              return await response.json();
+            } catch (error) {
+              console.error('Error deleting review:', error.message);
+              throw error;
+            }
+          }, [accessToken]);
+
+
+
+        
+
         //function to reset the reviewPosted state
         const resetReviewPosted = useCallback(() => {
             setReviewPosted(false);
@@ -127,9 +153,9 @@ export const ReviewProvider = ({ children }) => {
 
         const contextValue = useMemo(() => ({
             reviews, avatars, fetchReviews, fetchAvatars, postReview,
-            reviewPosted, resetReviewPosted, refreshAvatars
+            reviewPosted, resetReviewPosted, refreshAvatars, deleteReview
         }), [reviews, avatars, fetchReviews, fetchAvatars, postReview,
-            reviewPosted, resetReviewPosted, refreshAvatars]);
+            reviewPosted, resetReviewPosted, refreshAvatars, deleteReview]);
 
 
     return (
