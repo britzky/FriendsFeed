@@ -33,7 +33,11 @@ export const AppNavigator = () => {
     )
   }
 
+  console.log("isLoggedIn:", isLoggedIn, "inRegistrationFlow:", inRegistrationFlow);
+
   const initialRouteName = isLoggedIn ? (inRegistrationFlow ? "Navbar" : "LandingPage") : "LandingPage";
+  console.log("initialRouteName:", initialRouteName);
+
 
   return (
     <NavigationContainer>

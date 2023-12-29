@@ -47,7 +47,7 @@ const ReviewsCard = ({ restaurantId }) => {
               <View style={styles.icons}>
                 <Text style={{color: '#787778', width: '90%'}}>{formatDate(review.date)}</Text>
                 {review.username === userDetails.username &&
-                <View style={{flexDirection: 'row', gap: 5}}>
+                <View style={{flexDirection: 'row', gap: 10}}>
                   <Icon name="trash-2" size={18} color="red"/>
                   <Pencil name="pencil" size={18} color="#739072"/>
                 </View>
