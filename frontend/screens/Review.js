@@ -44,8 +44,8 @@ export const Review = () => {
           onChange={setRating}
           maxStars={5}
           starSize={32}
-          color="black" // or any color you want
-          emptyColor="black" // or any other color for empty stars
+          color="black"
+          emptyColor="black"
           enableHalfStar={false}
           starStyle={{ marginLeft: -5 }}
         />
@@ -62,7 +62,6 @@ export const Review = () => {
           value={comment}
           selectionColor="black"
         />
-
         <Pressable
           android_ripple={{ color: "#3A4D39" }}
           style={styles.reviewButton}
@@ -70,7 +69,6 @@ export const Review = () => {
         >
           <Text style={styles.text}>Post Review</Text>
         </Pressable>
-
       </View>
     </View>
   );
@@ -103,7 +101,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 15,
   },
-
   errorText: {
     color: "red",
     fontSize: 13,
@@ -132,7 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#739072",
     borderRadius: 5,
     marginTop: 70,
-    width: "90%", // Full-width button
+    width: "90%", 
     alignItems: "center",
     marginTop: 20,
     marginLeft: 20,

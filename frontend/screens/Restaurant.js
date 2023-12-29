@@ -11,7 +11,7 @@ const Restaurant = () => {
   const route = useRoute();
   const { restaurant } = route.params;
   const { accessToken } = useAuth();
-  const { fetchReviews, refreshAvatars, avatars } = useReview();
+  const { fetchReviews, refreshAvatars, avatars, reviews } = useReview();
   const navigation = useNavigation();
 
   useEffect(() => {
