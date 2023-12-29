@@ -2,12 +2,14 @@ import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { avatars } from "../assets";
 import { useReview } from "../context/ReviewContext";
+import { useAuth } from "../context/AuthContext";
 import StarRating from "react-native-star-rating-widget";
 import Icon from 'react-native-vector-icons/Feather';
 import Pencil from 'react-native-vector-icons/SimpleLineIcons';
 
 const ReviewsCard = ({ restaurantId }) => {
   const { reviews } = useReview();
+  const { userDetails } = useAuth();
   const restaurantReviews = reviews[restaurantId];
 
   if (!restaurantReviews || restaurantReviews.length === 0) {
@@ -43,11 +45,13 @@ const ReviewsCard = ({ restaurantId }) => {
                 starStyle={{ marginLeft: -5 }}
               />
               <View style={styles.icons}>
-                <Text style={{color: '#787778'}}>{formatDate(review.date)}</Text>
+                <Text style={{color: '#787778', width: '90%'}}>{formatDate(review.date)}</Text>
+                {review.username === userDetails.username &&
                 <View style={{flexDirection: 'row', gap: 5}}>
                   <Icon name="trash-2" size={18} color="red"/>
                   <Pencil name="pencil" size={18} color="#739072"/>
                 </View>
+                }
               </View>
             </View>
           </View>
@@ -82,7 +86,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   icons: {
-    width: '75%',
+    width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
