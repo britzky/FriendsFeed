@@ -1,15 +1,18 @@
-import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { avatars } from "../assets";
 import { useReview } from "../context/ReviewContext";
 import { useAuth } from "../context/AuthContext";
+import { Alert } from "react-native";
 import StarRating from "react-native-star-rating-widget";
-import Icon from 'react-native-vector-icons/Feather';
-import Pencil from 'react-native-vector-icons/SimpleLineIcons';
+import Icon from "react-native-vector-icons/Feather";
+import Pencil from "react-native-vector-icons/SimpleLineIcons";
 
 const ReviewsCard = ({ restaurantId }) => {
-  const { reviews } = useReview();
+  const [_, setReviews] = useState([]);
+  const { reviews, deleteReview } = useReview();
   const { userDetails } = useAuth();
+
   const restaurantReviews = reviews[restaurantId];
 
   if (!restaurantReviews || restaurantReviews.length === 0) {
@@ -24,6 +27,19 @@ const ReviewsCard = ({ restaurantId }) => {
     return `${month.toString().padStart(2, "0")}/${day
       .toString()
       .padStart(2, "0")}/${year}`;
+  };
+
+  const handleDelete = async (reviewId) => {
+    try {
+      const response = await deleteReview(reviewId);
+      // Assuming deleteReview returns some response
+      setReviews((prevReviews) =>
+        prevReviews.filter((review) => review.id !== reviewId)
+      );
+      Alert.alert("Success", response.message);
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   };
 
   return (
@@ -41,19 +57,26 @@ const ReviewsCard = ({ restaurantId }) => {
                 rating={review.rating}
                 maxStars={5}
                 starSize={20}
-                color='black'
-                emptyColor='black'
+                color="black"
+                emptyColor="black"
                 readOnly={true}
                 starStyle={{ marginLeft: -5 }}
               />
               <View style={styles.icons}>
-                <Text style={{color: '#787778', width: '90%'}}>{formatDate(review.date)}</Text>
-                {review.username === userDetails.username &&
-                <View style={{flexDirection: 'row', gap: 5}}>
-                  <Icon name="trash-2" size={18} color="red"/>
-                  <Pencil name="pencil" size={18} color="#739072"/>
-                </View>
-                }
+                <Text style={{ color: "#787778", width: "90%" }}>
+                  {formatDate(review.date)}
+                </Text>
+
+                {review.username === userDetails.username && (
+                  <View style={{ flexDirection: "row", gap: 5 }}>
+                    <TouchableOpacity onPress={() => handleDelete(review.id)}>
+                      <Icon name="trash-2" size={18} color="red" />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                      <Pencil name="pencil" size={18} color="#739072" />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </View>
           </View>
@@ -88,10 +111,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   icons: {
-    width: '90%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    width: "90%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   reviewText: {
     marginTop: 10,
