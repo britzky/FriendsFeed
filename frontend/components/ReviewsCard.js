@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { avatars } from "../assets";
 import { useReview } from "../context/ReviewContext";
 import { useAuth } from "../context/AuthContext";
-import { Alert } from "react-native";
 import StarRating from "react-native-star-rating-widget";
 import Icon from "react-native-vector-icons/Feather";
 import Pencil from "react-native-vector-icons/SimpleLineIcons";
 
 const ReviewsCard = ({ restaurantId }) => {
   const [_, setReviews] = useState([]);
+
   const { reviews, deleteReview } = useReview();
   const { userDetails } = useAuth();
 
@@ -32,13 +32,16 @@ const ReviewsCard = ({ restaurantId }) => {
   const handleDelete = async (reviewId) => {
     try {
       const response = await deleteReview(reviewId);
-      // Assuming deleteReview returns some response
+      if (response) {
+        console.log( "Review deleted successfully");
+      }
+
+      // Update the state to remove the deleted review
       setReviews((prevReviews) =>
         prevReviews.filter((review) => review.id !== reviewId)
       );
-      Alert.alert("Success", response.message);
     } catch (error) {
-      Alert.alert("Error", error.message);
+      console.log("Error", error.message);
     }
   };
 

@@ -115,17 +115,23 @@ export const ReviewProvider = ({ children }) => {
         }, []);
 
 
-        const deleteReview = useCallback(async (reviewsId,) => {
+        const deleteReview = useCallback(async (reviewsId) => {
+            console.log("Deleting review with ID:", reviewsId);
             try {
-              const response = await fetch(`https://colab-test.onrender.com/reviews/${reviewsId}/delete`, {
-                method: 'DELETE',
-                headers: {
-                  'Authorization': `Bearer ${accessToken}`
-                }
-              });
-          
-              const responseData = await response.json();
+               
+                console.log( response);
+                const response = await fetch(`https://colab-test.onrender.com/reviews/${reviewsId}/delete`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
 
+
+              const responseData = await response.json();
+              console.log("Received response data:", responseData);
+          
+             
               if (!response.ok) {
                 console.error('Server Response:', responseData);
                 throw new Error(`Error ${response.status}: ${responseData.message || 'Unknown error'}`);
@@ -136,7 +142,7 @@ export const ReviewProvider = ({ children }) => {
               console.error('Error deleting review:', error);
               throw error;
             }
-          }, []);
+          }, [accessToken]);
 
 
 
