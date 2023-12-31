@@ -44,7 +44,6 @@ export const Navbar = () => {
                 tabBarStyle: { display: keyboardVisible ? 'none' : 'flex', height: 50, backgroundColor: '#F5F5F5', borderTopWidth: 1, borderTopColor: 'gray' },
             }}
         >
-            <Tab.Screen name="GlobalStack" component={GlobalStack} options={{ tabBarButton: () => null, headerShown: false }} />
             <Tab.Screen
                 name="Home"
                 component={Home}
