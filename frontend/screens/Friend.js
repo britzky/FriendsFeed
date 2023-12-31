@@ -5,16 +5,14 @@ import { Searchbar } from "../components/Searchbar";
 import { FriendCard } from "../components/FriendCard";
 import { useFriends } from "../context/FriendContext";
 import { FriendList } from "../components/FriendList";
-import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export const Friend = ({ route }) => {
   const [friend, setFriend] = useState(null);
   const [username, setUsername] = useState("");
-  const { accessToken, isLoggedIn, setInRegistrationFlow, inRegistrationFlow } = useAuth();
+  const { accessToken, isLoggedIn, setInRegistrationFlow, setIsLoggedIn, inRegistrationFlow } = useAuth();
   const { fetchFriends } = useFriends();
-  const navigation = useNavigation();
 
   //fetch the friend list
   useEffect(() => {
@@ -65,9 +63,7 @@ export const Friend = ({ route }) => {
     if (isNewUser === "true") {
       await AsyncStorage.removeItem("isNewUser");
     }
-    if (isLoggedIn) {
-      setInRegistrationFlow(false);
-    }
+    setIsLoggedIn(true);
   };
 
   return (

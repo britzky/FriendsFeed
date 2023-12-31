@@ -48,6 +48,11 @@ export const SearchRestaurant = () => {
     setSearchedRestaurant(searchedName);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigation.navigate("LandingPage");
+  };
+
   const renderRestaurantCard = ({ item }) => {
     return (
       <>
@@ -93,7 +98,7 @@ export const SearchRestaurant = () => {
             </>
           )}
           <View>
-            <Pressable onPress={() => logout()}>
+            <Pressable onPress={handleLogout}>
               <Text>Logout</Text>
             </Pressable>
           </View>

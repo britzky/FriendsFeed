@@ -13,7 +13,7 @@ const images = {
 };
 
 export const ChooseAvatar = ({ route }) => {
-  const { registerUser } = useAuth();
+  const { registerUser, isLoggedIn } = useAuth();
   const navigation = useNavigation();
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -46,13 +46,6 @@ export const ChooseAvatar = ({ route }) => {
       }
     }, 0);
   };
-
-  // // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
-  // useEffect(() => {
-  //   if (accessToken && userDetails) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, [accessToken, userDetails]);
 
   // useEffect(() => {
   //   const navigateIfReady = async () => {

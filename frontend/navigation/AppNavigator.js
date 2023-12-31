@@ -11,13 +11,17 @@ import { ChooseAvatar } from "../screens/ChooseAvatar";
 import { Header } from "../components/Header";
 import { Navbar } from "./Navbar";
 import { Friend } from "../screens/Friend";
+import { Home } from '../screens/Home';
+import { SearchRestaurant } from '../screens/SearchRestaurant';
+import Restaurant from '../screens/Restaurant';
+import { Review } from '../screens/Review';
 
 enableScreens();
 
 const Stack = createStackNavigator();
 
 export const AppNavigator = () => {
-  const { loading, inRegistrationFlow, isLoggedIn, setInRegistrationFlow } = useAuth();
+  const { loading, isLoggedIn, setInRegistrationFlow } = useAuth();
 
   useEffect(() => {
     if(!isLoggedIn) {
@@ -25,25 +29,25 @@ export const AppNavigator = () => {
     }
   }, [isLoggedIn])
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <ActivityIndicator size="large" />
-      </View>
-    )
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+  //         <ActivityIndicator size="large" />
+  //     </View>
+  //   )
+  // }
 
-  console.log("isLoggedIn:", isLoggedIn, "inRegistrationFlow:", inRegistrationFlow);
-
-  const initialRouteName = isLoggedIn ? (inRegistrationFlow ? "Navbar" : "LandingPage") : "LandingPage";
-  console.log("initialRouteName:", initialRouteName);
-
+  const initialRouteName = "LandingPage"
 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialRouteName}>
-        {!inRegistrationFlow ? (
-          <Stack.Screen name="Navbar" component={Navbar} options={{headerShown: false}} />
+        {isLoggedIn ? (
+          <Stack.Group>
+            <Stack.Screen name="Navbar" component={Navbar} options={{headerShown: false}} />
+            <Stack.Screen name="Restaurant" component={Restaurant} options={{headerShown: false}} />
+            <Stack.Screen name="Review" component={Review} options={{headerShown: false}} />
+          </Stack.Group>
         ) : (
           <Stack.Group>
             <Stack.Screen name="LandingPage" component={LandingPage} options={{ headerShown: false }}/>

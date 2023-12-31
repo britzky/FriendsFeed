@@ -128,8 +128,7 @@ export const AuthProvider = ({ children }) => {
                 AsyncStorage.setItem('refresh_token', data.refresh_token);
                 setUserDetails(data.user);
                 setAccessToken(data.access_token);
-                setIsLoggedIn(true);
-                setLoading(false);
+
             } else {
                 const errorData = await response.json();
                 throw new Error(errorData.message);
@@ -166,7 +165,6 @@ export const AuthProvider = ({ children }) => {
                 AsyncStorage.setItem('refresh_token', data.refresh_token);
                 setUserDetails(data.user);
                 setAccessToken(data.access_token);
-                setIsLoggedIn(true);
             } else {
                 setLoading(false);
                 throw new Error(data.message);
@@ -201,9 +199,6 @@ export const AuthProvider = ({ children }) => {
          registerUser,
          loginUser,
     }
-
-
-
 
   return (
     <AuthContext.Provider value={contextValue}>
