@@ -39,9 +39,9 @@ const RestaurantCard = ({
       <Text style={styles.title}>{restaurantName}</Text>
         {friendAvatars &&
           friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
-            <View style={styles.avatarContainer}>
+            <View key={index} style={styles.avatarContainer}>
             <Image
-            key={index}
+            
             source={avatars[avatar]}
             style={[
               styles.avatar,
@@ -80,14 +80,15 @@ const RestaurantCard = ({
         <View style={styles.avatarContainer}>
           {friendAvatars &&
             friendAvatars.slice(0, MAX_AVATARS_DISPLAYED).map((avatar, index) => (
-              <Image
-                key={index}
-                source={avatars[avatar]}
-                style={[
-                  styles.avatar,
-                  { marginLeft: index === 0 ? 0 : -10 }
-                ]}
-              />
+              <View key={index} style={styles.avatarContainer}>
+                  <Image
+                    source={avatars[avatar]}
+                    style={[
+                      styles.avatar,
+                      { marginLeft: index === 0 ? 0 : -10 },
+                    ]}
+                  />
+                </View>
             ))}
           <Text style={styles.overall}>Friend’s Overall Rating</Text>
         </View>
