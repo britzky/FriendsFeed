@@ -11,7 +11,7 @@ import { useRestaurant } from "../context/RestaurantContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export const Home = () => {
-  const { isLoggedIn, userDetails, loading, accessToken } = useAuth();
+  const { logout, isLoggedIn, userDetails, loading, accessToken, setInRegistrationFlow } = useAuth();
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [showRatingDropdown, setShowRatingDropdown] = useState(false);

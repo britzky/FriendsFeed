@@ -21,7 +21,7 @@ enableScreens();
 const Stack = createStackNavigator();
 
 export const AppNavigator = () => {
-  const { loading, isLoggedIn, setInRegistrationFlow } = useAuth();
+  const { loading, isLoggedIn, inRegistrationFlow, setInRegistrationFlow } = useAuth();
 
   useEffect(() => {
     if(!isLoggedIn) {
@@ -29,15 +29,15 @@ export const AppNavigator = () => {
     }
   }, [isLoggedIn])
 
-  // if (loading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-  //         <ActivityIndicator size="large" />
-  //     </View>
-  //   )
-  // }
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <ActivityIndicator size="large" />
+      </View>
+    )
+  }
 
-  const initialRouteName = "LandingPage"
+  const initialRouteName = isLoggedIn ? (inRegistrationFlow ? "Navbar" : "LandingPage") : "LandingPage";
 
   return (
     <NavigationContainer>

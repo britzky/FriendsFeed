@@ -13,7 +13,7 @@ const images = {
 };
 
 export const ChooseAvatar = ({ route }) => {
-  const { registerUser, isLoggedIn } = useAuth();
+  const { userDetails, setIsLoggedIn, isLoggedIn, setUserDetails, setAccessToken, accessToken } = useAuth();
   const navigation = useNavigation();
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -34,30 +34,52 @@ export const ChooseAvatar = ({ route }) => {
       ...formData,
       profile_picture: selectedAvatar,
     };
-    setTimeout(async () => {
-      try {
-        console.log("Completed user details:", completedUserDetails);
-        await registerUser(completedUserDetails);
-        navigation.navigate("Friend")
-      } catch (error) {
-        console.error("Error completing registration:", error);
-      } finally {
+    try {
+      const response = await fetch("https://colab-test.onrender.com/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(completedUserDetails),
+      });
+      const data = await response.json();
+      console.log("This is the data: ", data)
+
+      if (response.ok) {
+        console.log("Registration completed successfully:", data);
+        await AsyncStorage.setItem("user_details", JSON.stringify(data));
+        await AsyncStorage.setItem("access_token", data.access_token);
+        await AsyncStorage.setItem("refresh_token", data.refresh_token);
+        setUserDetails(data.user);
+        setAccessToken(data.access_token);
+        await AsyncStorage.setItem("isNewUser", "true");
         setLoading(false);
+      } else {
+        console.error("Error completing registration:", data);
       }
-    }, 0);
+    } catch (error) {
+      console.error("Error completing registration:", error);
+    }
   };
 
-  // useEffect(() => {
-  //   const navigateIfReady = async () => {
-  //     const isNewUser = await AsyncStorage.getItem("isNewUser");
-  //     if (isNewUser === "true" && isLoggedIn) {
-  //       navigation.navigate("Friend");
-  //       console.log("Navigating to Friend screen")
-  //       await AsyncStorage.removeItem("isNewUser");
-  //     }
-  //   };
-  //   navigateIfReady();
-  // }, [isLoggedIn, navigation, route.params]);
+  // Side effect to check if accessToken and userDetails are available before setting isLoggedIn to true
+  useEffect(() => {
+    if (accessToken && userDetails) {
+      setIsLoggedIn(true);
+    }
+  }, [accessToken, userDetails]);
+
+  useEffect(() => {
+    const navigateIfReady = async () => {
+      const isNewUser = await AsyncStorage.getItem("isNewUser");
+      if (isNewUser === "true" && isLoggedIn) {
+        navigation.navigate("Friend");
+        console.log("Navigating to Friend screen")
+        await AsyncStorage.removeItem("isNewUser");
+      }
+    };
+    navigateIfReady();
+  }, [isLoggedIn, navigation, route.params]);
 
   return (
     <ScrollView>

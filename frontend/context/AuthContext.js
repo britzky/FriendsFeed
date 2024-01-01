@@ -23,9 +23,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         console.log('Access Token Updated:', accessToken)
         console.log('User Details Updated:', userDetails)
-        console.log('Is Logged In Updated:', isLoggedIn)
-        console.log('inRegistrationFlow Updated:', inRegistrationFlow)
-    }, [accessToken, userDetails, isLoggedIn, inRegistrationFlow])
+    }, [accessToken, userDetails])
 
     const checkServerReadiness = async () => {
         try {
@@ -111,70 +109,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const registerUser = async (formData) => {
-        setLoading(true);
-        try {
-            const response = await fetch("https://colab-test.onrender.com/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                AsyncStorage.setItem('user_details', JSON.stringify(data.user));
-                AsyncStorage.setItem('access_token', data.access_token);
-                AsyncStorage.setItem('refresh_token', data.refresh_token);
-                setUserDetails(data.user);
-                setAccessToken(data.access_token);
-
-            } else {
-                const errorData = await response.json();
-                throw new Error(errorData.message);
-            }
-        } catch (error) {
-            console.error("Error registering user:", error);
-            setLoading(false);
-            throw error;
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const loginUser = async (username, password) => {
-        const credentials = {
-            username: username,
-            password: password
-        }
-        setLoading(true);
-        try {
-            const response = await fetch("https://colab-test.onrender.com/signin", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(credentials)
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                AsyncStorage.setItem('user_details', JSON.stringify(data.user));
-                AsyncStorage.setItem('access_token', data.access_token);
-                AsyncStorage.setItem('refresh_token', data.refresh_token);
-                setUserDetails(data.user);
-                setAccessToken(data.access_token);
-            } else {
-                setLoading(false);
-                throw new Error(data.message);
-            }
-        } catch (error) {
-            setLoading(false);
-            throw error;
-        }
-    }
-
     const logout = async () => {
         await AsyncStorage.clear(); // Clear all AsyncStorage data
         console.log("AsyncStorage after clear: ", await AsyncStorage.getAllKeys()); // This should return an empty array
@@ -184,24 +118,8 @@ export const AuthProvider = ({ children }) => {
         setAccessToken(null);
     };
 
-    const contextValue = {
-         isLoggedIn,
-         setIsLoggedIn,
-         userDetails,
-         setUserDetails,
-         accessToken,
-         setAccessToken,
-         refreshToken,
-         logout,
-         loading,
-         inRegistrationFlow,
-         setInRegistrationFlow,
-         registerUser,
-         loginUser,
-    }
-
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, userDetails, setUserDetails, accessToken, setAccessToken, refreshToken, logout, loading, inRegistrationFlow, setInRegistrationFlow }}>
         {children}
     </AuthContext.Provider>
   )
